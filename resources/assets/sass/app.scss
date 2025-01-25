@@ -1,0 +1,35 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic|Roboto:300,400,500,700');
+
+// Variables
+@import "variables";
+
+$fa-font-path: "../webfonts";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap.scss";
+
+// jQuery UI
+@import "~jquery-ui-bundle/jquery-ui.css";
+
+// select2
+@import "~select2/dist/css/select2.css";
+
+// flastpickr
+@import "~flatpickr/dist/flatpickr.css";
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/css/fontawesome.css';
+@import '~@fortawesome/fontawesome-free/css/regular.css';
+@import '~@fortawesome/fontawesome-free/css/solid.css';
+@import '~@fortawesome/fontawesome-free/css/brands.css';
+
+// Custom Styles
+@import "style";
+// @import "public/css/bootstrap";
+// @import "public/css/style";
+// @import "public/css/bootstrap-adaptive-tabs";
+// @import "public/css/jquery.datetimeentry";
+// @import "public/css/jquery-ui";
+// @import "public/css/select2";
+// @import "public/css/style";
