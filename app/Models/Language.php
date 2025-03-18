@@ -14,4 +14,31 @@ class Language extends Model implements Auditable
     use SoftDeletes;
 
     protected $table = 'language';
+
+
+    // Criado e Editado por DMG
+
+    /**
+     * Set the application locale.
+     *
+     * @param string $locale
+     * @return void
+     */
+    public static function setLocale($locale)
+    {
+        if (in_array($locale, ['en', 'es', 'pt'])) {
+            session(['applocale' => $locale]);
+            app()->setLocale($locale);
+        }
+    }
+
+    /**
+     * Get the current application locale.
+     *
+     * @return string
+     */
+    public static function getLocale()
+    {
+        return session('applocale', config('app.locale'));
+    }
 }

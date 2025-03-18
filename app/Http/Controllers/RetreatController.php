@@ -132,7 +132,6 @@ class RetreatController extends Controller
         $retreat->event_type_id = $request->input('event_type');
         $retreat->is_active = $request->input('is_active');
         $retreat->max_participants = $request->input('max_participants');
-
         // TODO: find a way to tag silent retreats, perhaps with event_type_id - for now disabled
         //$retreat->silent = $request->input('silent');
         // amount will be related to default_fee_id?
@@ -140,6 +139,11 @@ class RetreatController extends Controller
         // attending should be calculated based on retreat participants
         //$retreat->attending = $request->input('attending');
         //$retreat->year = $request->input('year');
+
+        $retreat->chapel = $request->input('chapel');
+        $retreat->points_room= $request->input('points_room');
+        $retreat->dining_room= $request->input('dining_room');
+
 
         $directors = $request->input('directors');
         $innkeepers = $request->input('innkeepers');
@@ -200,6 +204,8 @@ class RetreatController extends Controller
                 abort(500, 'Google Calendar Error');
             }
         }
+
+
 
         flash('Retreat: <a href="'.url('/retreat/'.$retreat->id).'">'.$retreat->title.'</a> added')->success();
 
@@ -468,6 +474,13 @@ class RetreatController extends Controller
         $retreat->is_active = $request->input('is_active');
         $retreat->max_participants = $request->input('max_participants');
         $retreat->save();
+
+
+        $retreat->chapel = $request->input('chapel');
+        $retreat->points_room= $request->input('points_room');
+        $retreat->dining_room= $request->input('dining_room');
+
+
 
         if ($request->file('contract') !== null) {
             $description = 'Contract for '.$retreat->idnumber.'-'.$retreat->title;
@@ -923,4 +936,9 @@ class RetreatController extends Controller
             return false;
         }
     }
+
+
+
+
+    
 }

@@ -40,6 +40,10 @@ class UpdateRetreatRequest extends FormRequest
             'event_attachment_description' => 'string|max:200|nullable',
             'max_participants' => 'integer|min:0|max:150',
 
+
+            'chapel' => 'required',
+            'dining_room' => 'required',
+            'points_room' => 'required',
         ];
     }
 

@@ -58,12 +58,12 @@
                         {{ html()->select('Chapel_id', ['Santo Inácio' => 'Santo Inácio', 'São José' => 'São José', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Dinning Room:', 'dinning_room_id') }}
-                        {{ html()->select('Chapel_id', ['Sala de Refeiçoes A' => 'Sala de Refeiçoes A', 'Sala de Refeiçoes B' => 'Sala de Refeiçoes B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
+                        {{ html()->label('Dinning Room:', 'Dinning_room_id') }}
+                        {{ html()->select('Dinning_room_id', ['Sala de Refeiçoes A' => 'Sala de Refeiçoes A', 'Sala de Refeiçoes B' => 'Sala de Refeiçoes B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     <div class="col-lg-3">
                         {{ html()->label('Points Room :', 'points_room_id') }}
-                        {{ html()->select('Chapel_id', ['Chapel' => 'Sala A', 'Dinning Room' => 'Sala B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
+                        {{ html()->select('points_room_id', ['CDinning Room' => 'Sala de refeições A', 'Dinning Room' => 'Sala B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     </div>
                     <div class="row">

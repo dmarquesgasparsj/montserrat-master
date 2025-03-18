@@ -42,7 +42,7 @@
                 </div>
                 <div class="row"> <!-- Adicionar Implementar aqui uma lista definida nos buildings -->
                     <div class="col-lg-3">
-                        {{ html()->label('Chapel:', 'Chapel_id') }}
+                        {{ html()->label('Chapel:', 'Chapel') }}
                         {{ html()->select('Chapel_id', ['Santo Inácio' => 'Santo Inácio', 'São José' => 'São José', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     <div class="col-lg-3">

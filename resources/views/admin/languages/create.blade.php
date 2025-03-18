@@ -3,21 +3,21 @@
 
 @section('content')
 <div class="container">
-    <h1>Create Language</h1>
+    <h1>{{ __('Create Language') }}</h1>
 
-    <form action="{{ route('languages.store') }}" method="POST">
+    <form action="{{ route('language.change') }}" method="POST">
         @csrf
         <div class="form-group">
-            <label for="name">Language</label>
-            <select name="name" id="name" class="form-control" required>
-                <option value="">Select a Language</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="Portuguese">Portuguese</option>
+            <label for="language">{{ __('Language') }}</label>
+            <select name="language" id="language" class="form-control" required>
+                <option value="">{{ __('Select a Language') }}</option>
+                <option value="en">{{ __('English') }}</option>
+                <option value="es">{{ __('Spanish') }}</option>
+                <option value="pt">{{ __('Portuguese') }}</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">{{ __('Change Language') }}</button>
     </form>
 </div>
 @endsection
