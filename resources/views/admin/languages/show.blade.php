@@ -14,8 +14,8 @@
             <p><strong>Name:</strong> {{ $language->name }}</p>
         </div>
         <div class="card-footer">
-            <a href="{{ route('languages.edit', $language->id) }}" class="btn btn-warning">Edit</a>
-            <form action="{{ route('languages.destroy', $language->id) }}" method="POST" style="display:inline;">
+            <a href="{{ route('language.index', $language->id) }}" class="btn btn-warning">Edit</a>
+            <form action="{{ route('language.destroy', $language->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>

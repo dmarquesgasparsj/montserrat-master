@@ -228,6 +228,11 @@ return [
         'Room' => 'Room',
         'Closet' => 'Closet',
         'Other' => 'Other',
+        //'Dining Room' => 'Dining Room',
+        //'Chapel' => 'Chapel',
+        //'Conference Room' => 'Conference Room',
+
+        // Adicões que facilitam a vida
     ],
 
     'medium' => [
@@ -350,6 +355,14 @@ return [
         'Face' => 'Face to Face',
         'Letter' => 'Letter',
         'Other' => 'Other',
+    ],
+
+    // Adicionar possivelmente mais linguas
+    // To do - por o Set Locale dependendo do que for escolhido ao instalar
+    'locale' => [
+        'pt' => 'Portuguese',
+        'en' => 'English',
+        'es' => 'Spanish',
     ],
 
     // when using the database seeder the first contact created is the self organization

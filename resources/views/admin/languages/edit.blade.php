@@ -5,7 +5,7 @@
 <div class="container">
     <h1>Edit Language</h1>
 
-    <form action="{{ route('languages.update', $language->id) }}" method="POST">
+    <form action="{{ route('language.update', $language->id) }}" method="POST">
         @csrf
         @method('PUT')
 

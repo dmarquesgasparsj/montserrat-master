@@ -126,7 +126,7 @@ return [
         ],
         'deleteLog' => [
             'title'     => 'Excluir permanentemente o registro de atividades',
-            'message'   => 'Tem certeza de que deseja EXCLUIR permanentemente o registro de atividades?',
+            'message'   => 'Tem certeza de que deseja excluir permanentemente o registro de atividades?',
         ],
         'restoreLog' => [
             'title'     => 'Restaurar o registro de atividades excluído',

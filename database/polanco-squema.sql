@@ -947,6 +947,9 @@ CREATE TABLE `event` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `ppd_id` int(11) DEFAULT NULL,
   `calendar_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `chapel` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `dining_room` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `points_room` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -2120,6 +2123,9 @@ CREATE TABLE `Retreats` (
   `NumberAttended` int(11) DEFAULT NULL,
   `Retreat Master` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Retreat Type ID` int(11) DEFAULT NULL
+  `Chapel` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Dinning Room` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Room 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

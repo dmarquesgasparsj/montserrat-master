@@ -167,6 +167,7 @@ Route::middleware('web', 'activity')->group(function () {
         Route::resource('website', WebsiteController::class);
         
         Route::resource('language', LanguageController::class);
+        Route::post('language/change', [LanguageController::class, 'changeLanguage'])->name('language.change');
         Route::get('language/{language}', [LanguageController::class, 'switchLang'])->name('language');
 
         Route::prefix('squarespace')->group(function () {
