@@ -2,9 +2,9 @@
 @section('content')
 <div class="row">
 	<div class="col-lg-12 text-center">
-		<h1>Welcome to Polanco, the Casa da Torre Jesuit Retreat House Database!</h1>
-		<p><a href="https://en.wikipedia.org/wiki/Juan_Alfonso_de_Polanco" target="_blank">Polanco</a> is your friendly assistant for managing information and making all of our lives a little easier.</p>
-		<p><a href="https://www.liturgia.pt/liturgiadiaria/" target="_blank">Today's Readings</a></p>
+		<h1>{{ __('messages.welcome_polanco_long') }}</h1>
+		<p><a href="https://en.wikipedia.org/wiki/Juan_Alfonso_de_Polanco" target="_blank">{{ __('messages.polanco') }}</a> {{ __('messages.polanco_description') }}</p>
+		<p><a href="https://www.liturgia.pt/liturgiadiaria/" target="_blank">{{ __('messages.todays_readings') }}</a></p>
 <!--		<p>{!! $quote !!}</p>  -->
 		<div class="responsiveCal">
 			<iframe src="https://calendar.google.com/calendar/embed?wkst=2&amp;bgcolor=%23FFFFFF&amp;src=montserratretreat.org_6rll8gg5fu0tmps7riubl0g0cc%40group.calendar.google.com&amp;color=%23711616&amp;ctz=America%2FChicago" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>

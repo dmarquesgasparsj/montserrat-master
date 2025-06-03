@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('squarespace_inventory', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index('name');
+            $table->string('name')->index(); // Let system auto-generate index name
             $table->integer('custom_form_id');
             $table->integer('variant_options')->nullable();
             $table->timestamps();

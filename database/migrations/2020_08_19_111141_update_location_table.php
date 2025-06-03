@@ -21,7 +21,7 @@ return new class extends Migration
             $table->index(['type', 'name'], 'idx_type_name');
             $table->index('room_id', 'idx_room_id');
             $table->index('parent_id', 'idx_parent_id');
-            $table->index('name', 'idx_name');
+            // $table->index('name', 'idx_name'); // Index on name already created by unique() constraint in create_locations_table
         });
     }
 
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->dropIndex('idx_type_name');
             $table->dropIndex('idx_room_id');
             $table->dropIndex('idx_parent_id');
-            $table->dropIndex('idx_name');
+            // $table->dropIndex('idx_name'); // Corresponding drop for the commented out index
         });
     }
 };

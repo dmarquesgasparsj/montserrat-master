@@ -21,6 +21,9 @@ class LanguageController extends Controller
      * Display a list of the languages available in the application, with an introductory text.
      * @return View
      */
+
+    // public function authorize($ability, $arguments = []): bool
+
     public function index(): View
     {
         $languages = config('app.languages', []); // Default to empty array
@@ -31,6 +34,7 @@ class LanguageController extends Controller
     }
 
     public function changeLanguage(Request $request)
+
     {
         $language = $request->input('language');
         if (in_array($language, ['en', 'es', 'pt'])) {

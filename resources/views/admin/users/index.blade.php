@@ -4,15 +4,15 @@
 <div class="row bg-cover">
     <div class="col-lg-12">
         <h2>
-            Index of Users
+            {{ __('messages.users_index_title') }}
         </h2>
-        <p class="lead">{{$users->total()}} records</p>
+        <p class="lead">{{$users->total()}} {{ __('messages.records') }}</p>
 
     </div>
     <div class="col-lg-12 my-3 table-responsive-md">
         @if ($users->isEmpty())
             <div class="col-lg-12 text-center py-5">
-                <p>It is a brand new world, there are no users!</p>
+                <p>{{ __('messages.no_users_message') }}</p>
             </div>
         @else
 
@@ -20,10 +20,10 @@
                 {{ $users->links() }}
                 <thead>
                     <tr>
-                        <th scope="col">Avatar</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Roles</th>
+                        <th scope="col">{{ __('messages.avatar') }}</th>
+                        <th scope="col">{{ __('messages.name') }}</th>
+                        <th scope="col">{{ __('messages.email') }}</th>
+                        <th scope="col">{{ __('messages.roles') }}</th>
                     </tr>
                 </thead>
                 <tbody>

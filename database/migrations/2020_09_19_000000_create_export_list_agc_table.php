@@ -32,8 +32,8 @@ return new class extends Migration
             $table->decimal('total_given', 13, 2)->default('0.00');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['contact_id'], 'idx_contact_id');
-            $table->unique(['sort_name'], 'idx_sort_name');
+            $table->unique('contact_id'); // Let system auto-generate index name for uniqueness
+            $table->unique('sort_name');  // Let system auto-generate index name for uniqueness
         });
     }
 
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('export_list');
+        Schema::dropIfExists('export_list_agc'); // Corrected table name for drop
     }
 };
