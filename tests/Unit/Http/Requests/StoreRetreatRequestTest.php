@@ -47,9 +47,9 @@ final class StoreRetreatRequestTest extends TestCase
             'is_active' => 'boolean',
             'max_participants' => 'integer|min:0|max:150',
 
-            'chapel' => 'required',
-            'dining_room' => 'required',
-            'points_room' => 'required',
+            //'chapel' => 'required',
+            //'dining_room' => 'required',
+            //'points_room' => 'required',
             
         ], $actual);
     }

@@ -140,9 +140,9 @@ class RetreatController extends Controller
         //$retreat->attending = $request->input('attending');
         //$retreat->year = $request->input('year');
 
-        $retreat->chapel = $request->input('chapel');
-        $retreat->points_room= $request->input('points_room');
-        $retreat->dining_room= $request->input('dining_room');
+        //$retreat->chapel = $request->input('chapel');
+        //$retreat->points_room= $request->input('points_room');
+        //$retreat->dining_room= $request->input('dining_room');
 
 
         $directors = $request->input('directors');
@@ -476,9 +476,9 @@ class RetreatController extends Controller
         $retreat->save();
 
 
-        $retreat->chapel = $request->input('chapel');
-        $retreat->points_room= $request->input('points_room');
-        $retreat->dining_room= $request->input('dining_room');
+        //$retreat->chapel = $request->input('chapel');
+        //$retreat->points_room= $request->input('points_room');
+        //$retreat->dining_room= $request->input('dining_room');
 
 
 

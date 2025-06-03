@@ -243,6 +243,16 @@ class Retreat extends Model implements Auditable
         }
     }
 
+    public function getRetreatChapelRooms()
+    {
+        // Em execução, ir buscar os dados da capela, sala de refieçoes etc
+        $spaces = '';
+        $chapel = $this->chapel()->get();
+        //$innkeepers = $this->innkeepers()->get();
+        //$assistants = $this->assistants()->get();
+
+    }
+
     public function getRetreatScheduleLinkAttribute()
     {
         if (Storage::has('event/'.$this->id.'/schedule.pdf')) {

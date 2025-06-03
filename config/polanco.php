@@ -228,11 +228,11 @@ return [
         'Room' => 'Room',
         'Closet' => 'Closet',
         'Other' => 'Other',
-        //'Dining Room' => 'Dining Room',
-        //'Chapel' => 'Chapel',
-        //'Conference Room' => 'Conference Room',
+        'Dining Room' => 'Dining Room',
+        'Chapel' => 'Chapel',
+        'Conference Room' => 'Conference Room',
 
-        // Adicões que facilitam a vida
+        // DG Adicões que facilitam a vida
     ],
 
     'medium' => [
