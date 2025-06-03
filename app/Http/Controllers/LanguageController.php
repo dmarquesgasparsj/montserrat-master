@@ -19,7 +19,7 @@ class LanguageController extends Controller
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize($ability, $arguments = []): bool
     {
         return true;
     }

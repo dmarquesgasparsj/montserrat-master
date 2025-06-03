@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('squarespace_contribution', function (Blueprint $table) {
             $table->id();
-            $table->integer('message_id')->index('idx_message_id');
-            $table->integer('contact_id')->nullable()->index('idx_contact_id');
-            $table->integer('event_id')->nullable()->index('idx_event_id');
-            $table->integer('donation_id')->nullable()->index('idx_donation_id');
-            $table->integer('touchpoint_id')->nullable()->index('idx_touchpoint_id');
+            $table->integer('message_id')->index(); // Auto-generate index name
+            $table->integer('contact_id')->nullable()->index(); // Auto-generate index name
+            $table->integer('event_id')->nullable()->index(); // Auto-generate index name
+            $table->integer('donation_id')->nullable()->index(); // Auto-generate index name
+            $table->integer('touchpoint_id')->nullable()->index(); // Auto-generate index name
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('address_street')->nullable();
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('idnumber')->nullable();
             $table->text('comments', 65535)->nullable();
             $table->boolean('is_processed')->nullable()->default(0);
-            $table->string('stripe_charge_id')->index('idx_stripe_charge_id');
+            $table->string('stripe_charge_id')->index(); // Auto-generate index name
             $table->timestamps();
             $table->softDeletes();
         });
