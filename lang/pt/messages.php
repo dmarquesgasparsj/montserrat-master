@@ -3,7 +3,7 @@
 return [
     'welcome' => 'Bem-vindo!',
     'toggle_navigation' => 'Alternar Navegação',
-    'english' => 'Inglês', // Assuming English should also be translatable
+    'english' => 'Inglês',
     'spanish' => 'Espanhol',
     'portuguese' => 'Português',
     'login' => 'Entrar',
@@ -70,7 +70,7 @@ return [
     'description_label' => 'Descrição:',
     'permissions_label_suffix' => 'Permissões:',
     'update_permissions' => 'Atualizar Permissões',
-    'users_with_role_prefix' => 'Usuários com função ',
-    'users_with_role_suffix' => ':',
+    'users_with_role_prefix' => 'Usuários com a função ',
+    'users_with_role_suffix' => ' :', // Added a space for better formatting with the prefix
     'update_users' => 'Atualizar Usuários',
 ];

@@ -15,9 +15,9 @@
         <tbody>
                 @php
                     $languages = [
-                        ['id' => 1, 'name' => 'English'],
-                        ['id' => 2, 'name' => 'Portuguese'],
-                        ['id' => 3, 'name' => 'Spanish']
+                        ['id' => 1, 'name' => 'English', 'code' => 'en'],
+                        ['id' => 2, 'name' => 'Portuguese', 'code' => 'pt'],
+                        ['id' => 3, 'name' => 'Spanish', 'code' => 'es']
                     ];
                 @endphp
 
@@ -26,7 +26,7 @@
                         <td>{{ $language['id'] }}</td>
                         <td>{{ $language['name'] }}</td>
                         <td>
-                            <button type="submit" name="selected_language" value="{{ $language['id'] }}" class="btn btn-primary">Select</button>
+                            <a href="{{ route('lang.switch', ['lang' => $language['code']]) }}" class="btn btn-primary">Select</a>
                         </td>
                     </tr>
                 @endforeach
