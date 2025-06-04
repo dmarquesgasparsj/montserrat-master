@@ -50,6 +50,7 @@ class LanguageController extends Controller
      */
     public function switchLang($lang): RedirectResponse
     {
+        App::setLocale($lang); // Add this line
         session()->put('applocale', $lang);
         return Redirect::back();
     }
