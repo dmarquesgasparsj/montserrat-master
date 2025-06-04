@@ -26,7 +26,7 @@
                         <td>{{ $language['id'] }}</td>
                         <td>{{ $language['name'] }}</td>
                         <td>
-                            <a href="{{ route('lang.switch', ['lang' => $language['code']]) }}" class="btn btn-primary">Select</a>
+                            <a href="{{ route('lang.switch', ['language' => $language['code']]) }}" class="btn btn-primary">Select</a>
                         </td>
                     </tr>
                 @endforeach
