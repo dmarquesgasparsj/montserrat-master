@@ -48,10 +48,10 @@ class LanguageController extends Controller
     /**
      * Get the validation rules that apply to the request.
      */
-    public function switchLang($lang): RedirectResponse
+    public function switchLang($language): RedirectResponse
     {
-        App::setLocale($lang); // Add this line
-        session()->put('applocale', $lang);
+        App::setLocale($language); // Add this line
+        session()->put('applocale', $language);
         return Redirect::back();
     }
 }
