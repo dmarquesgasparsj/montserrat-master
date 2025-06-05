@@ -23,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->throttleApi();
+
+        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocaleFromSession::class); // Add this line
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
