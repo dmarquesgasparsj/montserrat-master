@@ -1,5 +1,5 @@
 @extends('template')
 @section('content')
-<h1>Welcome to the Grounds Page</h1>
-<p>This page will contain information about the retreat house grounds.</p>
+<h1>{{ __('messages.grounds_title') }}</h1>
+<p>{{ __('messages.grounds_description') }}</p>
 @stop

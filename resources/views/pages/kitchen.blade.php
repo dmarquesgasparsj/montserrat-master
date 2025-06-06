@@ -1,6 +1,6 @@
 @extends('template')
 @section('content')
-<h1>Welcome to the Kitchen Page</h1>
-<p>This page will contain information about the kitchen.</p>
+<h1>{{ __('messages.kitchen_title') }}</h1>
+<p>{{ __('messages.kitchen_description') }}</p>
 <img src="images/kitchen-humor.png">
 @stop
