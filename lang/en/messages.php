@@ -73,4 +73,13 @@ return [
     'users_with_role_prefix' => 'Users with ',
     'users_with_role_suffix' => ' role:',
     'update_users' => 'Update Users',
+    'home' => 'Home',
+    'contacts' => 'Contacts',
+    'events' => 'Events',
+    'rooms' => 'Rooms',
+    'finance' => 'Finance',
+    'maintenance' => 'Maintenance',
+    'gate_controls' => 'Gate Controls',
+    'dashboards' => 'Dashboards',
+    'admin' => 'Admin',
 ];
