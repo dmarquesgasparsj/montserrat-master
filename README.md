@@ -110,3 +110,29 @@ Prior to committing code changes, it is suggested to run the phpunit tests. Test
 
 * php artisan --env=testing migrate:fresh --seed
 * php artisan --env=testing db:seed --class=TestPermissionRolesSeeder
+## Localization
+
+Polanco supports multiple interface languages.
+
+### Available locales
+
+The following locale codes are included:
+
+* `en` – English
+* `es` – Spanish
+* `pt` – Portuguese
+
+### Changing the default locale
+
+Edit your `.env` file and set `APP_LOCALE` to one of the supported codes:
+
+```bash
+APP_LOCALE=es
+php artisan config:clear
+```
+
+The `config:clear` command reloads the configuration so the new default takes effect.
+
+### Switching languages at runtime
+
+A **Language** dropdown is available in the top navigation bar. Choose a language from this menu to update the interface instantly. The selected locale is stored in your session and will be used for subsequent pages.
