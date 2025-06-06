@@ -35,7 +35,7 @@
 	<div class="container pt-0">
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<a class="navbar-brand" href={{ ( Auth::check() ) ? route('welcome') : route('home') }}>
-				<img src="{{URL('/images/mrhlogoblack.png')}}" alt="Home" class="logo">
+                                <img src="{{URL('/images/mrhlogoblack.png')}}" alt="{{ __('messages.home') }}" class="logo">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -45,7 +45,7 @@
 					@can('show-contact')
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Contacts
+                                                        {{ __('messages.contacts') }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href={{ route('person.index') }}>Persons</a>
@@ -74,27 +74,27 @@
 					@endCan
 					@can('show-retreat')
 					<li class="nav-item">
-						<a class="nav-link" href={{ route('retreat.index') }}>Events</a>
+                                                <a class="nav-link" href={{ route('retreat.index') }}>{{ __('messages.events') }}</a>
 					</li>
 					@endCan
 					@can('show-room')
 					<li class="nav-item">
-						<a class="nav-link" href={{ route('rooms') }}>Rooms</a>
+                                                <a class="nav-link" href={{ route('rooms') }}>{{ __('messages.rooms') }}</a>
 					</li>
 					@endCan
 					@can('show-donation')
 					<li class="nav-item">
-						<a class="nav-link" href={{ route('finance') }}>Finance</a>
+                                                <a class="nav-link" href={{ route('finance') }}>{{ __('messages.finance') }}</a>
 					</li>
 					@endCan
 
 					@can('show-asset')
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Maintenance
+                                                        {{ __('messages.maintenance') }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href={{ route('maintenance') }}>Maintenance</a>
+                                                        <a class="dropdown-item" href={{ route('maintenance') }}>{{ __('messages.maintenance') }}</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href={{ route('asset.index') }}>Assets</a>
 							<div class="dropdown-divider"></div>
@@ -109,7 +109,7 @@
 					@can('show-gate')
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Gate Controls
+                                                        {{ __('messages.gate_controls') }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href={{ route('gate.index') }}>Gate log</a>
@@ -131,13 +131,13 @@
 					@endcan
 					@can('show-dashboard')
 					<li class="nav-item">
-						<a class="nav-link" href={{ route('dashboard.index') }}>Dashboards</a>
+                                                <a class="nav-link" href={{ route('dashboard.index') }}>{{ __('messages.dashboards') }}</a>
 					</li>
 					@endcan
 					@can('show-admin-menu')
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Admin
+                                                        {{ __('messages.admin') }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href={{ route('permission.index') }}>Permissions</a>

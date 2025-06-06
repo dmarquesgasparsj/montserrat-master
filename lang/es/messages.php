@@ -73,4 +73,13 @@ return [
     'users_with_role_prefix' => 'Usuarios con rol ',
     'users_with_role_suffix' => ':',
     'update_users' => 'Actualizar Usuarios',
+    'home' => 'Inicio',
+    'contacts' => 'Contactos',
+    'events' => 'Eventos',
+    'rooms' => 'Habitaciones',
+    'finance' => 'Finanzas',
+    'maintenance' => 'Mantenimiento',
+    'gate_controls' => 'Controles de Puerta',
+    'dashboards' => 'Paneles de control',
+    'admin' => 'Administración',
 ];

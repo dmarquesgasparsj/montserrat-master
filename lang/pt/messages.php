@@ -73,4 +73,13 @@ return [
     'users_with_role_prefix' => 'Usuários com a função ',
     'users_with_role_suffix' => ' :', // Added a space for better formatting with the prefix
     'update_users' => 'Atualizar Usuários',
+    'home' => 'Início',
+    'contacts' => 'Contatos',
+    'events' => 'Eventos',
+    'rooms' => 'Quartos',
+    'finance' => 'Finanças',
+    'maintenance' => 'Manutenção',
+    'gate_controls' => 'Controles do Portão',
+    'dashboards' => 'Painéis',
+    'admin' => 'Administração',
 ];
