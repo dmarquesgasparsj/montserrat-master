@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h1>
-                        <span class="grey">Dashboard Index</span>
+                        <span class="grey">{{ $page_title }}</span>
                     </h1>
                     <div class="col-lg-3 col-md-4">
                         <select class="custom-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">

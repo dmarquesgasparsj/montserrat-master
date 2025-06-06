@@ -73,4 +73,9 @@ return [
     'users_with_role_prefix' => 'Users with ',
     'users_with_role_suffix' => ' role:',
     'update_users' => 'Update Users',
+    'dashboard_index_title' => 'Dashboard Index',
+    'dashboard_agc_title' => 'AGC Dashboard',
+    'dashboard_events_title' => 'Event Dashboard',
+    'dashboard_description_title' => 'Donation Description Dashboard',
+    'dashboard_event_drilldown' => 'Event Dashboard Drilldown: :name FY :year',
 ];

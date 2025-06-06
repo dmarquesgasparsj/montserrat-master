@@ -73,4 +73,9 @@ return [
     'users_with_role_prefix' => 'Usuarios con rol ',
     'users_with_role_suffix' => ':',
     'update_users' => 'Actualizar Usuarios',
+    'dashboard_index_title' => 'Índice del Tablero',
+    'dashboard_agc_title' => 'Tablero AGC',
+    'dashboard_events_title' => 'Tablero de Eventos',
+    'dashboard_description_title' => 'Tablero de Descripción de Donaciones',
+    'dashboard_event_drilldown' => 'Desglose del Tablero de Eventos: :name FY :year',
 ];
