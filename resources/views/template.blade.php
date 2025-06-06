@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ session('applocale', config('app.locale')) }}">
 
 <head>
 	<meta charset="UTF-8">
