@@ -135,4 +135,8 @@ return [
     'gate_controls' => 'Gate Controls',
     'dashboards' => 'Dashboards',
     'admin' => 'Admin',
+    'board_members' => 'Board Members',
+    'board_members_group' => 'Board Members Group',
+    'open_for' => 'Open for...',
+    'delete_confirm' => 'Are you sure you want to delete?',
 ];

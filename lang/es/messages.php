@@ -135,4 +135,8 @@ return [
     'gate_controls' => 'Controles de Puerta',
     'dashboards' => 'Paneles de control',
     'admin' => 'Administración',
+    'board_members' => 'Miembros de la Junta',
+    'board_members_group' => 'Grupo de Miembros de la Junta',
+    'open_for' => 'Abrir por...',
+    'delete_confirm' => '¿Está seguro de que desea eliminar?',
 ];

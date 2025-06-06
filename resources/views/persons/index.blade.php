@@ -19,7 +19,7 @@
         <div class="filters">
             <span>
                 <a href={{ action([\App\Http\Controllers\PersonController::class, 'boardmembers']) }}>
-                    <img src="{{ URL::asset('images/board.png')}}" class="btn btn-info" alt="Board Members" title="Board Members">
+                    <img src="{{ URL::asset('images/board.png')}}" class="btn btn-info" alt="{{ __('messages.board_members') }}" title="{{ __('messages.board_members') }}">
                 </a>
             </span>
             <span>

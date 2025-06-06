@@ -17,12 +17,12 @@
 	<link rel="stylesheet" type="text/css" href="{{ url(mix('dist/bundle.css')) }}">
 	<script src="{{ url(mix('dist/bundle.js')) }}"></script>
 	<script>
-		function ConfirmDelete() {
-			var x = confirm("Are you sure you want to delete?");
-			if (x)
-				return true;
-			else
-				return false;
+                function ConfirmDelete() {
+                        var x = confirm("{{ __('messages.delete_confirm') }}");
+                        if (x)
+                                return true;
+                        else
+                                return false;
 		}
 	</script>
 
@@ -117,7 +117,7 @@
 							<a class="dropdown-item" href={{ route('gate.close') }}>Close</a>
 							<div class="dropdown-divider"></div>
 							<div class="dropright dropdown-submenu">
-								<a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown">Open for...</a>
+                                                                <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown">{{ __('messages.open_for') }}</a>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" href={{ route('gate.open', 1) }}>1 hour</a>
 									<a class="dropdown-item" href={{ route('gate.open', 2) }}>2 hours</a>

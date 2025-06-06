@@ -135,4 +135,8 @@ return [
     'gate_controls' => 'Controles do Portão',
     'dashboards' => 'Painéis',
     'admin' => 'Administração',
+    'board_members' => 'Membros do Conselho',
+    'board_members_group' => 'Grupo de Membros do Conselho',
+    'open_for' => 'Abrir por...',
+    'delete_confirm' => 'Tem certeza de que deseja excluir?',
 ];

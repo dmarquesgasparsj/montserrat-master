@@ -7,7 +7,7 @@
         <h2>Edit: {{ $person->full_name }}</h2>
     </div>
     <div class="col-lg-12 text-center">
-        @if ($person->is_board_member) <span><a href={{ action([\App\Http\Controllers\PersonController::class, 'boardmembers']) }}>{{ html()->img(asset('images/board.png'), 'Board Members Group')->attribute('title', "Board Members Group")->class('btn btn-outline-dark') }}</a></span> @endIf
+        @if ($person->is_board_member) <span><a href={{ action([\App\Http\Controllers\PersonController::class, 'boardmembers']) }}>{{ html()->img(asset('images/board.png'), __('messages.board_members_group'))->attribute('title', __('messages.board_members_group'))->class('btn btn-outline-dark') }}</a></span> @endIf
         @if ($person->is_ambassador) <span><a href={{ action([\App\Http\Controllers\PersonController::class, 'ambassadors']) }}>{{ html()->img(asset('images/ambassador.png'), 'Ambassador Group')->attribute('title', "Ambassadors Group")->class('btn btn-outline-dark') }}</a></span> @endIf
         @if ($person->is_staff) <span><a href={{ action([\App\Http\Controllers\PersonController::class, 'staff']) }}>{{ html()->img(asset('images/employee.png'), 'Staff Group')->attribute('title', "Employees Group")->class('btn btn-outline-dark') }}</a></span> @endIf
         @if ($person->is_steward) <span><a href={{ action([\App\Http\Controllers\PersonController::class, 'stewards']) }}>{{ html()->img(asset('images/steward.png'), 'Steward Group')->attribute('title', "Stewards Group")->class('btn btn-outline-dark') }}</a></span> @endIf
