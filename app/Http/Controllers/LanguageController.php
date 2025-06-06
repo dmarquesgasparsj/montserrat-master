@@ -27,8 +27,8 @@ class LanguageController extends Controller
     public function index(): View
     {
         $languages = config('app.languages', []); // Default to empty array
-        $currentLang = session('applocale');
-        $currentLang = Arr::get($languages, $currentLang);
+        $currentLang = session('applocale', config('app.locale'));
+        $currentLang = Arr::get($languages, $currentLang, config('app.locale'));
     
         return view('admin.languages.index', compact('languages', 'currentLang'));
     }
