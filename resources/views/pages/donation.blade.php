@@ -1,5 +1,5 @@
 @extends('template')
 @section('content')
-<h1>Welcome to the Donation Page</h1>
-<p>This page will contain information about donations.</p>
+<h1>{{ __('messages.donation_title') }}</h1>
+<p>{{ __('messages.donation_description') }}</p>
 @stop
