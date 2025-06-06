@@ -6,22 +6,22 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h1>
-                    <span class="grey">{{$persons->total()}} results found</span>
-                    <span class="search"><a href={{ action([\App\Http\Controllers\SearchController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), 'New search')->attribute('title', "New search")->class('btn btn-link') }}</a></span></h1>
+                    <span class="grey">{{$persons->total()}} {{ __('messages.results_found') }}</span>
+                    <span class="search"><a href={{ action([\App\Http\Controllers\SearchController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), __('messages.new_search'))->attribute('title', __('messages.new_search'))->class('btn btn-link') }}</a></span></h1>
                 </div>
                 @if ($persons->isEmpty())
-                    <p>Oops, no known contacts with the given search criteria</p>
+                    <p>{{ __('messages.oops_no_contacts_message') }}</p>
                 @else
-                <table class="table table-striped table-bordered table-hover"><caption><h2>Contacts</h2></caption>
+                <table class="table table-striped table-bordered table-hover"><caption><h2>{{ __('messages.contacts') }}</h2></caption>
                     <thead>
                         <tr>
-                            <th>Picture</th>
-                            <th>Name</th>
-                            <th>Address (City)</th>
-                            <th>Home phone</th>
-                            <th>Cell phone</th>
-                            <th>Email</th>
-                            <th>Parish (City)</th>
+                            <th>{{ __('messages.picture') }}</th>
+                            <th>{{ __('messages.name') }}</th>
+                            <th>{{ __('messages.address_city') }}</th>
+                            <th>{{ __('messages.home_phone') }}</th>
+                            <th>{{ __('messages.cell_phone') }}</th>
+                            <th>{{ __('messages.email') }}</th>
+                            <th>{{ __('messages.parish_city') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,16 +31,16 @@
                             <td>{!!$person->contact_link_full_name!!}</td>
                             <td>
                                 @if($person->do_not_mail)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Mail</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_mail') }}</strong></div>
                                 @endIf
                                 {!!$person->address_primary_google_map!!}
                             </td>
                             <td>
                                 @if($person->do_not_phone)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Call</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_call') }}</strong></div>
                                 @endIf
                                 @if($person->do_not_sms)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Text</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_text') }}</strong></div>
                                 @endIf
                                 @foreach($person->phones as $phone)
                                 @if (($phone->location_type_id==1) and ($phone->phone_type=="Phone"))
@@ -51,10 +51,10 @@
                             <td>
 
                                 @if($person->do_not_phone)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Call</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_call') }}</strong></div>
                                 @endIf
                                 @if($person->do_not_sms)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Text</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_text') }}</strong></div>
                                 @endIf
                                 @foreach($person->phones as $phone)
                                 @if (($phone->location_type_id==1) and ($phone->phone_type=="Mobile"))
@@ -65,7 +65,7 @@
                             <td>
 
                                 @if($person->do_not_email)
-                                    <div class="alert alert-warning alert-important"><strong>Do Not Email</strong></div>
+                                    <div class="alert alert-warning alert-important"><strong>{{ __('messages.do_not_email') }}</strong></div>
                                 @endIf
                                 @foreach($person->emails as $email)
                                 @if ($email->is_primary)

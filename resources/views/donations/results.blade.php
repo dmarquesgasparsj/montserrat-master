@@ -6,8 +6,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1>
-                    <span class="grey">{{$donations->total()}} result(s) found</span>
-                    <span class="search"><a href={{ action([\App\Http\Controllers\DonationController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), 'New search')->attribute('title', "New search")->class('btn btn-link') }}</a></span>
+                    <span class="grey">{{$donations->total()}} {{ __('messages.results_found') }}</span>
+                    <span class="search"><a href={{ action([\App\Http\Controllers\DonationController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), __('messages.new_search'))->attribute('title', __('messages.new_search'))->class('btn btn-link') }}</a></span>
                 </h1>
                 <p class="lead">${{number_format($all_donations->sum('payments_paid'),2)}} paid of ${{number_format($all_donations->sum('donation_amount'),2) }} pledged
                   @if ($all_donations->sum('donation_amount') > 0)
@@ -16,20 +16,20 @@
                 </p>
             </div>
             @if ($donations->isEmpty())
-            <p>Oops, no known donations with the given search criteria</p>
+            <p>{{ __('messages.oops_no_contacts_message') }}</p>
             @else
             <table class="table table-striped table-bordered table-hover">
                 <caption>
-                    <h2>Donations</h2>
+                    <h2>{{ __('messages.donations') }}</h2>
                 </caption>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Donor</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Event</th>
-                        <th>Notes</th>
+                        <th>{{ __('messages.date') }}</th>
+                        <th>{{ __('messages.donor') }}</th>
+                        <th>{{ __('messages.description') }}</th>
+                        <th>{{ __('messages.amount') }}</th>
+                        <th>{{ __('messages.event') }}</th>
+                        <th>{{ __('messages.notes') }}</th>
                     </tr>
                 </thead>
                 <tbody>
