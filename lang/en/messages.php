@@ -139,4 +139,10 @@ return [
     'board_members_group' => 'Board Members Group',
     'open_for' => 'Open for...',
     'delete_confirm' => 'Are you sure you want to delete?',
+    'persons' => 'Persons',
+    'parishes' => 'Parishes',
+    'parish' => 'Parish',
+    'dioceses' => 'Dioceses',
+    'diocese' => 'Diocese',
+    'no_dioceses_message' => 'No Dioceses are currently in the database.',
 ];
