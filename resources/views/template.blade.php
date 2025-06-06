@@ -48,9 +48,9 @@
                                                         {{ __('messages.contacts') }}
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href={{ route('person.index') }}>Persons</a>
-							<a class="dropdown-item" href={{ route('parish.index') }}>Parishes</a>
-							<a class="dropdown-item" href={{ route('diocese.index') }}>Dioceses</a>
+                                                        <a class="dropdown-item" href={{ route('person.index') }}>{{ __('messages.persons') }}</a>
+                                                        <a class="dropdown-item" href={{ route('parish.index') }}>{{ __('messages.parishes') }}</a>
+                                                        <a class="dropdown-item" href={{ route('diocese.index') }}>{{ __('messages.dioceses') }}</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href={{ route('organization.index') }}>Organizations</a>
 							<a class="dropdown-item" href={{ route('vendor.index') }}>Vendors</a>

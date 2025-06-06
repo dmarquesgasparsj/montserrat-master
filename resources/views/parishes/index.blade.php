@@ -3,7 +3,7 @@
     <div class="row bg-cover">
         <div class="col-lg-12">
             <h1>
-                Parish
+                {{ __('messages.parish') }}
                 @can('create-contact')
                 <span class="options">
                     <a href={{ action([\App\Http\Controllers\ParishController::class, 'create']) }}>
