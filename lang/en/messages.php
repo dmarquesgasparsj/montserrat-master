@@ -135,4 +135,10 @@ return [
     'gate_controls' => 'Gate Controls',
     'dashboards' => 'Dashboards',
     'admin' => 'Admin',
+    'persons' => 'Persons',
+    'parishes' => 'Parishes',
+    'parish' => 'Parish',
+    'dioceses' => 'Dioceses',
+    'diocese' => 'Diocese',
+    'no_dioceses_message' => 'No Dioceses are currently in the database.',
 ];

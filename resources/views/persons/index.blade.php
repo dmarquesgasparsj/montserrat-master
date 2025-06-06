@@ -4,7 +4,7 @@
 <div class="row bg-cover">
     <div class="col-lg-12">
         <h1>
-            Persons
+            {{ __('messages.persons') }}
             @can('create-contact')
                 <span class="options">
                     <a href={{ action([\App\Http\Controllers\PersonController::class, 'create']) }}>

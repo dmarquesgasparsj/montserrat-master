@@ -4,7 +4,7 @@
 <div class="row bg-cover">
     <div class="col-lg-12">
         <h1>
-            Diocese
+            {{ __('messages.diocese') }}
             @can('create-contact')
                 <span class="options">
                     <a href={{ action([\App\Http\Controllers\DioceseController::class, 'create']) }}>
@@ -18,7 +18,7 @@
     <div class="col-lg-12">
         @if ($dioceses->isEmpty())
         <div class="col-lg-12 text-center py-5">
-            <p>No Dioceses are currently in the database.</p>
+            <p>{{ __('messages.no_dioceses_message') }}</p>
         </div>
         @else
         <table class="table table-striped table-bordered table-hover table-responsive">

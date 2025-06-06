@@ -135,4 +135,10 @@ return [
     'gate_controls' => 'Controles de Puerta',
     'dashboards' => 'Paneles de control',
     'admin' => 'Administración',
+    'persons' => 'Personas',
+    'parishes' => 'Parroquias',
+    'parish' => 'Parroquia',
+    'dioceses' => 'Diócesis',
+    'diocese' => 'Diócesis',
+    'no_dioceses_message' => 'No hay diócesis actualmente en la base de datos.',
 ];
