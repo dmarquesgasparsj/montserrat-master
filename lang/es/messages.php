@@ -121,4 +121,13 @@ return [
     'support_description' => 'This page will allow users to create support tickets when they need help, want new functionality, etc.',
     'user_title' => 'Welcome to the User Page',
     'user_description' => 'This page will contain information about users of the Montserrat Retreat House database.',
+    'home' => 'Inicio',
+    'contacts' => 'Contactos',
+    'events' => 'Eventos',
+    'rooms' => 'Habitaciones',
+    'finance' => 'Finanzas',
+    'maintenance' => 'Mantenimiento',
+    'gate_controls' => 'Controles de Puerta',
+    'dashboards' => 'Paneles de control',
+    'admin' => 'Administración',
 ];
