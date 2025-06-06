@@ -8,7 +8,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h1>
-                        <span class="grey">Donation Description Dashboard</span>
+                        <span class="grey">{{ $page_title }}</span>
                     </h1>
                 </div>
                     <div class="row">

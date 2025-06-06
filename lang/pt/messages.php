@@ -73,6 +73,11 @@ return [
     'users_with_role_prefix' => 'Usuários com a função ',
     'users_with_role_suffix' => ' :', // Added a space for better formatting with the prefix
     'update_users' => 'Atualizar Usuários',
+    'dashboard_index_title' => 'Índice do Painel',
+    'dashboard_agc_title' => 'Painel AGC',
+    'dashboard_events_title' => 'Painel de Eventos',
+    'dashboard_description_title' => 'Painel de Descrição de Doações',
+    'dashboard_event_drilldown' => 'Detalhamento do Painel de Eventos: :name FY :year',
     'about_title' => 'About the Montserrat Retreat House Database',
     'about_description' => 'This is an alpha version of the Montserrat Retreat House database. It is a work in progress!',
     'about_codetest_alt' => 'Code test ;)',

@@ -17,7 +17,9 @@ class DashboardController extends Controller
     {
         $this->authorize('show-dashboard');
 
-        return view('dashboard.index');
+        $page_title = __('messages.dashboard_index_title');
+
+        return view('dashboard.index', compact('page_title'));
     }
 
     public function agc($number_of_years = 5): View
@@ -101,7 +103,9 @@ class DashboardController extends Controller
         }
 
         // dd($donors, $data);
-        return view('dashboard.agc', compact('number_of_years', 'donors', 'agc_descriptions', 'data'));
+        $page_title = __('messages.dashboard_agc_title');
+
+        return view('dashboard.agc', compact('number_of_years', 'donors', 'agc_descriptions', 'data', 'page_title'));
     }
 
     public function agc_donations(AgcDonationsRequest $request): View
@@ -197,7 +201,9 @@ class DashboardController extends Controller
             'dataset2' => $avgs,
         ];
 
-        return view('dashboard.description', compact('donation_type', 'descriptions', 'data'));
+        $page_title = __('messages.dashboard_description_title');
+
+        return view('dashboard.description', compact('donation_type', 'descriptions', 'data', 'page_title'));
     }
 
     public function events($year = null): View
@@ -268,7 +274,9 @@ class DashboardController extends Controller
         // dd($colors, $event_colors, $revenue_data);
         // dd(count($labels), $labels, $chart_colors);
         // dd($total_revenue, $event_summary, $labels, $revenue_data);
-        return view('dashboard.events', compact('years', 'year', 'event_summary', 'total_revenue', 'total_participants', 'total_peoplenights', 'labels', 'revenue_data', 'participants_data', 'people_nights_data', 'event_colors'));
+        $page_title = __('messages.dashboard_events_title');
+
+        return view('dashboard.events', compact('years', 'year', 'event_summary', 'total_revenue', 'total_participants', 'total_peoplenights', 'labels', 'revenue_data', 'participants_data', 'people_nights_data', 'event_colors', 'page_title'));
     }
 
     public function drilldown($event_type_id = null, $year = null): View
@@ -290,6 +298,8 @@ class DashboardController extends Controller
             ->where('end_date', '<', now())
             ->orderBy('start_date')->get();
 
-        return view('dashboard.drilldown', compact('event_type', 'year', 'retreats'));
+        $page_title = __('messages.dashboard_event_drilldown', ['name' => $event_type->name, 'year' => $year]);
+
+        return view('dashboard.drilldown', compact('event_type', 'year', 'retreats', 'page_title'));
     }
 }
