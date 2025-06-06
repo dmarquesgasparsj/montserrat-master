@@ -1,5 +1,5 @@
 @extends('template')
 @section('content')
-<h1>Welcome to the User Page</h1>
-<p>This page will contain information about users of the Montserrat Retreat House database.</p>
+<h1>{{ __('messages.user_title') }}</h1>
+<p>{{ __('messages.user_description') }}</p>
 @stop

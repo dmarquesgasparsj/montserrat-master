@@ -1,7 +1,7 @@
 @extends('template')
 @section('content')
-<h1>Welcome to the Maintenance Page</h1>
-<p>This page will contain information about maintenance activities.</p>
+<h1>{{ __('messages.maintenance_title') }}</h1>
+<p>{{ __('messages.maintenance_description') }}</p>
 <img src="images/maintenance-humor.png">
 
 @stop
