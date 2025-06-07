@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
         $mailable = 0; //initialize to false
         $subject = 'Error Detected on '.config('polanco.site_name');
         $fullurl = $request->fullUrl();
-        (isset(Auth::User()->name) ? $username = Auth::User()->name : $username = 'Unknown user');
+        (isset(Auth::User()->name) ? $username = Auth::User()->name : $username = __('messages.unknown_user'));
         (! empty($request->ip()) ? $ip_address = $request->ip() : $ip_address = 'Unspecified IP Address');
 
         //403
@@ -92,7 +92,7 @@ class Handler extends ExceptionHandler
             Mail::send('emails.en_US.error', ['error' => $exception, 'url' => $fullurl, 'user' => $username, 'ip' => $ip_address, 'subject' => $subject], function ($m) use ($subject) {
                 $m->to(config('polanco.admin_email'))->subject($subject);
             });
-            flash('Email sent to site administrator regarding: '.$subject)->error();
+            flash(__('messages.email_sent_admin').$subject)->error();
         }
 
         if (($exception instanceof \ErrorException) && (! config('app.debug'))) { // avoid displaying error details to the user unless debugging

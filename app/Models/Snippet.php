@@ -24,7 +24,7 @@ class Snippet extends Model implements Auditable
         if (isset($this->language->label)) {
             return $this->language->label;
         } else {
-            return 'Unknown language';
+            return __('messages.unknown_language');
         }
     }
 }

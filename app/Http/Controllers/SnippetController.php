@@ -261,7 +261,7 @@ class SnippetController extends Controller
                 }
                 break;
             default:
-                flash('Unknown snippet test: '.$title)->error();
+                flash(__('messages.unknown_snippet_test', ['title' => $title]))->error();
                 break;
         }
 
