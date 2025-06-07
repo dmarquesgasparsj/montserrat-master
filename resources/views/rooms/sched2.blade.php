@@ -39,12 +39,12 @@
                     @else
                         
                         @foreach($roomsort as $room)
-                    
+
                         <tr>
                             <th scope="row">
                                 <a href="{{url('room/'.$room->id)}}">{{$room->location->name}} {{$room->name}}</a>
                             </th>
-                            
+
                             @foreach($dts as $dt)
                                 @if (($m[$room->id][$dt->toDateString()]['status'] == 'R') OR ($m[$room->id][$dt->toDateString()]['status'] == 'O')) 
                                 <td class="table-warning">
@@ -55,8 +55,8 @@
                                 @endif
                                 </td>
                             @endforeach
-                        @endforeach
                         </tr>
+                        @endforeach
     
                         
                     @endif
