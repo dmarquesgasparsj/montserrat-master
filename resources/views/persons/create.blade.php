@@ -3,13 +3,13 @@
 
 <div class="row bg-cover">
     <div class="col-lg-12">
-        <h2>Create Person</h2>
+        <h2>{{ __('messages.person_create_title') }}</h2>
     </div>
     <div class="col-lg-12">
         {{ html()->form('POST', url('person'))->acceptsFiles()->open() }}
         <div class="row">
             <div class="col-lg-12">
-                <h3>Basic Information</h3>
+                <h3>{{ __('messages.basic_information_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
@@ -68,7 +68,7 @@
 
         <hr>
         <div class="col-lg-12 alert alert-danger alert-important" id="safety_info">
-            <h3>Emergency Contact Information</h3>
+            <h3>{{ __('messages.emergency_contact_information_title') }}</h3>
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
@@ -95,7 +95,7 @@
 
         <div class="row">
             <div class="col-lg-3 col-md-4" id="contact_info">
-                <h3>Contact Information</h3>
+                <h3>{{ __('messages.contact_information_title') }}</h3>
 
                 {{ html()->label('Preferred communication method:', 'preferred_communication_method_id') }}
                 {{ html()->select('preferred_communication_method_id', $preferred_communication_methods, 0)->class('form-control') }}
@@ -103,7 +103,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <h3>Addresses</h3>
+                <h3>{{ __('messages.addresses_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 @include('persons.create.addresses')
@@ -114,7 +114,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Phone Numbers</h3>
+                <h3>{{ __('messages.phone_numbers_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 @include('persons.create.phones')
@@ -125,7 +125,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Email Addresses</h3>
+                <h3>{{ __('messages.email_addresses_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 @include('persons.create.emails')
@@ -136,7 +136,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Websites (URLs)</h3>
+                <h3>{{ __('messages.urls_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 @include('persons.create.urls')
@@ -147,7 +147,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Demographics</h3>
+                <h3>{{ __('messages.demographics_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
@@ -198,7 +198,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Languages</h3>
+                <h3>{{ __('messages.languages_title') }}</h3>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
@@ -220,7 +220,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Notes</h3>
+                <h3>{{ __('messages.notes_title') }}</h3>
             </div>
             <div class="col-lg-3 col-md-6 alert alert-info alert-important">
                 {{ html()->label('Health Notes:', 'note_health') }}
@@ -251,7 +251,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>Groups and Relationships</h3>
+                <h3>{{ __('messages.groups_and_relationships_title') }}</h3>
             </div>
         </div>
         <div class="row">
@@ -371,7 +371,7 @@
 
     <div class="row">
         <div class="col-lg-12 mt-5">
-            {{ html()->submit('Add Person')->class('btn btn-light') }}
+            {{ html()->submit(__('messages.add_person_button'))->class('btn btn-light') }}
         </div>
     </div>
     {{ html()->form()->close() }}

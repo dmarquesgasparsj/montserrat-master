@@ -11,25 +11,25 @@
         <li class="nav-item" role="tab">
                 <a class="nav-link active" data-toggle="tab" role="tab" href="#address_home">
                 <i class="fa fa-home"></i>
-                <label>Home</label>
+                <label>{{ __('messages.home_tab') }}</label>
             </a>
         </li>
         <li class="nav-item" role="tab">
                 <a class="nav-link" data-toggle="tab" role="tab" href="#address_work">
                 <i class="fa fa-archive"></i>
-                <label>Work</label>
+                <label>{{ __('messages.work_tab') }}</label>
             </a>
         </li>
         <li class="nav-item" role="tab">
                 <a class="nav-link" data-toggle="tab" role="tab" href="#address_other">
                 <i class="fa fa-cog"></i>
-                <label>Other</label>
+                <label>{{ __('messages.other_tab') }}</label>
             </a>
         </li>
     </ul>
     <div class="tab-content">
         <div id="address_home" class="tab-pane fade show active" role="tabpanel">
-            <h4>Home address</h4>
+            <h4>{{ __('messages.home_address_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -63,7 +63,7 @@
         </div>
         <div id="address_work" class="tab-pane fade" role="tabpanel">
 
-            <h4>Work address</h4>
+            <h4>{{ __('messages.work_address_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -98,7 +98,7 @@
 
         <div id="address_other" class="tab-pane fade" role="tabpanel">
 
-            <h4>Other address</h4>
+            <h4>{{ __('messages.other_address_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -138,7 +138,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-4">
             {{ html()->checkbox("do_not_mail", 0, 1)->class("form-check-input")->id("do_not_mail") }}
-            {{ html()->label("Do not mail", "do_not_mail")->class("form-check-label")->id("do_not_mail") }}
+            {{ html()->label(__('messages.do_not_mail'), "do_not_mail")->class("form-check-label")->id("do_not_mail") }}
         </div>
     </div>
 </div>
