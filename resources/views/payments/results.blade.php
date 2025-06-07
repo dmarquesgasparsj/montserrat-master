@@ -34,7 +34,7 @@
                     @foreach($payments as $payment)
                     <tr>
                         <td><a href="{{ URL('payment/'. $payment->payment_id) }}">{{ date('M d, Y g:i A', strtotime($payment->payment_date)) }}</a></td>
-                        <td>{!! $payment->donation->contact->contact_link_full_name ?? 'Unknown contact' !!} </td>
+                        <td>{!! $payment->donation->contact->contact_link_full_name ?? __('messages.unknown_contact') !!} </td>
                         <td>{{ $payment->donation->donation_description }} </td>
                         <td>{!! $payment->donation->retreat_link !!}</td>
                         <td>{{ '$'.$payment->payment_amount }} / ({{'$'.$payment->donation->donation_amount  }})</td>

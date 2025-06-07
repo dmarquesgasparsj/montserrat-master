@@ -35,8 +35,8 @@
                         <tr>
 
                             <td style="width:17%"><a href="activity/{{ $activity->id}}">{{ date('M d, Y g:i A', strtotime($activity->touched_at)) }}</a></td>
-                            <td style="width:17%">{!! $activity->targets_full_name_link ?? 'Unknown contact(s)' !!} </td>
-                            <td style="width:17%">{!! $activity->assignees_full_name_link ?? 'Unknown assignee(s)' !!} </td>
+                            <td style="width:17%">{!! $activity->targets_full_name_link ?? __('messages.unknown_contacts') !!} </td>
+                            <td style="width:17%">{!! $activity->assignees_full_name_link ?? __('messages.unknown_assignees') !!} </td>
                             <td style="width:5%">{{ $activity->activity_type_label }}</td>
                             <td style="width:44%">{{ $activity->details }}</td>
                         </tr>

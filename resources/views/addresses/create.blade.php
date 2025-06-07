@@ -10,7 +10,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
-                        {{ html()->label('Name of Contact:', 'contact_id') }}
+                        {{ html()->label(__('messages.name_of_contact_label'), 'contact_id') }}
                         @if (isset($defaults['contact_id']))
                             {{ html()->select('contact_id', $contacts, $defaults['contact_id'])->class('form-control')->required() }}
                         @else
@@ -20,13 +20,13 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
-                        {{ html()->label('Location type', 'location_type_id') }}
+                        {{ html()->label(__('messages.location_type_label'), 'location_type_id') }}
                         {{ html()->select('location_type_id', $location_types, config('polanco.location_type.home'))->class('form-control') }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
-                        {{ html()->label("Address Line 1:", "street_address") }}
+                        {{ html()->label(__('messages.address_line_1_label'), "street_address") }}
                         {{ html()->text("street_address")->class("form-control") }}
                     </div>
                 </div>

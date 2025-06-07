@@ -187,7 +187,7 @@
                             @foreach($touchpoints as $touchpoint)
                             <tr>
                                 <td><a href="{{url('touchpoint/'.$touchpoint->id)}}">{{ $touchpoint->touched_at }}</a></td>
-                                <td>{!! $touchpoint->staff->contact_link_full_name ?? 'Unknown staff member' !!}</a></td>
+                                <td>{!! $touchpoint->staff->contact_link_full_name ?? __('messages.unknown_staff_member') !!}</a></td>
                                 <td>{{ $touchpoint->type }}</td>
                                 <td>{{ $touchpoint->notes }}</td>
                             </tr>

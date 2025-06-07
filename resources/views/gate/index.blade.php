@@ -32,7 +32,7 @@
                                     {{ date('M d, Y g:i A', strtotime($touchpoint->touched_at)) }}
                                 </a>
                             </td>
-                            <td style="width:17%">{!! $touchpoint->staff->contact_link_full_name ?? 'Unknown staff member' !!} </td>
+                            <td style="width:17%">{!! $touchpoint->staff->contact_link_full_name ?? __('messages.unknown_staff_member') !!} </td>
                             <td style="width:44%">{{ $touchpoint->notes }}</td>
                         </tr>
                         @endforeach

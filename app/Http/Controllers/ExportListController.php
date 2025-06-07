@@ -57,7 +57,7 @@ class ExportListController extends Controller
 
         $export_list->save();
 
-        flash('Export list: <a href="'.url('/admin/export_list/'.$export_list->id).'">'.$export_list->label.'</a> added')->success();
+        flash(__('messages.export_list_added', ['url' => url('/admin/export_list/'.$export_list->id), 'label' => $export_list->label]))->success();
 
         return Redirect::action([self::class, 'index']);
     }
@@ -108,7 +108,7 @@ class ExportListController extends Controller
 
         $export_list->save();
 
-        flash('Export list: <a href="'.url('/admin/export_list/'.$export_list->id).'">'.$export_list->label.'</a> updated')->success();
+        flash(__('messages.export_list_updated', ['url' => url('/admin/export_list/'.$export_list->id), 'label' => $export_list->label]))->success();
 
         return Redirect::action([self::class, 'show'], $export_list->id);
     }
@@ -123,7 +123,7 @@ class ExportListController extends Controller
 
         \App\Models\ExportList::destroy($id);
 
-        flash('Export list: '.$export_list->label.' deleted')->warning()->important();
+        flash(__('messages.export_list_deleted', ['label' => $export_list->label]))->warning()->important();
 
         return Redirect::action([self::class, 'index']);
     }

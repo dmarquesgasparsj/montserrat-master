@@ -6,11 +6,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1>
-                    <span class="grey">{{$assets->total()}} results found</span>
-                    <span class="search"><a href={{ action([\App\Http\Controllers\AssetController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), 'New search')->attribute('title', "New search")->class('btn btn-link') }}</a></span></h1>
+                    <span class="grey">{{$assets->total()}} {{ __('messages.results_found') }}</span>
+                    <span class="search"><a href={{ action([\App\Http\Controllers\AssetController::class, 'search']) }}>{{ html()->img(asset('images/search.png'), __('messages.new_search'))->attribute('title', __('messages.new_search'))->class('btn btn-link') }}</a></span></h1>
             </div>
             @if ($assets->isEmpty())
-            <p>Oops, no known assets with the given search criteria</p>
+            <p>{{ __('messages.oops_no_assets_message') }}</p>
             @else
             <table class="table table-striped table-bordered table-hover">
                 <caption>
