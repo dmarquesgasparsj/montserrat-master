@@ -10,25 +10,25 @@
         <li class="nav-item" role="tab">
                 <a class="nav-link active" data-toggle="tab" role="tab" href="#phone_home">
                 <i class="fa fa-home"></i>
-                <label>Home</label>
+                <label>{{ __('messages.home_tab') }}</label>
             </a>
         </li>
         <li class="nav-item" role="tab">
                 <a class="nav-link" data-toggle="tab" role="tab" href="#phone_work">
                 <i class="fa fa-archive"></i>
-                <label>Work</label>
+                <label>{{ __('messages.work_tab') }}</label>
             </a>
         </li>
         <li class="nav-item" role="tab">
                 <a class="nav-link" data-toggle="tab" role="tab" href="#phone_other">
                 <i class="fa fa-cog"></i>
-                <label>Other</label>
+                <label>{{ __('messages.other_tab') }}</label>
             </a>
         </li>
     </ul>
     <div class="tab-content">
         <div id="phone_home" class="tab-pane fade show active" role="tabpanel">
-            <h4>Home phone numbers</h4>
+            <h4>{{ __('messages.home_phone_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div id="phone_work" class="tab-pane fade" role="tabpanel">
-            <h4>Work phone numbers</h4>
+            <h4>{{ __('messages.work_phone_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div id="phone_other" class="tab-pane fade" role="tabpanel">
-            <h4>Other phone numbers</h4>
+            <h4>{{ __('messages.other_phone_title') }}</h4>
 
             <div class="row">
                 <div class="col-lg-3 col-md-4">
@@ -85,9 +85,9 @@
 </div>
 <div class="form-group form-check">
     {{ html()->checkbox('do_not_phone', 0, 1)->class('form-check-input')->id('do_not_phone') }}
-    {{ html()->label('Do not call', 'do_not_phone')->class('form-check-label')->id('do_not_phone') }}
+    {{ html()->label(__('messages.do_not_call'), 'do_not_phone')->class('form-check-label')->id('do_not_phone') }}
 </div>
 <div class="form-group form-check">
     {{ html()->checkbox('do_not_sms', 0, 1)->class('form-check-input')->id('do_not_sms') }}
-    {{ html()->label('Do not text', 'do_not_sms')->class('form-check-label')->id('do_not_sms') }}
+    {{ html()->label(__('messages.do_not_text'), 'do_not_sms')->class('form-check-label')->id('do_not_sms') }}
 </div>
