@@ -110,6 +110,12 @@ Prior to committing code changes, it is suggested to run the phpunit tests. Test
 
 * php artisan --env=testing migrate:fresh --seed
 * php artisan --env=testing db:seed --class=TestPermissionRolesSeeder
+
+## Retreat ID numbers
+
+When creating a retreat the ID number is generated automatically. The next value
+is determined by incrementing the highest numeric portion of existing retreat
+IDs. The generated number is shown on the creation form and cannot be edited.
 ## Localization
 
 Polanco supports multiple interface languages.

@@ -117,6 +117,7 @@ final class RetreatControllerTest extends TestCase
     {
         $user = $this->createUserWithPermission('create-retreat');
 
+        $expected = \App\Models\Retreat::nextIdnumber();
         $response = $this->actingAs($user)->get(route('retreat.create'));
         $response->assertOk();
         $response->assertViewIs('retreats.create');
@@ -126,7 +127,9 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewHas('c');
         $response->assertViewHas('event_types');
         $response->assertViewHas('is_active');
+        $response->assertViewHas('next_idnumber');
         $response->assertSeeText('Create Retreat');
+        $response->assertSeeText($expected);
     }
 
     #[Test]
@@ -379,9 +382,9 @@ final class RetreatControllerTest extends TestCase
     public function store_returns_an_ok_response(): void
     {
         $user = $this->createUserWithPermission('create-retreat');
-        $idnumber = $this->faker->numberBetween(11111111, 99999999).$this->faker->lastName();
+        $expected = \App\Models\Retreat::nextIdnumber();
         $response = $this->actingAs($user)->post(route('retreat.store'), [
-            'idnumber' => $idnumber,
+            'idnumber' => 'ignored',
             'start_date' => Carbon::parse($this->faker->dateTimeBetween('+6 days', '+10 days')),
             'end_date' => Carbon::parse($this->faker->dateTimeBetween('+11 days', '+15 days')),
             'title' => $this->faker->catchPhrase(),
@@ -393,10 +396,10 @@ final class RetreatControllerTest extends TestCase
             'assistant_id' => 0,
         ]);
         // TODO: assumes that Google calendar integration is not set but eventually we will want to test that this too is working and saving the calendar event
-        $retreat = \App\Models\Retreat::whereIdnumber($idnumber)->first();
+        $retreat = \App\Models\Retreat::whereIdnumber($expected)->first();
         $response->assertSessionHas('flash_notification');
         $response->assertRedirect(action([\App\Http\Controllers\RetreatController::class, 'index']));
-        $this->assertEquals($retreat->idnumber, $idnumber);
+        $this->assertEquals($retreat->idnumber, $expected);
     }
 
     #[Test]
