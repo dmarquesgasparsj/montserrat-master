@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         {{ html()->label('ID#:', 'idnumber') }}
-                        {{ html()->text('idnumber')->class('form-control') }}
+                        {{ html()->text('idnumber', $next_idnumber)->class('form-control')->attribute('readonly', true) }}
                     </div>
                     <div class="col-lg-3">
                         {{ html()->label('Title: ', 'title') }}

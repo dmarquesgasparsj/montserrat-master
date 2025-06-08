@@ -29,6 +29,23 @@ class Retreat extends Model implements Auditable
         ];
     }
 
+    /**
+     * Generate the next sequential idnumber based on existing numeric values.
+     */
+    public static function nextIdnumber(): string
+    {
+        $max = self::pluck('idnumber')
+            ->map(function ($id) {
+                if (preg_match('/^\d+/', $id, $m)) {
+                    return (int) $m[0];
+                }
+
+                return 0;
+            })->max();
+
+        return (string) (($max ?? 0) + 1);
+    }
+
     public function setStartDateAttribute($date)
     {
         $this->attributes['start_date'] = Carbon::parse($date);

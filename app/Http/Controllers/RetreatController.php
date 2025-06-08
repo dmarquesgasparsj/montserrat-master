@@ -112,7 +112,9 @@ class RetreatController extends Controller
             $c = [0 => 'N/A'] + $c;
         }
 
-        return view('retreats.create', compact('d', 'i', 'a', 'c', 'event_types', 'is_active'));
+        $next_idnumber = \App\Models\Retreat::nextIdnumber();
+
+        return view('retreats.create', compact('d', 'i', 'a', 'c', 'event_types', 'is_active', 'next_idnumber'));
     }
 
     /**
@@ -124,7 +126,7 @@ class RetreatController extends Controller
 
         $retreat = new \App\Models\Retreat;
 
-        $retreat->idnumber = $request->input('idnumber');
+        $retreat->idnumber = \App\Models\Retreat::nextIdnumber();
         $retreat->start_date = $request->input('start_date');
         $retreat->end_date = $request->input('end_date');
         $retreat->title = $request->input('title');
