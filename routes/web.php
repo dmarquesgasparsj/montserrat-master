@@ -349,6 +349,7 @@ Route::middleware('web', 'activity')->group(function () {
     Route::resource('retreat', RetreatController::class);
 
     Route::get('retreats', [PageController::class, 'retreat'])->name('retreats');
+    Route::get('room/location/{location_id?}', [RoomController::class, 'index_location']);
     Route::resource('room', RoomController::class);
     Route::get('rooms/{ymd?}', [RoomController::class, 'schedule'])->name('rooms');
 
