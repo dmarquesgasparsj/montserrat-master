@@ -97,6 +97,29 @@ final class RoomControllerTest extends TestCase
     }
 
     #[Test]
+    public function index_location_returns_an_ok_response(): void
+    {
+        $user = $this->createUserWithPermission('show-room');
+
+        $room = \App\Models\Room::factory()->create();
+
+        $number_rooms = $this->faker->numberBetween(2, 10);
+        $rooms = \App\Models\Room::factory()->count($number_rooms)->create([
+            'location_id' => $room->location_id,
+            'deleted_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get('room/location/'.$room->location_id);
+        $results = $response->viewData('roomsort');
+        $response->assertOk();
+        $response->assertViewIs('rooms.index');
+        $response->assertViewHas('roomsort');
+        $response->assertViewHas('locations');
+        $response->assertSeeText('Room Index');
+        $this->assertGreaterThan($number_rooms, $results->count());
+    }
+
+    #[Test]
     public function schedule_returns_an_ok_response(): void
     {
         $user = $this->createUserWithPermission('show-room');

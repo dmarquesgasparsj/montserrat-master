@@ -30,8 +30,23 @@ class RoomController extends Controller
         $roomsort = $rooms->sortBy(function ($building) {
             return sprintf('%-12s%s', $building->location->name, $building->name);
         });
+        $locations = \App\Models\Location::orderBy('name')->pluck('name', 'id');
 
-        return view('rooms.index', compact('roomsort'));   //
+        return view('rooms.index', compact('roomsort', 'locations'));   //
+    }
+
+    public function index_location($location_id = null): View
+    {
+        $this->authorize('show-room');
+
+        $locations = \App\Models\Location::orderBy('name')->pluck('name', 'id');
+
+        $rooms = \App\Models\Room::with('location')->whereLocationId($location_id)->get();
+        $roomsort = $rooms->sortBy(function ($room) {
+            return sprintf('%-12s%s', $room->location->name, $room->name);
+        });
+
+        return view('rooms.index', compact('roomsort', 'locations'));
     }
 
     /**

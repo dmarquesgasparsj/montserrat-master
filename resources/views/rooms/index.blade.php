@@ -16,6 +16,14 @@
                         @endCan
                     </h1>
 
+                    <select class="location-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                        <option value="">Filter by building ...</option>
+                        <option value="{{url('room')}}">All buildings</option>
+                        @foreach($locations as $key=>$location)
+                        <option value="{{url('room/location/'.$key)}}">{{$location}}</option>
+                        @endforeach
+                    </select>
+
                 </div>
                 @if ($roomsort->isEmpty())
                     <p> Yikes, there are no rooms at this retreat house!</p>
