@@ -30,7 +30,11 @@ class RoomController extends Controller
         $roomsort = $rooms->sortBy(function ($building) {
             return sprintf('%-12s%s', $building->location->name, $building->name);
         });
-        $locations = \App\Models\Location::orderBy('name')->pluck('name', 'id');
+        $location_ids = \App\Models\Room::distinct()->pluck('location_id');
+        $locations = \App\Models\Location::whereIn('id', $location_ids)
+            ->whereNotIn('type', ['Chapel', 'Dining Room'])
+            ->orderBy('name')
+            ->pluck('name', 'id');
 
         return view('rooms.index', compact('roomsort', 'locations'));   //
     }
@@ -39,7 +43,11 @@ class RoomController extends Controller
     {
         $this->authorize('show-room');
 
-        $locations = \App\Models\Location::orderBy('name')->pluck('name', 'id');
+        $location_ids = \App\Models\Room::distinct()->pluck('location_id');
+        $locations = \App\Models\Location::whereIn('id', $location_ids)
+            ->whereNotIn('type', ['Chapel', 'Dining Room'])
+            ->orderBy('name')
+            ->pluck('name', 'id');
 
         $rooms = \App\Models\Room::with('location')->whereLocationId($location_id)->get();
         $roomsort = $rooms->sortBy(function ($room) {
