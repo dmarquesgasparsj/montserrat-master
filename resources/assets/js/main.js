@@ -27,6 +27,10 @@ $(document).ready(function() {
   $('.flatpickr-date-time').flatpickr(dateTimeOptions);
   $('.flatpickr-time').flatpickr(timeOptions);
 
+  $.ajaxSetup({
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+  });
+
   // Enable drag & drop of reservations on the room schedule
   $('.reservation').draggable({
     revert: 'invalid',
