@@ -10,7 +10,7 @@
             {!!$next_link!!}
         </h2>
         <p class="lead">
-            <span class="table-success">A=Available</span>
+            <span class="table-success">Available</span>
             <span class="table-warning">R=Reserved</span>
             <span class="table-warning">O=Occupied</span>
             <span class="table-danger">C=Cleaning Needed</span>
@@ -51,7 +51,6 @@
                                 {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), $m[$room->id][$dt->toDateString()]['status'])->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
                                 @else
                                 <td class="table-success room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
-                                    A
                                 @endif
                                 </td>
                             @endforeach
