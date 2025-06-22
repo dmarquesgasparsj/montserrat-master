@@ -330,11 +330,46 @@ class RoomController extends Controller
     public function moveReservation(Request $request)
     {
         $this->authorize('update-registration');
+        $registration = \App\Models\Registration::with('retreat')->findOrFail($request->input('registration_id'));
+        $room_id = $request->input('room_id');
 
-        $registration = \App\Models\Registration::findOrFail($request->input('registration_id'));
-        $registration->room_id = $request->input('room_id');
+        $conflict = \App\Models\Registration::where('room_id', $room_id)
+            ->where('id', '<>', $registration->id)
+            ->whereNull('canceled_at')
+            ->whereHas('retreat', function ($query) use ($registration) {
+                $query->where('start_date', '<=', $registration->retreat->end_date)
+                    ->where('end_date', '>=', $registration->retreat->start_date);
+            })->exists();
+
+        if ($conflict) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Room not available for the selected dates',
+            ], 409);
+        }
+
+        $registration->room_id = $room_id;
         $registration->save();
 
         return response()->json(['status' => 'ok']);
+    }
+
+    public function createReservation(Request $request)
+    {
+        $this->authorize('create-registration');
+
+        $data = $request->validate([
+            'room_id' => 'required|integer|exists:rooms,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $registration = \App\Models\Registration::factory()->create([
+            'room_id' => $data['room_id'],
+            'arrived_at' => Carbon::parse($data['start_date'])->startOfDay(),
+            'departed_at' => Carbon::parse($data['end_date'])->startOfDay(),
+        ]);
+
+        return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
     }
 }
