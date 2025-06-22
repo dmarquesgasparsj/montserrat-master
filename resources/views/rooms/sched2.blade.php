@@ -10,11 +10,11 @@
             {!!$next_link!!}
         </h2>
         <p class="lead">
-            <span class="table-success">A=Available</span>
-            <span class="table-warning">R=Reserved</span>
-            <span class="table-warning">O=Occupied</span>
-            <span class="table-danger">C=Cleaning Needed</span>
-            <span class="table-danger">M=Maintenance Required</span>
+            <span class="table-success">Available</span>
+            <span class="table-warning">Reserved</span>
+            <span class="table-info">Occupied</span>
+            <span class="table-danger">Cleaning Needed</span>
+            <span class="table-secondary">Maintenance Required</span>
         </p>
     </div>
 
@@ -46,12 +46,19 @@
                             </th>
 
                             @foreach($dts as $dt)
-                                @if (($m[$room->id][$dt->toDateString()]['status'] == 'R') OR ($m[$room->id][$dt->toDateString()]['status'] == 'O')) 
+                                @php $status = $m[$room->id][$dt->toDateString()]['status']; @endphp
+                                @if ($status == 'O')
+                                <td class="table-info room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
+                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), '&nbsp;')->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
+                                @elseif ($status == 'R')
                                 <td class="table-warning room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
-                                {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), $m[$room->id][$dt->toDateString()]['status'])->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
+                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), '&nbsp;')->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
+                                @elseif ($status == 'C')
+                                <td class="table-danger room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
+                                @elseif ($status == 'M')
+                                <td class="table-secondary room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
                                 @else
                                 <td class="table-success room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
-                                    A
                                 @endif
                                 </td>
                             @endforeach
