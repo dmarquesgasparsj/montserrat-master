@@ -282,5 +282,26 @@ final class RoomControllerTest extends TestCase
         $this->assertEquals($roomB->id, $registration->room_id);
     }
 
+    #[Test]
+    public function create_reservation_creates_a_registration(): void
+    {
+        $user = $this->createUserWithPermission('create-registration');
+        $room = \App\Models\Room::factory()->create();
+
+        $start = now()->toDateString();
+        $end = now()->addDay()->toDateString();
+
+        $response = $this->actingAs($user)->post(route('rooms.create-reservation'), [
+            'room_id' => $room->id,
+            'start_date' => $start,
+            'end_date' => $end,
+        ]);
+
+        $response->assertJson(['status' => 'ok']);
+        $this->assertDatabaseHas('participant', [
+            'room_id' => $room->id,
+        ]);
+    }
+
     // test cases...
 }

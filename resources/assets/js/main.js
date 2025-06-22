@@ -51,4 +51,53 @@ $(document).ready(function() {
       });
     }
   });
+
+  // Drag to select available dates for new reservations
+  let selecting = false;
+  let startCell = null;
+  let selectedCells = [];
+
+  $('.room-cell.table-success')
+    .on('mousedown', function (e) {
+      selecting = true;
+      startCell = this;
+      selectedCells = [this];
+      $('.room-cell.table-success').removeClass('table-info');
+      $(this).addClass('table-info');
+      e.preventDefault();
+    })
+    .on('mouseover', function () {
+      if (selecting && $(this).data('room-id') === $(startCell).data('room-id')) {
+        $(this).addClass('table-info');
+        selectedCells.push(this);
+      }
+    });
+
+  $(document).on('mouseup', function () {
+    if (!selecting || selectedCells.length === 0) {
+      selecting = false;
+      return;
+    }
+
+    const roomId = $(startCell).data('room-id');
+    const startDate = $(selectedCells[0]).data('date');
+    const endDate = $(selectedCells[selectedCells.length - 1]).data('date');
+
+    $.ajax({
+      url: '/rooms/create-reservation',
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        room_id: roomId,
+        start_date: startDate,
+        end_date: endDate
+      },
+      complete: function () {
+        $(selectedCells).removeClass('table-info');
+        selecting = false;
+      }
+    });
+  });
 });
