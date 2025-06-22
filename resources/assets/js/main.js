@@ -26,4 +26,29 @@ $(document).ready(function() {
   $('.flatpickr-date').flatpickr(dateOptions); // Apply flatpickr
   $('.flatpickr-date-time').flatpickr(dateTimeOptions);
   $('.flatpickr-time').flatpickr(timeOptions);
+
+  // Enable drag & drop of reservations on the room schedule
+  $('.reservation').draggable({
+    revert: 'invalid',
+    helper: 'clone'
+  });
+
+  $('.room-cell').droppable({
+    accept: '.reservation',
+    hoverClass: 'table-primary',
+    drop: function (event, ui) {
+      const registrationId = ui.draggable.data('registration-id');
+      const roomId = $(this).data('room-id');
+      const date = $(this).data('date');
+      $.ajax({
+        url: '/rooms/move-reservation',
+        method: 'POST',
+        data: {
+          registration_id: registrationId,
+          room_id: roomId,
+          date: date
+        }
+      });
+    }
+  });
 });

@@ -352,6 +352,7 @@ Route::middleware('web', 'activity')->group(function () {
     Route::get('room/location/{location_id?}', [RoomController::class, 'index_location']);
     Route::resource('room', RoomController::class);
     Route::get('rooms/{ymd?}', [RoomController::class, 'schedule'])->name('rooms');
+    Route::post('rooms/move-reservation', [RoomController::class, 'moveReservation'])->name('rooms.move-reservation');
 
     Route::name('squarespace.')->prefix('squarespace')->group(function () {
         Route::resource('/', SquarespaceController::class);
