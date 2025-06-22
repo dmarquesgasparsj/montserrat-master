@@ -353,4 +353,23 @@ class RoomController extends Controller
 
         return response()->json(['status' => 'ok']);
     }
+
+    public function createReservation(Request $request)
+    {
+        $this->authorize('create-registration');
+
+        $data = $request->validate([
+            'room_id' => 'required|integer|exists:rooms,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $registration = \App\Models\Registration::factory()->create([
+            'room_id' => $data['room_id'],
+            'arrived_at' => Carbon::parse($data['start_date'])->startOfDay(),
+            'departed_at' => Carbon::parse($data['end_date'])->startOfDay(),
+        ]);
+
+        return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
+    }
 }
