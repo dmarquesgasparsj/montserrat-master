@@ -27,6 +27,11 @@ $(document).ready(function() {
   $('.flatpickr-date-time').flatpickr(dateTimeOptions);
   $('.flatpickr-time').flatpickr(timeOptions);
 
+  const reservationModal = $('#reservationModal');
+  const roomInput = $('#reservation-room-id');
+  const startInput = $('#reservation-start-date');
+  const endInput = $('#reservation-end-date');
+
   $.ajaxSetup({
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
   });
@@ -61,6 +66,17 @@ $(document).ready(function() {
   let startCell = null;
   let selectedCells = [];
 
+  // Click on a single available cell to open reservation modal
+  $('.room-cell.table-success').on('click', function () {
+    if (selecting) return;
+    const roomId = $(this).data('room-id');
+    const date = $(this).data('date');
+    roomInput.val(roomId);
+    startInput.val(date);
+    endInput.val(date);
+    reservationModal.modal('show');
+  });
+
   $('.room-cell.table-success')
     .on('mousedown', function (e) {
       selecting = true;
@@ -87,21 +103,12 @@ $(document).ready(function() {
     const startDate = $(selectedCells[0]).data('date');
     const endDate = $(selectedCells[selectedCells.length - 1]).data('date');
 
-    $.ajax({
-      url: '/rooms/create-reservation',
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      data: {
-        room_id: roomId,
-        start_date: startDate,
-        end_date: endDate
-      },
-      complete: function () {
-        $(selectedCells).removeClass('table-info');
-        selecting = false;
-      }
-    });
+    roomInput.val(roomId);
+    startInput.val(startDate);
+    endInput.val(endDate);
+    reservationModal.modal('show');
+
+    $(selectedCells).removeClass('table-info');
+    selecting = false;
   });
 });

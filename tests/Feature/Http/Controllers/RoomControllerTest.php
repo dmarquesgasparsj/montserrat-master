@@ -175,6 +175,18 @@ final class RoomControllerTest extends TestCase
     }
 
     #[Test]
+    public function schedule_contains_reservation_modal(): void
+    {
+        $user = $this->createUserWithPermission('show-room');
+
+        $response = $this->actingAs($user)->get(route('rooms'));
+
+        $response->assertOk();
+        $response->assertSee('id="reservationModal"', false);
+        $response->assertSee('id="reservationForm"', false);
+    }
+
+    #[Test]
     public function show_returns_an_ok_response(): void
     {
         $user = $this->createUserWithPermission('show-room');
