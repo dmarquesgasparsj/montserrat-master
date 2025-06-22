@@ -269,7 +269,9 @@ final class RoomControllerTest extends TestCase
         $user = $this->createUserWithPermission('update-registration');
         $roomA = \App\Models\Room::factory()->create();
         $roomB = \App\Models\Room::factory()->create();
-        $registration = \App\Models\Registration::factory()->create(['room_id' => $roomA->id]);
+        $registration = \App\Models\Registration::factory()->create([
+            'room_id' => $roomA->id,
+        ]);
 
         $response = $this->actingAs($user)->post(route('rooms.move-reservation'), [
             'registration_id' => $registration->id,
@@ -280,6 +282,41 @@ final class RoomControllerTest extends TestCase
         $response->assertJson(['status' => 'ok']);
         $registration->refresh();
         $this->assertEquals($roomB->id, $registration->room_id);
+    }
+
+    #[Test]
+    public function move_reservation_returns_error_on_conflict(): void
+    {
+        $user = $this->createUserWithPermission('update-registration');
+
+        $retreat = \App\Models\Retreat::factory()->create([
+            'start_date' => now()->addDays(1),
+            'end_date' => now()->addDays(3),
+        ]);
+
+        $roomA = \App\Models\Room::factory()->create();
+        $roomB = \App\Models\Room::factory()->create();
+
+        $registrationA = \App\Models\Registration::factory()->create([
+            'room_id' => $roomA->id,
+            'event_id' => $retreat->id,
+        ]);
+
+        $registrationB = \App\Models\Registration::factory()->create([
+            'room_id' => $roomB->id,
+            'event_id' => $retreat->id,
+        ]);
+
+        $response = $this->actingAs($user)->post(route('rooms.move-reservation'), [
+            'registration_id' => $registrationB->id,
+            'room_id' => $roomA->id,
+            'date' => now()->addDay()->toDateString(),
+        ]);
+
+        $response->assertStatus(409);
+        $response->assertJson(['status' => 'error']);
+        $registrationB->refresh();
+        $this->assertEquals($roomB->id, $registrationB->room_id);
     }
 
     // test cases...
