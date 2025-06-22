@@ -142,3 +142,9 @@ The `config:clear` command reloads the configuration so the new default takes ef
 ### Switching languages at runtime
 
 A **Language** dropdown is available in the top navigation bar. Choose a language from this menu to update the interface instantly. The selected locale is stored in your session and will be used for subsequent pages.
+
+## Room Schedule
+
+Polanco includes a monthly room schedule available at `/rooms`. This page renders a matrix of rooms versus days and highlights reserved or occupied dates. You can view other months by appending a date in `YYYYMMDD` format to the URL. For example, `/rooms/20250101` shows January&nbsp;2025.
+
+The schedule logic is implemented in `RoomController::schedule`.

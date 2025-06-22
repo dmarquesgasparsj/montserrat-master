@@ -263,5 +263,24 @@ final class RoomControllerTest extends TestCase
         );
     }
 
+    #[Test]
+    public function move_reservation_updates_the_room(): void
+    {
+        $user = $this->createUserWithPermission('update-registration');
+        $roomA = \App\Models\Room::factory()->create();
+        $roomB = \App\Models\Room::factory()->create();
+        $registration = \App\Models\Registration::factory()->create(['room_id' => $roomA->id]);
+
+        $response = $this->actingAs($user)->post(route('rooms.move-reservation'), [
+            'registration_id' => $registration->id,
+            'room_id' => $roomB->id,
+            'date' => now()->toDateString(),
+        ]);
+
+        $response->assertJson(['status' => 'ok']);
+        $registration->refresh();
+        $this->assertEquals($roomB->id, $registration->room_id);
+    }
+
     // test cases...
 }

@@ -16,7 +16,7 @@
                         @endCan
                     </h1>
 
-                    <select class="location-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                    <select class="location-select select2" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                         <option value="">Filter by building ...</option>
                         <option value="{{url('room')}}">All buildings</option>
                         @foreach($locations as $key=>$location)

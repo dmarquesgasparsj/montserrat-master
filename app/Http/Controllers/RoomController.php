@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateRoomRequest;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -324,5 +325,16 @@ class RoomController extends Controller
         $d = DateTime::createFromFormat($format, $date);
 
         return $d && $d->format($format) == $date;
+    }
+
+    public function moveReservation(Request $request)
+    {
+        $this->authorize('update-registration');
+
+        $registration = \App\Models\Registration::findOrFail($request->input('registration_id'));
+        $registration->room_id = $request->input('room_id');
+        $registration->save();
+
+        return response()->json(['status' => 'ok']);
     }
 }
