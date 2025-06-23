@@ -317,6 +317,8 @@ final class RoomControllerTest extends TestCase
             'room_id' => $room->id,
         ]);
 
+    }
+
     public function move_reservation_returns_error_on_conflict(): void
     {
         $user = $this->createUserWithPermission('update-registration');
