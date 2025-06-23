@@ -31,6 +31,11 @@ $(document).ready(function() {
   const roomInput = $('#reservation-room-id');
   const startInput = $('#reservation-start-date');
   const endInput = $('#reservation-end-date');
+  let wasSelecting = false;
+
+  reservationModal.on('shown.bs.modal', function () {
+    wasSelecting = false;
+  });
 
   $.ajaxSetup({
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
@@ -68,7 +73,7 @@ $(document).ready(function() {
 
   // Click on a single available cell to open reservation modal
   $('.room-cell.table-success').on('click', function () {
-    if (selecting) return;
+    if (selecting || wasSelecting) return;
     const roomId = $(this).data('room-id');
     const date = $(this).data('date');
     roomInput.val(roomId);
@@ -107,6 +112,7 @@ $(document).ready(function() {
     startInput[0]._flatpickr.setDate(startDate, true);
     endInput[0]._flatpickr.setDate(endDate, true);
     reservationModal.modal('show');
+    wasSelecting = true;
 
     $(selectedCells).removeClass('table-info');
     selecting = false;
