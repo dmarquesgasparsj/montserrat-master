@@ -72,8 +72,8 @@ $(document).ready(function() {
     const roomId = $(this).data('room-id');
     const date = $(this).data('date');
     roomInput.val(roomId);
-    startInput.val(date);
-    endInput.val(date);
+    startInput[0]._flatpickr.setDate(date, true);
+    endInput[0]._flatpickr.setDate(date, true);
     reservationModal.modal('show');
   });
 
@@ -104,8 +104,8 @@ $(document).ready(function() {
     const endDate = $(selectedCells[selectedCells.length - 1]).data('date');
 
     roomInput.val(roomId);
-    startInput.val(startDate);
-    endInput.val(endDate);
+    startInput[0]._flatpickr.setDate(startDate, true);
+    endInput[0]._flatpickr.setDate(endDate, true);
     reservationModal.modal('show');
 
     $(selectedCells).removeClass('table-info');
