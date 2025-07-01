@@ -19,6 +19,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
  */
 
 mix.js('resources/assets/js/app.js', 'public/dist/bundle.js')
+.js('resources/assets/js/calendar.js', 'public/dist/calendar.js')
     .sass('resources/assets/sass/app.scss', 'public/dist/bundle.css').version()
     .sass('resources/assets/sass/print-envelope10.scss', 'public/dist/print-envelope10.css')
     .sass('resources/assets/sass/print-envelope9x6.scss', 'public/dist/print-envelope9x6.css')

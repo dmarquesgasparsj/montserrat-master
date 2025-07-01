@@ -29,7 +29,6 @@
         "nyholm/psr7": "^1.5",
         "owen-it/laravel-auditing": "^13.6",
         "php-http/curl-client": "^2.2",
-        "spatie/laravel-google-calendar": "^3.8",
         "spatie/laravel-stripe-webhooks": "^3.7",
         "stuyam/laravel-phone-validator": "dev-master",
         "symfony/http-client": "^7.0",
