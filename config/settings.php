@@ -12,5 +12,4 @@ return [
     'open_digits' => env('OPEN_DIGITS'),
     'close_digits' => env('CLOSE_DIGITS'),
 
-    'google_calendar_id' => env('GOOGLE_CALENDAR_ID'),
 ];

@@ -123,27 +123,6 @@ final class PageControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('admin.config.gate'));
         $response->assertForbidden();
     }
-
-    #[Test]
-    public function config_google_calendar_returns_an_ok_response(): void
-    {
-        $user = $this->createUserWithPermission('show-admin-menu');
-
-        $response = $this->actingAs($user)->get(route('admin.config.google_calendar'));
-
-        $response->assertOk();
-        $response->assertViewIs('admin.config.google_calendar');
-    }
-
-    #[Test]
-    public function config_google_calendar_client_returns_403(): void
-    {
-        $user = \App\Models\User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('admin.config.google_calendar'));
-        $response->assertForbidden();
-    }
-
     #[Test]
     public function config_google_client_returns_an_ok_response(): void
     {

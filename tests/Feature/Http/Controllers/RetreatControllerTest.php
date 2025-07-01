@@ -45,17 +45,6 @@ final class RetreatControllerTest extends TestCase
     }
 
     #[Test]
-    public function calendar_returns_an_ok_response(): void
-    {   //TODO: atm this is a pretty weak test assuming Google calendar is not implemented, could be stronger if we simulate creating such events
-        $user = $this->createUserWithPermission('show-retreat');
-
-        $response = $this->actingAs($user)->get(route('calendar'));
-
-        $response->assertOk();
-        $response->assertViewIs('calendar.index');
-        $response->assertViewHas('calendar_events');
-        $response->assertSeeText('Index of Google Master Calendar Events');
-    }
 
     #[Test]
     public function checkin_returns_an_ok_response(): void

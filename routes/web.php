@@ -38,6 +38,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\SquarespaceContributionController;
 use App\Http\Controllers\SquarespaceController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SquarespaceCustomFormController;
 use App\Http\Controllers\SquarespaceInventoryController;
 use App\Http\Controllers\SquarespaceOrderController;
@@ -131,7 +132,6 @@ Route::middleware('web', 'activity')->group(function () {
     Route::get('admin/config/application', [PageController::class, 'config_application'])->name('admin.config.application');
     Route::get('admin/config/gate', [PageController::class, 'config_gate'])->name('admin.config.gate');
     Route::get('admin/config/mail', [PageController::class, 'config_mail'])->name('admin.config.mail');
-    Route::get('admin/config/google_calendar', [PageController::class, 'config_google_calendar'])->name('admin.config.google_calendar');
     Route::get('admin/config/google_client', [PageController::class, 'config_google_client'])->name('admin.config.google_client');
     Route::get('admin/config/mailgun', [PageController::class, 'config_mailgun'])->name('admin.config.mailgun');
     Route::get('admin/config/twilio', [PageController::class, 'config_twilio'])->name('admin.config.twilio');
@@ -200,7 +200,8 @@ Route::middleware('web', 'activity')->group(function () {
     Route::resource('asset_job', AssetJobController::class);
 
     Route::get('bookstore', [PageController::class, 'bookstore'])->name('bookstore');
-    Route::get('calendar', [RetreatController::class, 'calendar'])->name('calendar');
+    Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::get('api/events', [CalendarController::class, 'events'])->name('api.events');
     Route::resource('diocese', DioceseController::class);
 
     /*
