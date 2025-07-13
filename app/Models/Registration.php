@@ -16,6 +16,29 @@ class Registration extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($registration) {
+            if ($registration->isDirty('departed_at') && ! empty($registration->departed_at) && $registration->room_id) {
+                $room = $registration->room;
+                if ($room) {
+                    $from = $room->status;
+                    $room->status = 'C';
+                    $room->save();
+
+                    \App\Models\Roomstate::create([
+                        'room_id' => $room->id,
+                        'statechange_at' => now(),
+                        'statusfrom' => $from,
+                        'statusto' => 'C',
+                    ]);
+                }
+            }
+        });
+    }
+
     protected $table = 'participant';
 
     protected $fillable = ['contact_id', 'event_id', 'status_id', 'role_id', 'notes', 'register_date'];

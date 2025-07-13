@@ -34,6 +34,7 @@ use App\Http\Controllers\RelationshipTypeController;
 use App\Http\Controllers\RetreatController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomstateController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\SquarespaceContributionController;
@@ -355,6 +356,8 @@ Route::middleware('web', 'activity')->group(function () {
     Route::get('rooms/{ymd?}', [RoomController::class, 'schedule'])->name('rooms');
     Route::post('rooms/move-reservation', [RoomController::class, 'moveReservation'])->name('rooms.move-reservation');
     Route::post('rooms/create-reservation', [RoomController::class, 'createReservation'])->name('rooms.create-reservation');
+
+    Route::resource('roomstate', RoomstateController::class)->only(['index', 'store', 'update']);
 
     Route::name('squarespace.')->prefix('squarespace')->group(function () {
         Route::resource('/', SquarespaceController::class);
