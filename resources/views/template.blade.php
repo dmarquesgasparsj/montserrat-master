@@ -177,15 +177,15 @@
 						<img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="rounded-circle avatar">
 					</div>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href={{ route('logout') }}>Logout</a>
+                                                <a class="dropdown-item" href={{ route('logout') }}>{{ __('messages.logout') }}</a>
 					</div>
 				</div>
 
 
 				@else
-				<a href={{ route('login') }}>
-					Login
-				</a>
+                                <a href={{ route('login') }}>
+                                        {{ __('messages.login') }}
+                                </a>
 				@endauth
 			</div>
 		</nav>
