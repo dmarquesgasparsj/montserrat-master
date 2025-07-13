@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-//TODO: Create unit tests for new admin.config pages (index, mail, google_calendar, etc.)
+//TODO: Create unit tests for new admin.config pages (index, mail, etc.)
 
 /**
  * @see \App\Http\Controllers\PageController
@@ -121,25 +121,6 @@ final class PageControllerTest extends TestCase
         $user = \App\Models\User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('admin.config.gate'));
-        $response->assertForbidden();
-    }
-    #[Test]
-    public function config_google_client_returns_an_ok_response(): void
-    {
-        $user = $this->createUserWithPermission('show-admin-menu');
-
-        $response = $this->actingAs($user)->get(route('admin.config.google_client'));
-
-        $response->assertOk();
-        $response->assertViewIs('admin.config.google_client');
-    }
-
-    #[Test]
-    public function config_google_client_returns_403(): void
-    {
-        $user = \App\Models\User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('admin.config.google_client'));
         $response->assertForbidden();
     }
 
