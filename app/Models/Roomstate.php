@@ -14,6 +14,8 @@ class Roomstate extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
+    protected $fillable = ['room_id', 'statechange_at', 'statusfrom', 'statusto'];
+
     protected $casts = [
         'statechange_at' => 'datetime',
     ];  //

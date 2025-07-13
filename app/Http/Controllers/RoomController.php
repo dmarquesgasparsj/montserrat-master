@@ -219,10 +219,9 @@ class RoomController extends Controller
         })->get();
 	
 #	dd($registrations_start,$registrations_end);
-	// create matrix of rooms and dates
+        // create matrix of rooms and dates
         foreach ($rooms as $room) {
             foreach ($dts as $dt) {
-                //dd($dt);
                 $m[$room->id][$dt->toDateString()]['status'] = 'A';
                 $m[$room->id][$dt->toDateString()]['registration_id'] = null;
                 $m[$room->id][$dt->toDateString()]['retreatant_id'] = null;
@@ -231,6 +230,15 @@ class RoomController extends Controller
                 $m[$room->id]['room'] = $room->name;
                 $m[$room->id]['building'] = $room->location->name;
                 $m[$room->id]['occupancy'] = $room->occupancy;
+            }
+
+            // highlight rooms that are marked cleaning or maintenance until cleared
+            if (in_array($room->status, ['C', 'M'])) {
+                foreach ($dts as $dt) {
+                    if ($m[$room->id][$dt->toDateString()]['status'] === 'A') {
+                        $m[$room->id][$dt->toDateString()]['status'] = $room->status;
+                    }
+                }
             }
         }
 
