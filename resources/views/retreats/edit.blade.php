@@ -47,10 +47,6 @@
                             {{ html()->label('Maximum participants', 'max_participants') }}
                             {{ html()->text('max_participants', $retreat->max_participants)->class('form-control') }}
                         </div>
-                        <div class="col-lg-3">
-                            {{ html()->label('Google Calendar ID:', 'calendar_id') }}
-                            {{ html()->text('calendar_id', $retreat->calendar_id)->class('form-control')->isReadonly() }}
-                        </div>
                     </div>
                     <div class="row"> <!-- Adicionar aqui uma lista definida nos buildings, que vai ler o evento -->
                     <div class="col-lg-3"> <!-- Algo deste genero {{ html()->select('event_type', $event_types, $retreat->event_type_id)->class('form-control') }} -->
