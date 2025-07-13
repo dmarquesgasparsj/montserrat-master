@@ -467,6 +467,10 @@ class PageController extends Controller
     {
         $this->authorize('show-admin-menu');
 
+        return view('admin.config.gate');
+    }
+
+    public function config_google_client(): View
     {
         $this->authorize('show-admin-menu');
 
