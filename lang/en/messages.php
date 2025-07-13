@@ -268,4 +268,13 @@ return [
     'export_list_added' => 'Export list: <a href=":url">:label</a> added',
     'export_list_updated' => 'Export list: <a href=":url">:label</a> updated',
     'export_list_deleted' => 'Export list: :label deleted',
+    'room_schedules_for' => 'Room Schedules for :start - :end',
+    'legend_title' => 'Legend:',
+    'legend_available' => 'A=Available',
+    'legend_reserved' => 'R=Reserved',
+    'legend_occupied' => 'O=Occupied',
+    'legend_cleaning_needed' => 'C=Cleaning Needed',
+    'legend_maintenance_required' => 'M=Maintenance Required',
+    'yikes_nothing_to_schedule_message' => 'Yikes, there is nothing to schedule!',
+    'yikes_no_rooms_message' => 'Yikes, there are no rooms!',
 ];

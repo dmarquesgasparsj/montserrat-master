@@ -268,4 +268,13 @@ return [
     'export_list_added' => 'Lista de exportação: <a href=":url">:label</a> adicionada',
     'export_list_updated' => 'Lista de exportação: <a href=":url">:label</a> atualizada',
     'export_list_deleted' => 'Lista de exportação: :label excluída',
+    'room_schedules_for' => 'Programação de quartos para :start - :end',
+    'legend_title' => 'Legenda:',
+    'legend_available' => 'A=Disponível',
+    'legend_reserved' => 'R=Reservado',
+    'legend_occupied' => 'O=Ocupado',
+    'legend_cleaning_needed' => 'C=Limpeza Necessária',
+    'legend_maintenance_required' => 'M=Manutenção Necessária',
+    'yikes_nothing_to_schedule_message' => 'Eita, não há nada para agendar!',
+    'yikes_no_rooms_message' => 'Eita, não há quartos!',
 ];
