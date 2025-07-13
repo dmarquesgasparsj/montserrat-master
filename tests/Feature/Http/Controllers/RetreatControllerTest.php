@@ -45,8 +45,6 @@ final class RetreatControllerTest extends TestCase
     }
 
     #[Test]
-
-    #[Test]
     public function checkin_returns_an_ok_response(): void
     {
         $user = $this->createUserWithPermission('update-registration');
