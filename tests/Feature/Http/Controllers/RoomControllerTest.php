@@ -35,6 +35,8 @@ final class RoomControllerTest extends TestCase
     {
         $user = $this->createUserWithPermission('delete-room');
         $room = \App\Models\Room::factory()->create();
+        $contact = \App\Models\Contact::factory()->create();
+        $event = \App\Models\Retreat::factory()->create();
 
         $response = $this->actingAs($user)->delete(route('room.destroy', [$room]));
 
@@ -133,6 +135,8 @@ final class RoomControllerTest extends TestCase
         $response->assertViewHas('m');
         $response->assertViewHas('previous_link');
         $response->assertViewHas('next_link');
+        $response->assertViewHas('retreats');
+        $response->assertViewHas('retreatants');
         $response->assertSeeText('Room Schedules');
     }
 
@@ -182,8 +186,12 @@ final class RoomControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('rooms'));
 
         $response->assertOk();
+        $response->assertViewHas('retreats');
+        $response->assertViewHas('retreatants');
         $response->assertSee('id="reservationModal"', false);
         $response->assertSee('id="reservationForm"', false);
+        $response->assertSee('name="contact_id"', false);
+        $response->assertSee('name="event_id"', false);
     }
 
     #[Test]
@@ -302,12 +310,16 @@ final class RoomControllerTest extends TestCase
     {
         $user = $this->createUserWithPermission('create-registration');
         $room = \App\Models\Room::factory()->create();
+        $contact = \App\Models\Contact::factory()->create();
+        $event = \App\Models\Retreat::factory()->create();
 
         $start = now()->toDateString();
         $end = now()->addDay()->toDateString();
 
         $response = $this->actingAs($user)->post(route('rooms.create-reservation'), [
             'room_id' => $room->id,
+            'contact_id' => $contact->id,
+            'event_id' => $event->id,
             'start_date' => $start,
             'end_date' => $end,
         ]);

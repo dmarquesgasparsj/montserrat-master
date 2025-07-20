@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Models\Contact;
+use App\Models\Retreat;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -211,6 +214,18 @@ class RoomController extends Controller
             return sprintf('%-12s%s', $room->location_id, $room->name);
         });
 
+        $retreats = \App\Models\Retreat::select(DB::raw('CONCAT(idnumber, "-", title, " (",DATE_FORMAT(start_date,"%m-%d-%Y"),")") as description'), 'id')
+            ->where('end_date', '>', Carbon::today()->subWeek())
+            ->where('is_active', '=', 1)
+            ->orderBy('start_date')
+            ->pluck('description', 'id');
+        $retreats->prepend('Unassigned', 0);
+
+        $retreatants = \App\Models\Contact::whereContactType(config('polanco.contact_type.individual'))
+            ->orderBy('sort_name')
+            ->pluck('sort_name', 'id');
+        $retreatants->prepend('Unassigned', 0);
+
         $registrations_start = \App\Models\Registration::with('room', 'room.location', 'retreatant', 'retreat')->whereNull('canceled_at')->where('room_id', '>', 0)->whereHas('retreat', function ($query) use ($dts) {
             $query->where('start_date', '>=', $dts[0])->where('start_date', '<=', $dts[30]);
         })->get();
@@ -300,7 +315,7 @@ class RoomController extends Controller
 #	    dd($start_time, $end_time, $numdays, $matrixdate, $m);
         }
 
-        return view('rooms.sched2', compact('dts', 'roomsort', 'm', 'previous_link', 'next_link'));
+        return view('rooms.sched2', compact('dts', 'roomsort', 'm', 'previous_link', 'next_link', 'retreats', 'retreatants'));
     }
 
     /**
@@ -370,13 +385,20 @@ class RoomController extends Controller
             'room_id' => 'required|integer|exists:rooms,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'contact_id' => 'required|integer|exists:contact,id',
+            'event_id' => 'required|integer|exists:event,id',
         ]);
 
-        $registration = \App\Models\Registration::factory()->create([
-            'room_id' => $data['room_id'],
-            'arrived_at' => Carbon::parse($data['start_date'])->startOfDay(),
-            'departed_at' => Carbon::parse($data['end_date'])->startOfDay(),
-        ]);
+        $registration = new \App\Models\Registration();
+        $registration->room_id = $data['room_id'];
+        $registration->contact_id = $data['contact_id'];
+        $registration->event_id = $data['event_id'];
+        $registration->status_id = config('polanco.registration_status_id.registered');
+        $registration->role_id = config('polanco.participant_role_id.retreatant');
+        $registration->register_date = now();
+        $registration->arrived_at = Carbon::parse($data['start_date'])->startOfDay();
+        $registration->departed_at = Carbon::parse($data['end_date'])->startOfDay();
+        $registration->save();
 
         return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
     }
