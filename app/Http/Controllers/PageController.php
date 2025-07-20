@@ -377,6 +377,29 @@ class PageController extends Controller
         return view('reports.retreatregistrations', compact('registrations'));   //
     }
 
+    public function reservations_report(Request $request)
+    {
+        $this->authorize('show-registration');
+
+        $reservations = \App\Models\Registration::whereNull('canceled_at')
+            ->where('room_id', '>', 0)
+            ->with('retreat', 'retreatant', 'room')
+            ->orderBy('register_date')
+            ->get();
+
+        if ($request->boolean('pdf')) {
+            $pdf = PDF::loadView('reports.reservations', compact('reservations'));
+            $pdf->setOptions([
+                'header-html' => view('pdf._header'),
+                'footer-html' => view('pdf._footer'),
+            ]);
+
+            return $pdf->inline('reservations.pdf');
+        }
+
+        return view('reports.reservations', compact('reservations'));   //
+    }
+
     public function eoy_acknowledgment($contact_id = null, $start_date = null, $end_date = null)
     {
         $this->authorize('show-donation');

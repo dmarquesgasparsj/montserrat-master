@@ -310,6 +310,7 @@ Route::middleware('web', 'activity')->group(function () {
         Route::get('finance/cc_deposit/{day?}', [PageController::class, 'finance_cc_deposit'])->name('report.finance.cc_deposit');
         Route::get('finance/retreatdonations/{retreat_id?}', [PageController::class, 'finance_retreatdonations']);
         Route::get('finance/deposits', [PageController::class, 'finance_deposits']);
+        Route::get('reservations', [PageController::class, 'reservations_report'])->name('report.reservations');
     });
 
     Route::get('reservation', [PageController::class, 'reservation'])->name('reservation');
