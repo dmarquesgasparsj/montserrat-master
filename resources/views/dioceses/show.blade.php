@@ -66,7 +66,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-lg-6">
-                <h2>Phone Numbers</h2>
+                <h2>{{ __('messages.phone_numbers_title') }}</h2>
                 @foreach($diocese->phones as $phone)
                     @if(!empty($phone->phone))
                         <span class="font-weight-bold">{{$phone->location->display_name}} - {{$phone->phone_type}}: </span>{{$phone->phone}} {{$phone->phone_ext}}<br>

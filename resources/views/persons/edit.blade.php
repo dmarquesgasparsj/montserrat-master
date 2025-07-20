@@ -165,7 +165,7 @@
 
             <div class="row">
                 <div class="col-lg-12" id="phones">
-                    <h3>Phone Numbers</h3>
+                    <h3>{{ __('messages.phone_numbers_title') }}</h3>
                 </div>
                 <div class="col-lg-12">
                     @include('persons.update.phones')
