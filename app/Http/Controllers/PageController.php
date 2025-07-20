@@ -31,7 +31,30 @@ class PageController extends Controller
 
     public function reservation(): View
     {
-        return view('pages.reservation');
+        $this->authorize('show-registration');
+
+        $reservations = \App\Models\Registration::with('room', 'retreatant', 'retreat')
+            ->whereNull('canceled_at')
+            ->where('room_id', '>', 0)
+            ->orderBy('register_date', 'desc')
+            ->paginate(25);
+
+        $retreats = \App\Models\Retreat::select(DB::raw("CONCAT(idnumber, '-', title, ' (', DATE_FORMAT(start_date,'%m-%d-%Y'), ')') as description"), 'id')
+            ->where('end_date', '>', Carbon::today()->subWeek())
+            ->where('is_active', '=', 1)
+            ->orderBy('start_date')
+            ->pluck('description', 'id');
+        $retreats->prepend('Unassigned', 0);
+
+        $retreatants = \App\Models\Contact::whereContactType(config('polanco.contact_type.individual'))
+            ->orderBy('sort_name')
+            ->pluck('sort_name', 'id');
+        $retreatants->prepend('Unassigned', 0);
+
+        $rooms = \App\Models\Room::orderby('name')->pluck('name', 'id');
+        $rooms->prepend('Unassigned', 0);
+
+        return view('reservations.index', compact('reservations', 'retreatants', 'retreats', 'rooms'));
     }
 
     // TODO: no action
