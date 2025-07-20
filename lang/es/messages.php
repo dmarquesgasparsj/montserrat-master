@@ -243,6 +243,8 @@ return [
     'twitter_tab' => 'Twitter',
     'find_contact_placeholder' => 'Buscar contacto por nombre',
     'find_person_button' => 'Buscar Persona',
+    'find_retreatant_label' => 'Buscar un retirante:',
+    'retreatant_id_label' => 'ID del retirante:',
     'advanced_search' => 'Búsqueda avanzada',
     'add_person_button' => 'Añadir Persona',
     'corrupt_polanco_error' => '¡Ups! Parece que :admin está usando SQL para corromper Polanco.',
