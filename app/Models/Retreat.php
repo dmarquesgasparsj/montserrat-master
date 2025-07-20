@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -202,6 +203,11 @@ class Retreat extends Model implements Auditable
         return $this->hasMany(Registration::class, 'event_id', 'id');
     }
 
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'retreat_id', 'id');
+    }
+
     public function retreatants()
     {
         return $this->registrations()->whereCanceledAt(null)->whereRoleId(config('polanco.participant_role_id.retreatant'))->whereStatusId(config('polanco.registration_status_id.registered'));
@@ -335,12 +341,7 @@ class Retreat extends Model implements Auditable
     }
 
     /*
-     * Returns an array of attendee email addresses to be added to a Google Calendar event
-     * see https://developers.google.com/google-apps/calendar/create-events (for PHP section)
-     *  'attendees' => array(
-            array('email' => 'lpage@example.com'),
-            array('email' => 'sbrin@example.com'),
-        )
+     * Returns an array of attendee email addresses for a calendar event
      */
     public function getRetreatAttendeesAttribute()
     {

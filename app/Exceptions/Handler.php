@@ -82,7 +82,7 @@ class Handler extends ExceptionHandler
         }
 
         // 500
-        if ($exception instanceof \ErrorException || ($exception->getMessage() == 'Google Calendar Error')) {
+        if ($exception instanceof \ErrorException) {
             $mailable = 1;
             $subject = '500 '.$subject.': '.$exception->getMessage();
         }

@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact;
 use App\Models\Retreat;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationConfirmation;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -399,6 +401,14 @@ class RoomController extends Controller
         $registration->arrived_at = Carbon::parse($data['start_date'])->startOfDay();
         $registration->departed_at = Carbon::parse($data['end_date'])->startOfDay();
         $registration->save();
+
+        if (! empty($registration->retreatant->email_primary_text) && $registration->contact->do_not_email == 0) {
+            try {
+                Mail::to($registration->retreatant->email_primary_text)->queue(new ReservationConfirmation($registration));
+            } catch (\Exception $e) {
+                // ignore mail failures during reservation creation
+            }
+        }
 
         return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
     }
