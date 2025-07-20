@@ -147,3 +147,7 @@ A **Language** dropdown is available in the top navigation bar. Choose a languag
 Polanco includes a monthly room schedule available at `/rooms`. This page renders a matrix of rooms versus days and highlights reserved or occupied dates. You can view other months by appending a date in `YYYYMMDD` format to the URL. For example, `/rooms/20250101` shows January&nbsp;2025.
 
 The schedule logic is implemented in `RoomController::schedule`.
+
+## Event Calendar
+
+Polanco provides an event calendar at `/calendar` powered by [FullCalendar](https://fullcalendar.io/). The calendar displays retreats from the database and allows easy browsing of upcoming events.

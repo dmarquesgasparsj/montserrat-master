@@ -13,7 +13,7 @@ class ReservationFactory extends Factory
      *
      * @var string
      */
-    protected $model = \App\Reservation::class;
+    protected $model = \App\Models\Reservation::class;
 
     /**
      * Define the model's default state.
