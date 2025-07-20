@@ -8,7 +8,7 @@
             @can('create-gift-certificate')
             <span class="options">
                 <a href={{ action([\App\Http\Controllers\GiftCertificateController::class, 'create']) }}>
-                    <img src="{{ URL::asset('images/create.png') }}" alt="Add" class="btn btn-light" title="Add">
+                    <img src="{{ URL::asset('images/create.png') }}" alt="{{ __('messages.add_item') }}" class="btn btn-light" title="{{ __('messages.add_item') }}">
                 </a>
             </span>
             @endCan
