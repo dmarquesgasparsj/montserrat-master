@@ -317,7 +317,7 @@ final class RoomControllerTest extends TestCase
         $start = now()->toDateString();
         $end = now()->addDay()->toDateString();
 
-        $response = $this->actingAs($user)->post(route('rooms.create-reservation'), [
+        $response = $this->actingAs($user)->postJson(route('rooms.create-reservation'), [
             'room_id' => $room->id,
             'contact_id' => $contact->id,
             'event_id' => $event->id,
@@ -349,7 +349,7 @@ final class RoomControllerTest extends TestCase
         $start = now()->toDateString();
         $end = now()->addDay()->toDateString();
 
-        $this->actingAs($user)->post(route('rooms.create-reservation'), [
+        $this->actingAs($user)->postJson(route('rooms.create-reservation'), [
             'room_id' => $room->id,
             'contact_id' => $contact->id,
             'event_id' => $event->id,

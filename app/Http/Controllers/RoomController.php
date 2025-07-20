@@ -410,6 +410,12 @@ class RoomController extends Controller
             }
         }
 
-        return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['status' => 'ok', 'registration_id' => $registration->id]);
+        }
+
+        flash('Reservation created')->success();
+
+        return redirect()->route('rooms', Carbon::parse($data['start_date'])->format('Y-m-d'));
     }
 }
