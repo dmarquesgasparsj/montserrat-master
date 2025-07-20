@@ -94,6 +94,14 @@
                         {{ html()->label('End Date', 'reservation-end-date') }}
                         {{ html()->text('end_date')->class('form-control flatpickr-date')->id('reservation-end-date') }}
                     </div>
+                    <div class="form-group">
+                        {{ html()->label('Guest', 'reservation-contact-id') }}
+                        {{ html()->select('contact_id', $retreatants)->class('form-control select2')->id('reservation-contact-id') }}
+                    </div>
+                    <div class="form-group">
+                        {{ html()->label('Retreat', 'reservation-event-id') }}
+                        {{ html()->select('event_id', $retreats)->class('form-control select2')->id('reservation-event-id') }}
+                    </div>
                 {{ html()->form()->close() }}
             </div>
             <div class="modal-footer">

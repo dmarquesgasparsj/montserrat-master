@@ -117,4 +117,16 @@ $(document).ready(function() {
     $(selectedCells).removeClass('table-info');
     selecting = false;
   });
+
+  $('#reservationForm').on('submit', function (e) {
+    e.preventDefault();
+    $.post({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      success: function () {
+        reservationModal.modal('hide');
+        window.location.reload();
+      }
+    });
+  });
 });
