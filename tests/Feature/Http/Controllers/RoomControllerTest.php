@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Mail;
 use Tests\TestCase;
 
 /**
@@ -328,6 +329,35 @@ final class RoomControllerTest extends TestCase
         $this->assertDatabaseHas('participant', [
             'room_id' => $room->id,
         ]);
+
+    }
+
+    #[Test]
+    public function create_reservation_queues_a_confirmation_email(): void
+    {
+        Mail::fake();
+
+        $user = $this->createUserWithPermission('create-registration');
+        $room = \App\Models\Room::factory()->create();
+        $contact = \App\Models\Contact::factory()->create();
+        \App\Models\Email::factory()->create([
+            'contact_id' => $contact->id,
+            'is_primary' => 1,
+        ]);
+        $event = \App\Models\Retreat::factory()->create();
+
+        $start = now()->toDateString();
+        $end = now()->addDay()->toDateString();
+
+        $this->actingAs($user)->post(route('rooms.create-reservation'), [
+            'room_id' => $room->id,
+            'contact_id' => $contact->id,
+            'event_id' => $event->id,
+            'start_date' => $start,
+            'end_date' => $end,
+        ])->assertJson(['status' => 'ok']);
+
+        Mail::assertQueued(\App\Mail\ReservationConfirmation::class);
 
     }
 

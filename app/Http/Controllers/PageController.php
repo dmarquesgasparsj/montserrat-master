@@ -31,7 +31,30 @@ class PageController extends Controller
 
     public function reservation(): View
     {
-        return view('pages.reservation');
+        $this->authorize('show-registration');
+
+        $reservations = \App\Models\Registration::with('room', 'retreatant', 'retreat')
+            ->whereNull('canceled_at')
+            ->where('room_id', '>', 0)
+            ->orderBy('register_date', 'desc')
+            ->paginate(25);
+
+        $retreats = \App\Models\Retreat::select(DB::raw("CONCAT(idnumber, '-', title, ' (', DATE_FORMAT(start_date,'%m-%d-%Y'), ')') as description"), 'id')
+            ->where('end_date', '>', Carbon::today()->subWeek())
+            ->where('is_active', '=', 1)
+            ->orderBy('start_date')
+            ->pluck('description', 'id');
+        $retreats->prepend('Unassigned', 0);
+
+        $retreatants = \App\Models\Contact::whereContactType(config('polanco.contact_type.individual'))
+            ->orderBy('sort_name')
+            ->pluck('sort_name', 'id');
+        $retreatants->prepend('Unassigned', 0);
+
+        $rooms = \App\Models\Room::orderby('name')->pluck('name', 'id');
+        $rooms->prepend('Unassigned', 0);
+
+        return view('reservations.index', compact('reservations', 'retreatants', 'retreats', 'rooms'));
     }
 
     // TODO: no action
@@ -375,6 +398,29 @@ class PageController extends Controller
             ->get();
 
         return view('reports.retreatregistrations', compact('registrations'));   //
+    }
+
+    public function reservations_report(Request $request)
+    {
+        $this->authorize('show-registration');
+
+        $reservations = \App\Models\Registration::whereNull('canceled_at')
+            ->where('room_id', '>', 0)
+            ->with('retreat', 'retreatant', 'room')
+            ->orderBy('register_date')
+            ->get();
+
+        if ($request->boolean('pdf')) {
+            $pdf = PDF::loadView('reports.reservations', compact('reservations'));
+            $pdf->setOptions([
+                'header-html' => view('pdf._header'),
+                'footer-html' => view('pdf._footer'),
+            ]);
+
+            return $pdf->inline('reservations.pdf');
+        }
+
+        return view('reports.reservations', compact('reservations'));   //
     }
 
     public function eoy_acknowledgment($contact_id = null, $start_date = null, $end_date = null)
