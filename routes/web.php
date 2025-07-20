@@ -35,6 +35,7 @@ use App\Http\Controllers\RetreatController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomstateController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\SquarespaceContributionController;
@@ -312,7 +313,7 @@ Route::middleware('web', 'activity')->group(function () {
         Route::get('finance/deposits', [PageController::class, 'finance_deposits']);
     });
 
-    Route::get('reservation', [PageController::class, 'reservation'])->name('reservation');
+    Route::resource('reservation', ReservationController::class);
     Route::get('restricted', [PageController::class, 'restricted'])->name('restricted');
 
     Route::get('retreat/{event_id}/attachment/{file_name}', [AttachmentController::class, 'show_event_attachment'])->name('show_event_attachment');
