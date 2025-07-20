@@ -36,7 +36,6 @@ use App\Http\Controllers\RetreatController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomstateController;
-use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\SquarespaceContributionController;
