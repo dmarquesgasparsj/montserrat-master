@@ -249,6 +249,8 @@ return [
     'twitter_tab' => 'Twitter',
     'find_contact_placeholder' => 'Find contact by name',
     'find_person_button' => 'Find Person',
+    'find_retreatant_label' => 'Find a retreatant:',
+    'retreatant_id_label' => 'Retreatant id:',
     'advanced_search' => 'Advanced search',
     'add_person_button' => 'Add Person',
     'corrupt_polanco_error' => 'Oops! Looks like :admin is using the SQL to corrupt Polanco.',
