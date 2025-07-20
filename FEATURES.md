@@ -1,6 +1,7 @@
 --implemented
 - Donations - create, edit, view and delete
 - Events (Retreats) - Create, edit, view and delete, email retreat participants
+- Event calendar displayed with FullCalendar
 - Participants (aka Registrations - Retreat) - (add, edit, view and delete)
 - Contacts (Retreatants, Donors, Parishes, Dioceses, Vendors, Organizations, etc.) - (add, edit, view and delete)
 - Rooms - (add, edit, view and delete)

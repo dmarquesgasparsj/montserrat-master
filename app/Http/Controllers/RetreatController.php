@@ -523,13 +523,7 @@ class RetreatController extends Controller
         if (! $removed_ambassadors->isEmpty()) {
             $retreat->ambassadors()->whereIn('contact_id', $removed_ambassadors)->delete();
         }
-        /*
-        * if there is existing calendar_id but the Google Calendar configuration becomes invalid
-        * leave the data untouched in the calendar_id field
-        * hoping that the configuration will be repaired and then functionality can resume
-        * this could potentially be problematic if changing calendars
-        * in the event of calendar change, it is recommended to manually clear all calendar_id data from the event table
-        */
+
 
         flash('Retreat: <a href="'.url('/retreat/'.$retreat->id).'">'.$retreat->title.'</a> updated')->success();
 
