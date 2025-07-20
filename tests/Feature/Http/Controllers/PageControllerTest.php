@@ -669,6 +669,19 @@ final class PageControllerTest extends TestCase
     }
 
     #[Test]
+    public function reservations_report_returns_an_ok_response(): void
+    {
+        $user = $this->createUserWithPermission('show-registration');
+        \App\Models\Registration::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('report.reservations'));
+
+        $response->assertOk();
+        $response->assertViewIs('reports.reservations');
+        $response->assertViewHas('reservations');
+    }
+
+    #[Test]
     public function support_displays_view(): void
     {
         $user = \App\Models\User::factory()->create();
