@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -23,6 +26,21 @@ class Reservation extends Model implements Auditable
         'start',
         'end',
         'notes',
+        'remember_token',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'start' => 'datetime',
+            'end' => 'datetime',
+        ];
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'id');
+
     ];
 
     protected $casts = [
@@ -47,17 +65,22 @@ class Reservation extends Model
     {
         return $this->belongsTo(Room::class);
 
+
     }
 
     public function registration(): BelongsTo
     {
 
+
         return $this->belongsTo(Registration::class);
+
     }
 
     public function retreatant(): BelongsTo
     {
+
         return $this->belongsTo(Contact::class, 'retreatant_id');
+
 
     }
 
