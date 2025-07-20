@@ -29,6 +29,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RelationshipController;
 use App\Http\Controllers\RelationshipTypeController;
 use App\Http\Controllers\RetreatController;
@@ -281,6 +282,7 @@ Route::middleware('web', 'activity')->group(function () {
     Route::get('registration/confirm/{token}', [RegistrationController::class, 'confirmAttendance']);
     Route::get('registration/{participant}/email', [RegistrationController::class, 'registrationEmail']);
     Route::get('registration/send_confirmation_email/{id}', [RegistrationController::class, 'send_confirmation_email'])->name('registration.send_confirmation_email');
+    Route::get('reservation/send_confirmation_email/{id}', [ReservationController::class, 'send_confirmation_email'])->name('reservation.send_confirmation_email');
     Route::get('registration/add/{id}', [RegistrationController::class, 'add']);
     Route::post('relationship/add', [RelationshipTypeController::class, 'make']);
     Route::get('registration/{id}/confirm', [RegistrationController::class, 'confirm'])->name('registration.confirm');
