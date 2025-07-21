@@ -308,6 +308,7 @@ Route::middleware('web', 'activity')->group(function () {
         Route::get('retreatregistrations/{retreat_id}', [PageController::class, 'retreatregistrations']);
         Route::get('retreatroster/{retreat_id}', [PageController::class, 'retreatrosterreport']);
         Route::get('retreatrosterphone/{retreat_id}', [PageController::class, 'retreatrosterphonereport']);
+        Route::get('meal_summary/{retreat_id}', [PageController::class, 'retreatmealcounts'])->name('report.meal_summary');
         Route::get('contact_info_report/{id}', [PageController::class, 'contact_info_report']);
         Route::get('finance/cash_deposit/{day?}', [PageController::class, 'finance_cash_deposit'])->name('report.finance.cash_deposit');
         Route::get('finance/cc_deposit/{day?}', [PageController::class, 'finance_cc_deposit'])->name('report.finance.cc_deposit');

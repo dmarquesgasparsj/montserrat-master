@@ -26,6 +26,7 @@
                 <option value="{{url('report/retreatantinfo/'.$retreat->idnumber)}}">Retreatant info sheets</option>
                 <option value="{{url('retreat/'.$retreat->id.'/roomlist')}}">Room list</option>
                 <option value="{{url('retreat/'.$retreat->id.'/tableplacards')}}">Table placards</option>
+                <option value="{{url('report/meal_summary/'.$retreat->idnumber)}}">Meal Summary</option>
                 <option value="{{url('report/retreatregistrations/'.$retreat->idnumber)}}">Registrations</option>
                 @can('show-donation')
                     <option value="{{url('report/finance/retreatdonations/'.$retreat->idnumber)}}">Donations</option>
