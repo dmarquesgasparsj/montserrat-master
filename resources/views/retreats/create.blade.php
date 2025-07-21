@@ -3,7 +3,7 @@
 
 <div class="row bg-cover">
     <div class="col-lg-12">
-        <h2>Create Retreat</h2>
+        <h2>{{ __('messages.retreat_create_title') }}</h2>
     </div>
     <div class="col-lg-12">
         {{ html()->form('POST', url('retreat'))->open() }}
@@ -24,19 +24,19 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-3">
-                        {{ html()->label('Starts: ', 'start_date') }}
+                        {{ html()->label(__('messages.start_label'), 'start_date') }}
                         {{ html()->text('start_date')->id('start_date')->class('form-control flatpickr-date-time bg-white') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Ends: ', 'end_date') }}
+                        {{ html()->label(__('messages.end_label'), 'end_date') }}
                         {{ html()->text('end_date')->id('end_date')->class('form-control flatpickr-date-time bg-white') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Canceled?:', 'is_active') }}
+                        {{ html()->label(__('messages.canceled_label'), 'is_active') }}
                         {{ html()->select('is_active', $is_active, 1)->class('form-control') }}
                     </div>
                     <div class="col-lg-3"> 
-                            {{ html()->label('Maximum participants', 'max_participants') }}
+                            {{ html()->label(__('messages.participants_label'), 'max_participants') }}
                             {{ html()->text('max_participants', 20)->class('form-control') }}
                     </div>
                 </div>
