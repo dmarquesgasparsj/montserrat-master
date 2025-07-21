@@ -217,8 +217,9 @@ class RoomController extends Controller
         });
 
         $retreats = \App\Models\Retreat::select(DB::raw('CONCAT(idnumber, "-", title, " (",DATE_FORMAT(start_date,"%m-%d-%Y"),")") as description'), 'id')
-            ->where('end_date', '>', Carbon::today()->subWeek())
-            ->where('is_active', '=', 1)
+            ->whereBetween('start_date', [$dts[0], $dts[31]])
+            ->where('end_date', '>=', Carbon::today())
+            ->where('is_active', 1)
             ->orderBy('start_date')
             ->pluck('description', 'id');
         $retreats->prepend('Unassigned', 0);

@@ -396,5 +396,30 @@ final class RoomControllerTest extends TestCase
 
     }
 
+    #[Test]
+    public function schedule_filters_retreats_by_end_date(): void
+    {
+        Carbon::setTestNow(Carbon::create(2025, 7, 15));
+        $user = $this->createUserWithPermission('show-room');
+
+        $past = \App\Models\Retreat::factory()->create([
+            'start_date' => Carbon::create(2025, 7, 1),
+            'end_date' => Carbon::create(2025, 7, 5),
+        ]);
+        $future = \App\Models\Retreat::factory()->create([
+            'start_date' => Carbon::create(2025, 7, 20),
+            'end_date' => Carbon::create(2025, 7, 22),
+        ]);
+
+        $response = $this->actingAs($user)->get(route('rooms', ['ymd' => '2025-07-01']));
+
+        $response->assertOk();
+        $retreats = $response->viewData('retreats');
+        $this->assertTrue($retreats->has($future->id));
+        $this->assertFalse($retreats->has($past->id));
+
+        Carbon::setTestNow();
+    }
+
     // test cases...
 }
