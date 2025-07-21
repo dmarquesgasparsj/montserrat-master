@@ -39,10 +39,10 @@
         <div class="row">
             <div class="col-lg-4 col-md-6 ">
                 <span class="font-weight-bold">ID#: </span>{{ $retreat->idnumber}} <br>
-                <span class="font-weight-bold">Starts: </span>{{ date('F j, Y g:i A', strtotime($retreat->start_date)) }} <br>
-                <span class="font-weight-bold">Ends: </span>{{ date('F j, Y g:i A', strtotime($retreat->end_date)) }} <br>
+                <span class="font-weight-bold">{{ __('messages.start_label') }} </span>{{ date('F j, Y g:i A', strtotime($retreat->start_date)) }} <br>
+                <span class="font-weight-bold">{{ __('messages.end_label') }} </span>{{ date('F j, Y g:i A', strtotime($retreat->end_date)) }} <br>
                 <span class="font-weight-bold">Title: </span>{{ $retreat->title}} <br>
-                <span class="font-weight-bold">Participants: </span>{{ $retreat->participant_count}} out of {{$retreat->max_participants}} 
+                <span class="font-weight-bold">{{ __('messages.participants_label') }} </span>{{ $retreat->participant_count}} out of {{$retreat->max_participants}}
                 @if ($retreat->max_participants > 0)
                     ({{number_format((($retreat->participant_count / $retreat->max_participants)*100),0).'% Capacity'}})
                 @endIf
@@ -99,7 +99,7 @@
 
             <div class="col-lg-4 col-md-6">
                 <span class="font-weight-bold">Type: </span>{{ $retreat->retreat_type}} <br>
-                <span class="font-weight-bold">Status: </span>{{ $retreat->is_active == 0 ? 'Canceled' : 'Active' }} <br>
+                <span class="font-weight-bold">Status: </span>{{ $retreat->is_active == 0 ? __('messages.status_canceled') : __('messages.status_active') }} <br>
                 @can('show-donation')
                     <span class="font-weight-bold">Donations: </span>
                     {{ html()->a(url('report/finance/retreatdonations/'.$retreat->idnumber),
@@ -221,9 +221,9 @@
                 <select class="custom-select col-3" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                     <option value="">Filter registrations by status ...</option>
                     <option value="{{url('retreat/'.$retreat->id)}}">All</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/active')}}">Active</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/active')}}">{{ __('messages.status_active') }}</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/arrived')}}">Arrived</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/canceled')}}">Canceled</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/canceled')}}">{{ __('messages.status_canceled') }}</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/confirmed')}}">Confirmed</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/dawdler')}}">Dawdler</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/departed')}}">Departed</option>

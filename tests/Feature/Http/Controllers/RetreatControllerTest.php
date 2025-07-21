@@ -41,7 +41,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewHas('retreat');
         $response->assertViewHas('registrations');
         $response->assertViewHas('rooms');
-        $response->assertSeeText('Save Room Assignments');
+        $response->assertSeeText(__('messages.save_room_assignments'));
     }
 
     #[Test]
@@ -115,7 +115,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewHas('event_types');
         $response->assertViewHas('is_active');
         $response->assertViewHas('next_idnumber');
-        $response->assertSeeText('Create Retreat');
+        $response->assertSeeText(__('messages.retreat_create_title'));
         $response->assertSeeText($expected);
     }
 
@@ -146,7 +146,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewHas('options');
         $response->assertViewHas('event_types');
         $response->assertViewHas('is_active');
-        $response->assertSeeText('Edit');
+        $response->assertSeeText(__('messages.edit'));
         $response->assertSeeText($retreat->idnumber);
 
         $this->assertTrue($this->findFieldValueInResponseContent('idnumber', $retreat->idnumber, 'text', $response->getContent()));
@@ -227,8 +227,8 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewHas('oldretreats');
         $response->assertViewHas('defaults');
         $response->assertViewHas('event_types');
-        $response->assertSeeText('Upcoming Retreat');
-        $response->assertSeeText('Previous Retreat');
+        $response->assertSeeText(__('messages.upcoming_retreat'));
+        $response->assertSeeText(__('messages.previous_retreat'));
     }
 
     #[Test]
@@ -361,7 +361,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertViewIs('retreats.waitlist');
         $response->assertViewHas('retreat');
         $response->assertViewHas('registrations');
-        $response->assertSeeText('Waitlist for');
+        $response->assertSeeText(__('messages.waitlist_for'));
         $response->assertSeeText($retreat->idnumber);
     }
 
@@ -558,7 +558,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('retreats.results');
         $response->assertViewHas('events');
-        $response->assertSeeText('results found');
+        $response->assertSeeText(__('messages.results_found'));
         $response->assertSeeText($retreat->idnumber);
     }
 
@@ -572,7 +572,7 @@ final class RetreatControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('retreats.search');
         $response->assertViewHas('event_types');
-        $response->assertSeeText('Search Events');
+        $response->assertSeeText(__('messages.search_events'));
     }
 
     // test cases...
