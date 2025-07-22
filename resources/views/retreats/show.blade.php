@@ -12,37 +12,37 @@
         </h1>
     </div>
     <div class="col-lg-12">
-        {{ html()->a(url('#registrations'), 'Registrations')->class('btn btn-outline-dark') }}
+        {{ html()->a(url('#registrations'), __('messages.registrations_button'))->class('btn btn-outline-dark') }}
         @can('create-touchpoint')
             {{ html()->a(url(action([\App\Http\Controllers\TouchpointController::class, 'add_retreat'], $retreat->id)), 'Retreat touchpoint')->class('btn btn-outline-dark') }}
         @endCan
         @can('show-registration')
             <select class="custom-select col-3" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                <option value="">Print ...</option>
-                <option value="{{url('retreat/'.$retreat->id.'/namebadges/all')}}">Namebadges</option>
-                <option value="{{url('report/retreatrosterphone/'.$retreat->idnumber)}}">Phone Roster</option>
-                <option value="{{url('report/retreatroster/'.$retreat->idnumber)}}">Roster</option>
-                <option value="{{url('report/retreatlisting/'.$retreat->idnumber)}}">Listing</option>
-                <option value="{{url('report/retreatantinfo/'.$retreat->idnumber)}}">Retreatant info sheets</option>
-                <option value="{{url('retreat/'.$retreat->id.'/roomlist')}}">Room list</option>
-                <option value="{{url('retreat/'.$retreat->id.'/tableplacards')}}">Table placards</option>
-                <option value="{{url('report/meal_summary/'.$retreat->idnumber)}}">Meal Summary</option>
-                <option value="{{url('report/retreatregistrations/'.$retreat->idnumber)}}">Registrations</option>
+                <option value="">{{ __('messages.print_option') }}</option>
+                <option value="{{url('retreat/'.$retreat->id.'/namebadges/all')}}">{{ __('messages.print_namebadges') }}</option>
+                <option value="{{url('report/retreatrosterphone/'.$retreat->idnumber)}}">{{ __('messages.print_phone_roster') }}</option>
+                <option value="{{url('report/retreatroster/'.$retreat->idnumber)}}">{{ __('messages.print_roster') }}</option>
+                <option value="{{url('report/retreatlisting/'.$retreat->idnumber)}}">{{ __('messages.print_listing') }}</option>
+                <option value="{{url('report/retreatantinfo/'.$retreat->idnumber)}}">{{ __('messages.print_info_sheets') }}</option>
+                <option value="{{url('retreat/'.$retreat->id.'/roomlist')}}">{{ __('messages.print_room_list') }}</option>
+                <option value="{{url('retreat/'.$retreat->id.'/tableplacards')}}">{{ __('messages.print_table_placards') }}</option>
+                <option value="{{url('report/meal_summary/'.$retreat->idnumber)}}">{{ __('messages.print_meal_summary') }}</option>
+                <option value="{{url('report/retreatregistrations/'.$retreat->idnumber)}}">{{ __('messages.print_registrations') }}</option>
                 @can('show-donation')
-                    <option value="{{url('report/finance/retreatdonations/'.$retreat->idnumber)}}">Donations</option>
+                    <option value="{{url('report/finance/retreatdonations/'.$retreat->idnumber)}}">{{ __('messages.print_donations') }}</option>
                 @endCan
 
             </select>
         @endCan
     </div>
     <div class="col-lg-12 mt-3">
-        <h2>Details</h2>
+        <h2>{{ __('messages.details_title') }}</h2>
         <div class="row">
             <div class="col-lg-4 col-md-6 ">
-                <span class="font-weight-bold">ID#: </span>{{ $retreat->idnumber}} <br>
+                <span class="font-weight-bold">{{ __('messages.id_label') }} </span>{{ $retreat->idnumber}} <br>
                 <span class="font-weight-bold">{{ __('messages.start_label') }} </span>{{ date('F j, Y g:i A', strtotime($retreat->start_date)) }} <br>
                 <span class="font-weight-bold">{{ __('messages.end_label') }} </span>{{ date('F j, Y g:i A', strtotime($retreat->end_date)) }} <br>
-                <span class="font-weight-bold">Title: </span>{{ $retreat->title}} <br>
+                <span class="font-weight-bold">{{ __('messages.title_label') }} </span>{{ $retreat->title}} <br>
                 <span class="font-weight-bold">{{ __('messages.participants_label') }} </span>{{ $retreat->participant_count}} out of {{$retreat->max_participants}}
                 @if ($retreat->max_participants > 0)
                     ({{number_format((($retreat->participant_count / $retreat->max_participants)*100),0).'% Capacity'}})
@@ -53,7 +53,7 @@
                 @endif
             </div>
             <div class="col-lg-4 col-md-6 ">
-                <span class="font-weight-bold">Description: </span>
+                <span class="font-weight-bold">{{ __('messages.description_label') }} </span>
                 @if (!$retreat->description)
                     N/A
                 @else
@@ -61,7 +61,7 @@
                 @endif
                 <br>
 
-                <span class="font-weight-bold">Director(s): </span>
+                <span class="font-weight-bold">{{ __('messages.director_label') }} </span>
                 @if ($retreat->retreatmasters->isEmpty())
                     N/A <br>
                 @else
@@ -70,7 +70,7 @@
                     @endforeach
                 @endif
 
-                <span class="font-weight-bold">Innkeeper: </span>
+                <span class="font-weight-bold">{{ __('messages.innkeeper_label') }} </span>
                 @if ($retreat->innkeepers->isEmpty())
                     N/A <br>
                 @else
@@ -79,7 +79,7 @@
                     @endforeach
                 @endif
 
-                <span class="font-weight-bold">Assistant: </span>
+                <span class="font-weight-bold">{{ __('messages.assistant_label') }} </span>
                 @if ($retreat->assistants->isEmpty())
                     N/A <br>
                 @else
@@ -88,7 +88,7 @@
                     @endforeach
                 @endif
 
-                <span class="font-weight-bold">Ambassador(s): </span>
+                <span class="font-weight-bold">{{ __('messages.ambassador_label') }} </span>
                 @if ($retreat->ambassadors->isEmpty())
                     N/A <br>
                 @else
@@ -99,10 +99,10 @@
             </div>
 
             <div class="col-lg-4 col-md-6">
-                <span class="font-weight-bold">Type: </span>{{ $retreat->retreat_type}} <br>
-                <span class="font-weight-bold">Status: </span>{{ $retreat->is_active == 0 ? __('messages.status_canceled') : __('messages.status_active') }} <br>
+                <span class="font-weight-bold">{{ __('messages.event_type_label') }} </span>{{ $retreat->retreat_type}} <br>
+                <span class="font-weight-bold">{{ __('messages.status_label') }} </span>{{ $retreat->is_active == 0 ? __('messages.status_canceled') : __('messages.status_active') }} <br>
                 @can('show-donation')
-                    <span class="font-weight-bold">Donations: </span>
+                    <span class="font-weight-bold">{{ __('messages.donations_label') }} </span>
                     {{ html()->a(url('report/finance/retreatdonations/'.$retreat->idnumber),
                         ($retreat->donations_pledged_sum)>0 ? '$'.number_format($retreat->donations_pledged_sum,2) : '$'.number_format(0,2))
                     }}
@@ -113,12 +113,12 @@
                     @endCan
                     <br>
                 @endCan
-                <span class="font-weight-bold">Last updated: </span>{{ $retreat->updated_at?->format('F j, Y g:i A')}}<br>
+                <span class="font-weight-bold">{{ __('messages.last_updated_label') }} </span>{{ $retreat->updated_at?->format('F j, Y g:i A')}}<br>
 
             </div>
 
             <div class="col-lg-12">
-                <h2>Attachments</h2>
+                <h2>{{ __('messages.attachments_title') }}</h2>
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         @can('show-event-contract')
@@ -138,7 +138,7 @@
 
                     @can('show-event-attachment')
                     @if ($attachments->isEmpty())
-                    <p>There are no additional attachments for this retreat.</p>
+                    <p>{{ __('messages.no_attachments_message') }}</p>
                     @else
                     <table class="table">
                         <thead>
@@ -166,7 +166,7 @@
             @can('show-event-group-photo')
             @if (Storage::has('event/'.$retreat->id.'/group_photo.jpg'))
             <div class="col-lg-12">
-                <h2>Group Photo</h2>
+                <h2>{{ __('messages.group_photo_title') }}</h2>
                 <img src="{{url('retreat/'.$retreat->id).'/photo'}}" class="img" style="padding:5px; width:75%">
             </div>
             @endif
@@ -204,38 +204,38 @@
                     @endCan
                 </h2>
                 @can('create-registration')
-                    {{ html()->a(url(action([\App\Http\Controllers\RegistrationController::class, 'register'], $retreat->id)), 'Register a retreatant')->class('btn btn-outline-dark') }}
+                    {{ html()->a(url(action([\App\Http\Controllers\RegistrationController::class, 'register'], $retreat->id)), __('messages.register_retreatant_button'))->class('btn btn-outline-dark') }}
                 @endCan
                 @can('show-contact')
-                    {{ html()->a(url($retreat->email_registered_retreatants), 'Email registered retreatants')->class('btn btn-outline-dark') }}
+                    {{ html()->a(url($retreat->email_registered_retreatants), __('messages.email_registered_retreatants_button'))->class('btn btn-outline-dark') }}
                 @endCan
                 @can('update-registration')
-                    {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'assign_rooms'], $retreat->id)), 'Assign rooms')->class('btn btn-outline-dark') }}
+                    {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'assign_rooms'], $retreat->id)), __('messages.assign_rooms_button'))->class('btn btn-outline-dark') }}
                     @if (($retreat->start_date <= now()) && ($retreat->end_date >= now()))
-                        {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'checkin'], $retreat->id)), 'Checkin')->class('btn btn-outline-dark') }}
+                        {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'checkin'], $retreat->id)), __('messages.checkin_button'))->class('btn btn-outline-dark') }}
                     @endIf
 
                     @if ($retreat->end_date < now())
-                        {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'checkout'], $retreat->id)), 'Checkout')->class('btn btn-outline-dark') }}
+                        {{ html()->a(url(action([\App\Http\Controllers\RetreatController::class, 'checkout'], $retreat->id)), __('messages.checkout_button'))->class('btn btn-outline-dark') }}
                     @endIf
                 @endCan
                 <select class="custom-select col-3" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                    <option value="">Filter registrations by status ...</option>
-                    <option value="{{url('retreat/'.$retreat->id)}}">All</option>
+                    <option value="">{{ __('messages.filter_registrations_option') }}</option>
+                    <option value="{{url('retreat/'.$retreat->id)}}">{{ __('messages.all') }}</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/active')}}">{{ __('messages.status_active') }}</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/arrived')}}">Arrived</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/arrived')}}">{{ __('messages.status_arrived') }}</option>
                     <option value="{{url('retreat/'.$retreat->id.'/status/canceled')}}">{{ __('messages.status_canceled') }}</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/confirmed')}}">Confirmed</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/dawdler')}}">Dawdler</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/departed')}}">Departed</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/retreatants')}}">Retreatants</option>
-                    <option value="{{url('retreat/'.$retreat->id.'/status/unconfirmed')}}">Unconfirmed</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/confirmed')}}">{{ __('messages.status_confirmed') }}</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/dawdler')}}">{{ __('messages.status_dawdler') }}</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/departed')}}">{{ __('messages.status_departed') }}</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/retreatants')}}">{{ __('messages.status_retreatants') }}</option>
+                    <option value="{{url('retreat/'.$retreat->id.'/status/unconfirmed')}}">{{ __('messages.status_unconfirmed') }}</option>
                     </select>
             </div>
             <div class="col-lg-12 mt-3">
                 @if ($registrations->isEmpty())
                 <div class="text-center">
-                    <p>Currently, there are no registrations for this retreat.</p>
+                    <p>{{ __('messages.no_registrations_message') }}</p>
                 </div>
                 @else
                     @can('show-registration')
