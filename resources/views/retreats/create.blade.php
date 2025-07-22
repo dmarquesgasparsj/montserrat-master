@@ -10,15 +10,15 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-3">
-                        {{ html()->label('ID#:', 'idnumber') }}
+                        {{ html()->label(__('messages.id_label'), 'idnumber') }}
                         {{ html()->text('idnumber', $next_idnumber)->class('form-control')->attribute('readonly', true) }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Title: ', 'title') }}
+                        {{ html()->label(__('messages.title_label'), 'title') }}
                         {{ html()->text('title')->class('form-control') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Type:', 'event_type') }}
+                        {{ html()->label(__('messages.event_type_label'), 'event_type') }}
                         {{ html()->select('event_type', $event_types, config('polanco.event_type.ignatian'))->class('form-control') }}
                     </div>
                 </div>
@@ -42,39 +42,39 @@
                 </div>
                 <div class="row"> <!-- Adicionar Implementar aqui uma lista definida nos buildings -->
                     <div class="col-lg-3">
-                        {{ html()->label('Chapel:', 'Chapel') }}
+                        {{ html()->label(__('messages.chapel_label'), 'Chapel') }}
                         {{ html()->select('Chapel_id', ['Santo Inácio' => 'Santo Inácio', 'São José' => 'São José', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Dinning Room:', 'dinning_room_id') }}
+                        {{ html()->label(__('messages.dining_room_label'), 'dinning_room_id') }}
                         {{ html()->select('Chapel_id', ['Sala de Refeiçoes A' => 'Sala de Refeiçoes A', 'Sala de Refeiçoes B' => 'Sala de Refeiçoes B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Points Room :', 'points_room_id') }}
+                        {{ html()->label(__('messages.points_room_label'), 'points_room_id') }}
                         {{ html()->select('Chapel_id', ['Chapel' => 'Sala A', 'Dinning Room' => 'Sala B', 'Room to give points' => 'Room to give points'], null)->class('form-control') }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-9">
-                        {{ html()->label('Description:', 'description') }}
+                        {{ html()->label(__('messages.description_label'), 'description') }}
                         {{ html()->textarea('description')->class('form-control')->rows('3') }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-3">
-                        {{ html()->label('Director(s):', 'directors') }}
+                        {{ html()->label(__('messages.director_label'), 'directors') }}
                         {{ html()->multiselect('directors[]', $d, 0)->id('directors')->class('form-control select2') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Innkeeper(s):', 'innkeeper_ids') }}
+                        {{ html()->label(__('messages.innkeeper_label'), 'innkeeper_ids') }}
                         {{ html()->multiselect('innkeepers[]', $i, 0)->id('innkeepers')->class('form-control select2') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Assistant(s):', 'assistant_ids') }}
+                        {{ html()->label(__('messages.assistant_label'), 'assistant_ids') }}
                         {{ html()->multiselect('assistants[]', $a, 0)->id('assistants')->class('form-control select2') }}
                     </div>
                     <div class="col-lg-3">
-                        {{ html()->label('Ambassador(s):', 'ambassadors') }}
+                        {{ html()->label(__('messages.ambassador_label'), 'ambassadors') }}
                         {{ html()->multiselect('ambassadors[]', $c, 0)->id('ambassadors')->class('form-control select2') }}
                     </div>
                 </div>
@@ -82,7 +82,7 @@
 
             <div class="row">
                 <div class="col-lg-12 mt-5">
-                    {{ html()->submit('Add Retreat')->class('btn btn-light') }}
+                    {{ html()->submit(__('messages.add_retreat_button'))->class('btn btn-light') }}
                 </div>
             </div>
         {{ html()->form()->close() }}
