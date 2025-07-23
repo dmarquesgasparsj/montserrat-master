@@ -38,8 +38,5 @@ class UpdateRoomRequest extends FormRequest
     public function messages(): array
     {
         return [];
-        $actual = $this->subject->messages();
-
-        $this->assertEquals([], $actual);
     }
 }

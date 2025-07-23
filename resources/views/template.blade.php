@@ -143,7 +143,9 @@
 							<a class="dropdown-item" href={{ route('permission.index') }}>Permissions</a>
 							<a class="dropdown-item" href={{ route('role.index') }}>Roles</a>
 							<a class="dropdown-item" href={{ route('user.index') }}>Users</a>
-							<a class="dropdown-item" href={{ route('language.index') }}>Language</a>
+                                                        <a class="dropdown-item" href={{ route('language.index') }}>Language</a>
+
+                                                        <a class="dropdown-item" href={{ route('room.index') }}>{{ __('messages.rooms') }}</a>
 
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href={{ route('donation_type.index') }}>Donation types</a>
