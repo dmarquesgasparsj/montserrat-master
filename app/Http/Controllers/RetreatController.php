@@ -585,6 +585,20 @@ class RetreatController extends Controller
         // TODO: consider also checking to see if the arrived_at time is empty and if it is put in the retreat start time
         $this->authorize('update-registration');
         $retreat = \App\Models\Retreat::findOrFail($id); //verifies that it is a valid retreat id
+        $registrations = \App\Models\Registration::whereEventId($id)
+            ->whereCanceledAt(null)
+            ->whereNotNull('arrived_at')
+            ->whereNull('departed_at')
+            ->get();
+
+        foreach ($registrations as $registration) {
+            $registration->departed_at = $registration->retreat_end_date ?? now();
+            $registration->save();
+        }
+
+        flash('Retreatants for '.$retreat->title.' successfully checked out')->success();
+
+        return Redirect::action([self::class, 'show'], $retreat->id);
     }
 
     public function checkin($id): RedirectResponse

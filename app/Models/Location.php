@@ -17,7 +17,7 @@ class Location extends Model implements Auditable
 
     public function rooms(): HasMany
     {
-        return $this->hasMany(Room::class, 'room_id', 'id');
+        return $this->hasMany(Room::class, 'location_id', 'id');
     }
 
     public function parent(): HasOne
