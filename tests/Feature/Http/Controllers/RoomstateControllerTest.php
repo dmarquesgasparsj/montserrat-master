@@ -54,4 +54,15 @@ final class RoomstateControllerTest extends TestCase
             'statusto' => 'A',
         ]);
     }
+
+    #[Test]
+    public function index_displays_housekeeping_page(): void
+    {
+        $user = $this->createUserWithPermission('show-room');
+
+        $response = $this->actingAs($user)->get(route('roomstate.index'));
+
+        $response->assertOk();
+        $response->assertSeeText('Housekeeping');
+    }
 }
