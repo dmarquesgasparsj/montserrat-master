@@ -302,4 +302,40 @@ class DashboardController extends Controller
 
         return view('dashboard.drilldown', compact('event_type', 'year', 'retreats', 'page_title'));
     }
+
+    public function statistics(?string $start = null, ?string $end = null): View
+    {
+        $this->authorize('show-dashboard');
+
+        $range_start = \App\Models\Retreat::min('start_date');
+        $range_end = \App\Models\Retreat::max('end_date');
+
+        $default_start = $range_start ? \Carbon\Carbon::parse($range_start) : now()->subYear();
+        $default_end = $range_end ? \Carbon\Carbon::parse($range_end) : now();
+
+        $range_options = [
+            'start' => $default_start->format('Y-m-d'),
+            'end' => $default_end->format('Y-m-d'),
+        ];
+
+        $start = \Carbon\Carbon::parse($start ?? $range_options['start']);
+        $end = \Carbon\Carbon::parse($end ?? $range_options['end']);
+
+        $retreats = \App\Models\Retreat::where('start_date', '>=', $start)
+            ->where('start_date', '<=', $end)
+            ->where('end_date', '<=', now())
+            ->get();
+
+        $average_nights = $retreats->count() ? round($retreats->avg('nights'), 2) : 0;
+
+        $meals = \App\Models\Meal::where('meal_date', '>=', $start)
+            ->where('meal_date', '<=', $end)
+            ->get();
+
+        $meal_totals = $meals->groupBy('meal_type')->map->count()->toArray();
+
+        $page_title = __('messages.dashboard_statistics_title');
+
+        return view('dashboard.statistics', compact('start', 'end', 'range_options', 'average_nights', 'meal_totals', 'page_title'));
+    }
 }

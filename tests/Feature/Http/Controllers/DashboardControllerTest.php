@@ -160,4 +160,28 @@ final class DashboardControllerTest extends TestCase
         $response->assertViewHas('event_type');
         $response->assertSee('Drilldown');
     }
+
+    #[Test]
+    public function statistics_returns_an_ok_response(): void
+    {
+        $user = $this->createUserWithPermission('show-dashboard');
+        $retreat = \App\Models\Retreat::factory()->create([
+            'start_date' => now()->subDays(5),
+            'end_date' => now()->subDays(2),
+        ]);
+        \App\Models\Meal::factory()->create([
+            'retreat_id' => $retreat->id,
+            'meal_date' => now()->subDays(4),
+            'meal_type' => 'Lunch',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('dashboard.statistics'));
+
+        $response->assertOk();
+        $response->assertViewIs('dashboard.statistics');
+        $response->assertViewHas('average_nights');
+        $response->assertViewHas('meal_totals');
+        $response->assertViewHas('range_options');
+        $response->assertSee('Statistics Dashboard');
+    }
 }

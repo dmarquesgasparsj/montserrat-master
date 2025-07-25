@@ -77,6 +77,7 @@ return [
     'dashboard_agc_title' => 'Tablero AGC',
     'dashboard_events_title' => 'Tablero de Eventos',
     'dashboard_description_title' => 'Tablero de Descripción de Donaciones',
+    'dashboard_statistics_title' => 'Tablero de Estadísticas',
     'dashboard_event_drilldown' => 'Desglose del Tablero de Eventos: :name FY :year',
     'about_title' => 'Acerca de la base de datos de la Casa de Retiros Montserrat',
     'about_description' => 'Esta es una versión alfa de la base de datos de la Casa de Retiros Montserrat. ¡Está en desarrollo!',
