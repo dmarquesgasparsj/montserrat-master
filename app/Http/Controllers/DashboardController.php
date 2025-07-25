@@ -310,13 +310,17 @@ class DashboardController extends Controller
         $range_start = \App\Models\Retreat::min('start_date');
         $range_end = \App\Models\Retreat::max('end_date');
 
+        $default_start = $range_start ? \Carbon\Carbon::parse($range_start) : now()->subYear();
+        $default_end = $range_end ? \Carbon\Carbon::parse($range_end) : now();
+
         $range_options = [
-            'start' => optional($range_start)->format('Y-m-d'),
-            'end' => optional($range_end)->format('Y-m-d'),
+            'start' => $default_start->format('Y-m-d'),
+            'end' => $default_end->format('Y-m-d'),
         ];
 
-        $start = $start ?? $range_options['start'];
-        $end = $end ?? $range_options['end'];
+        $start = \Carbon\Carbon::parse($start ?? $range_options['start']);
+        $end = \Carbon\Carbon::parse($end ?? $range_options['end']);
+
 
         $retreats = \App\Models\Retreat::where('start_date', '>=', $start)
             ->where('start_date', '<=', $end)
