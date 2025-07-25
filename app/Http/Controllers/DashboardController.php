@@ -340,3 +340,4 @@ class DashboardController extends Controller
         return view('dashboard.statistics', compact('start', 'end', 'range_options', 'average_nights', 'meal_totals', 'page_title'));
     }
 }
+
