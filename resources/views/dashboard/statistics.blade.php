@@ -13,8 +13,8 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <form method="GET" action="{{ route('dashboard.statistics') }}">
-                            <input type="date" name="start" value="{{ $start }}" class="form-control mb-2">
-                            <input type="date" name="end" value="{{ $end }}" class="form-control mb-2">
+                            <input type="date" name="start" value="{{ $start->format('Y-m-d') }}" class="form-control mb-2">
+                            <input type="date" name="end" value="{{ $end->format('Y-m-d') }}" class="form-control mb-2">
                             <button type="submit" class="btn btn-primary">Filter</button>
                         </form>
                     </div>
