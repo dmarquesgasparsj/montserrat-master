@@ -14,6 +14,7 @@
                                 <option value="{{url('dashboard/agc')}}">AGC</option>
                                 <option value="{{url('dashboard/events')}}">Events</option>
                                 <option value="{{url('dashboard/description')}}">Donation descriptions</option>
+                                <option value="{{url('dashboard/statistics')}}">Statistics</option>
                         </select>
                     </div>
                 </div>
