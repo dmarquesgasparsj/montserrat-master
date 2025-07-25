@@ -77,6 +77,7 @@ return [
     'dashboard_agc_title' => 'Painel AGC',
     'dashboard_events_title' => 'Painel de Eventos',
     'dashboard_description_title' => 'Painel de Descrição de Doações',
+    'dashboard_statistics_title' => 'Painel de Estatísticas',
     'dashboard_event_drilldown' => 'Detalhamento do Painel de Eventos: :name FY :year',
     'about_title' => 'Sobre o Banco de Dados da Casa de Retiros Montserrat',
     'about_description' => 'Esta é uma versão alfa do banco de dados da Casa de Retiros Montserrat. Está em desenvolvimento!',
