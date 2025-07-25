@@ -321,6 +321,7 @@ class DashboardController extends Controller
         $start = \Carbon\Carbon::parse($start ?? $range_options['start']);
         $end = \Carbon\Carbon::parse($end ?? $range_options['end']);
 
+
         $retreats = \App\Models\Retreat::where('start_date', '>=', $start)
             ->where('start_date', '<=', $end)
             ->where('end_date', '<=', now())
