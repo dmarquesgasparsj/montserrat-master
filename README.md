@@ -144,9 +144,14 @@ A **Language** dropdown is available in the top navigation bar. Choose a languag
 
 ## Room Schedule
 
-Polanco includes a monthly room schedule available at `/rooms`. This page renders a matrix of rooms versus days and highlights reserved or occupied dates. You can view other months by appending a date in `YYYYMMDD` format to the URL. For example, `/rooms/20250101` shows January&nbsp;2025.
+Polanco includes a monthly room schedule available at `/rooms`. This page renders a matrix of rooms versus days and highlights reserved or occupied dates. Reserved or occupied cells display the retreatant's name and link directly to the reservation. Reservations can be dragged between rooms to update assignments. You can view other months by appending a date in `YYYYMMDD` format to the URL. For example, `/rooms/20250101` shows January&nbsp;2025.
 
 The schedule logic is implemented in `RoomController::schedule`.
+
+Usage notes:
+
+* Drag a reservation cell to another room to move a retreatant.
+* Click a name to open the reservation record.
 
 ## Event Calendar
 
