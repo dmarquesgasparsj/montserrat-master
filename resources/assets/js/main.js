@@ -62,7 +62,9 @@ $(document).ready(function() {
           room_id: roomId,
           date: date
         }
-      });
+      })
+        .done(() => window.location.reload())
+        .fail(err => console.error('Error moving reservation', err));
     }
   });
 
