@@ -49,10 +49,10 @@
                                 @php $status = $m[$room->id][$dt->toDateString()]['status']; @endphp
                                 @if ($status == 'O')
                                 <td class="table-info room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
-                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), '&nbsp;')->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
+                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), $m[$room->id][$dt->toDateString()]['retreatant_name'])->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
                                 @elseif ($status == 'R')
                                 <td class="table-warning room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
-                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), '&nbsp;')->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
+                                    {{ html()->a(url('registration/' . $m[$room->id][$dt->toDateString()]['registration_id']), $m[$room->id][$dt->toDateString()]['retreatant_name'])->attribute('title', $m[$room->id][$dt->toDateString()]['retreat_name'] . ' (' . $m[$room->id][$dt->toDateString()]['retreatant_name'] . ')')->attribute('class', 'reservation')->attribute('data-registration-id', $m[$room->id][$dt->toDateString()]['registration_id']) }}
                                 @elseif ($status == 'C')
                                 <td class="table-danger room-cell" data-room-id="{{$room->id}}" data-date="{{$dt->toDateString()}}">
                                 @elseif ($status == 'M')
