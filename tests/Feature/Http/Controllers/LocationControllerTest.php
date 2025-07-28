@@ -24,7 +24,7 @@ final class LocationControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.locations.create');
-        $response->assertSeeText('Create location');
+        $response->assertSeeText(__('messages.create_location_title'));
         $response->assertViewHas('parents');
         $response->assertViewHas('rooms');
         $response->assertViewHas('location_types');
@@ -57,7 +57,7 @@ final class LocationControllerTest extends TestCase
         $response->assertViewHas('location_types');
         $response->assertViewHas('parents');
         $response->assertViewHas('rooms');
-        $response->assertSeeText('Edit');
+        $response->assertSeeText(__('messages.edit_location_title'));
 
         $this->assertTrue($this->findFieldValueInResponseContent('name', $location->name, 'text', $response->getContent()));
         $this->assertTrue($this->findFieldValueInResponseContent('label', $location->label, 'text', $response->getContent()));
@@ -82,7 +82,7 @@ final class LocationControllerTest extends TestCase
         $response->assertViewIs('admin.locations.index');
         $response->assertViewHas('locations');
         $response->assertViewHas('location_types');
-        $response->assertSeeText('Locations');
+        $response->assertSeeText(__('messages.locations_index_title'));
     }
 
     #[Test]
@@ -104,7 +104,7 @@ final class LocationControllerTest extends TestCase
         $response->assertViewIs('admin.locations.index');
         $response->assertViewHas('locations');
         $response->assertViewHas('location_types');
-        $response->assertSeeText('Locations');
+        $response->assertSeeText(__('messages.locations_index_title'));
         $response->assertSeeText($location->type);
         $this->assertGreaterThan($number_locations, $results->count());
     }
@@ -121,7 +121,7 @@ final class LocationControllerTest extends TestCase
         $response->assertViewIs('admin.locations.show');
         $response->assertViewHas('location');
         $response->assertViewHas('children');
-        $response->assertSeeText('Location details');
+        $response->assertSeeText(__('messages.location_details_title'));
     }
 
     #[Test]
