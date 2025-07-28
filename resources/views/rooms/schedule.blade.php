@@ -24,8 +24,8 @@
                         </h2></caption>
                     <thead>
                         <tr>
-                            <th>Building</th>
-                            <th>Room#</th>
+                            <th>{{ __('messages.room_table_building_header') }}</th>
+                            <th>{{ __('messages.room_table_room_header') }}#</th>
                             @foreach($dts as $dt)
                             <th>{{$dt->day}}</th>
                             @endforeach

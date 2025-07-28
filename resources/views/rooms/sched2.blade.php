@@ -3,31 +3,31 @@
 
 <div class="row bg-cover">
     <div class="col-lg-12 text-center">
-        <h2>Room Schedules for</h2>
+        <h2>{{ __('messages.room_schedules_for', ['start' => $dts[0]->format('F d, Y'), 'end' => $dts[31]->format('F d, Y')]) }}</h2>
         <h2>
             {!!$previous_link!!}
             {{$dts[0]->format('F d, Y')}} - {{$dts[31]->format('F d, Y')}} 
             {!!$next_link!!}
         </h2>
         <p class="lead">
-            <span class="table-success">Available</span>
-            <span class="table-warning">Reserved</span>
-            <span class="table-info">Occupied</span>
-            <span class="table-danger">Cleaning Needed</span>
-            <span class="table-secondary">Maintenance Required</span>
+            <span class="table-success">{{ __('messages.legend_available') }}</span>
+            <span class="table-warning">{{ __('messages.legend_reserved') }}</span>
+            <span class="table-info">{{ __('messages.legend_occupied') }}</span>
+            <span class="table-danger">{{ __('messages.legend_cleaning_needed') }}</span>
+            <span class="table-secondary">{{ __('messages.legend_maintenance_required') }}</span>
         </p>
     </div>
 
     <div class="col-lg-12 text-center">
         @if (empty($m))
             
-                <p>Yikes, there is nothing to schedule!</p>
+                <p>{{ __('messages.yikes_nothing_to_schedule_message') }}</p>
             </div>
         @else
             <table class="table-sm table-bordered table-hover mx-auto">
                 <thead>
                     <tr>
-                        <th scope="col">Room</th>
+                        <th scope="col">{{ __('messages.room_table_room_header') }}</th>
                         @foreach($dts as $dt)
                         <th scope="col">{{$dt->day}}</th>
                         @endforeach
@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                     @if ($roomsort->isEmpty())
-                        <p> Yikes, there are no rooms!</p>
+                        <p>{{ __('messages.yikes_no_rooms_message') }}</p>
                     @else
                         
                         @foreach($roomsort as $room)

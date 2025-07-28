@@ -4,11 +4,11 @@
 <div class="row bg-cover">
     <div class="col-lg-12">
         <h2>
-            Locations
+            {{ __('messages.locations_index_title') }}
             @can('create-location')
             <span class="options">
                 <a href={{ action([\App\Http\Controllers\LocationController::class, 'create']) }}>
-                    <img src="{{ URL::asset('images/create.png') }}" alt="Add" class="btn btn-light" title="Add">
+                    <img src="{{ URL::asset('images/create.png') }}" alt="{{ __('messages.add_location_button') }}" class="btn btn-light" title="{{ __('messages.add_location_button') }}">
                 </a>
             </span>
             @endCan
@@ -16,8 +16,8 @@
     </div>
         <div class="col-md-2 col-lg-12">
             <select class="custom-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                <option value="">Filter by type ...</option>
-                <option value="{{url('admin/location')}}">All locations</option>
+                <option value="">{{ __('messages.filter_by_type_option') }}</option>
+                <option value="{{url('admin/location')}}">{{ __('messages.all_locations_option') }}</option>
                 @foreach($location_types as $key=>$type)
                 <option value="{{url('admin/location/type/'.$key)}}">{{$type}}</option>
                 @endForeach
@@ -27,17 +27,17 @@
     <div class="col-lg-12 my-3 table-responsive-md">
         @if ($locations->isEmpty())
         <div class="col-lg-12 text-center py-5">
-            <p>It is a brand new world, there are no locations!</p>
+            <p>{{ __('messages.no_locations_message') }}</p>
         </div>
         @else
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Occupancy</th>
-                    <th scope="col">Notes</th>
+                    <th scope="col">{{ __('messages.name') }}</th>
+                    <th scope="col">{{ __('messages.description') }}</th>
+                    <th scope="col">{{ __('messages.type') }}</th>
+                    <th scope="col">{{ __('messages.occupancy') }}</th>
+                    <th scope="col">{{ __('messages.notes') }}</th>
                 </tr>
             </thead>
             <tbody>

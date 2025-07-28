@@ -28,7 +28,7 @@ final class RoomControllerTest extends TestCase
         $response->assertViewIs('rooms.create');
         $response->assertViewHas('locations');
         $response->assertViewHas('floors');
-        $response->assertSeeText('Add A Room');
+        $response->assertSeeText(__('messages.create_room_title'));
     }
 
     #[Test]
@@ -61,7 +61,7 @@ final class RoomControllerTest extends TestCase
         $response->assertViewHas('floors');
         $room_data = $response->viewData('room');
         $this->assertEquals($room_data->description, $room->description);
-        $response->assertSeeText('Edit Room');
+        $response->assertSeeText(__('messages.edit_room_title'));
 
         $this->assertTrue($this->findFieldValueInResponseContent('location_id', $room->location_id, 'select', $response->getContent()));
         $this->assertTrue($this->findFieldValueInResponseContent('floor', $room->floor, 'select', $response->getContent()));
@@ -96,7 +96,7 @@ final class RoomControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('rooms.index');
         $response->assertViewHas('roomsort');
-        $response->assertSeeText('Room Index');
+        $response->assertSeeText(__('messages.room_index_title'));
     }
 
     #[Test]
@@ -118,7 +118,7 @@ final class RoomControllerTest extends TestCase
         $response->assertViewIs('rooms.index');
         $response->assertViewHas('roomsort');
         $response->assertViewHas('locations');
-        $response->assertSeeText('Room Index');
+        $response->assertSeeText(__('messages.room_index_title'));
         $this->assertGreaterThan($number_rooms, $results->count());
     }
 
@@ -138,7 +138,8 @@ final class RoomControllerTest extends TestCase
         $response->assertViewHas('next_link');
         $response->assertViewHas('retreats');
         $response->assertViewHas('retreatants');
-        $response->assertSeeText('Room Schedules');
+        $dts = $response->viewData('dts');
+        $response->assertSeeText(__('messages.room_schedules_for', ['start' => $dts[0]->format('F d, Y'), 'end' => $dts[31]->format('F d, Y')]));
     }
 
     #[Test]
@@ -156,7 +157,8 @@ final class RoomControllerTest extends TestCase
         $response->assertViewHas('m');
         $response->assertViewHas('previous_link');
         $response->assertViewHas('next_link');
-        $response->assertSeeText('Room Schedules');
+        $dts = $response->viewData('dts');
+        $response->assertSeeText(__('messages.room_schedules_for', ['start' => $dts[0]->format('F d, Y'), 'end' => $dts[31]->format('F d, Y')]));
     }
 
     #[Test]
@@ -176,7 +178,8 @@ final class RoomControllerTest extends TestCase
         $response->assertViewHas('m');
         $response->assertViewHas('previous_link');
         $response->assertViewHas('next_link');
-        $response->assertSeeText('Room Schedules');
+        $dts = $response->viewData('dts');
+        $response->assertSeeText(__('messages.room_schedules_for', ['start' => $dts[0]->format('F d, Y'), 'end' => $dts[31]->format('F d, Y')]));
     }
 
     #[Test]

@@ -8,32 +8,32 @@
                     <span>
                         <h2>
                             @can('update-room')
-                                <a href="{{url('room/'.$room->id.'/edit')}}">{{ $room->building }} - Room #{!! $room->name !!}</a>
+                                <a href="{{url('room/'.$room->id.'/edit')}}">{{ $room->building }} - {{ __('messages.room_table_room_header') }} #{!! $room->name !!}</a>
                             @else
-                                {{ $room->building }} - Room #{{$room->name}}
+                                {{ $room->building }} - {{ __('messages.room_table_room_header') }} #{{$room->name}}
                             @endCan
                         </h2>
                     </span>
-                    <span class="back"><a href={{ action([\App\Http\Controllers\RoomController::class, 'index']) }}>{{ html()->img(asset('images/room.png'), 'Room Index')->attribute('title', "Room Index")->class('btn btn-primary') }}</a></span></h1>
+                    <span class="back"><a href={{ action([\App\Http\Controllers\RoomController::class, 'index']) }}>{{ html()->img(asset('images/room.png'), __('messages.room_index_title'))->attribute('title', __('messages.room_index_title'))->class('btn btn-primary') }}</a></span></h1>
                 </div>
                 <div class='row'>
-                    <div class='col-md-2'><strong>Building: </strong>{{ $room->building}}</div>
+                    <div class='col-md-2'><strong>{{ __('messages.building_label') }} </strong>{{ $room->building}}</div>
                 </div><div class="clearfix"> </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Name: </strong>{{ $room->name}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.name_label') }} </strong>{{ $room->name}}</div>
                 </div><div class="clearfix"> </div>
                 <div class='row'>
-                    <div class='col-md-6'><strong>Description: </strong>{{ $room->description}}</div>
+                    <div class='col-md-6'><strong>{{ __('messages.description_label') }} </strong>{{ $room->description}}</div>
                 </div><div class="clearfix"> </div>
                 <div class='row'>
-                    <div class='col-md-6'><strong>Notes: </strong>{{ $room->notes}}</div>
+                    <div class='col-md-6'><strong>{{ __('messages.notes_label') }} </strong>{{ $room->notes}}</div>
                 </div><div class="clearfix"> </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Floor: </strong>{{ $room->floor}}</div>
-                    <div class='col-md-3'><strong>Access: </strong>{{ $room->access}}</div>
-                    <div class='col-md-3'><strong>Type: </strong>{{ $room->type}}</div>
-                    <div class='col-md-3'><strong>Occupancy: </strong>{{ $room->occupancy}}</div>
-                    <div class='col-md-3'><strong>Status: </strong>{{ $room->status}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.floor_label') }} </strong>{{ $room->floor}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.access_label') }} </strong>{{ $room->access}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.type_label') }} </strong>{{ $room->type}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.occupancy_label') }} </strong>{{ $room->occupancy}}</div>
+                    <div class='col-md-3'><strong>{{ __('messages.status_label') }} </strong>{{ $room->status}}</div>
                 </div><div class="clearfix"> </div>
                 <div class='row'>
                     @can('update-room')
