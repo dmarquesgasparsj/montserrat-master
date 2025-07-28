@@ -46,7 +46,7 @@
                         <td>{{ $registration->notes }}</td>
                         <td>
                             @if (isset($registration->room->name))
-                                <a href="room/{{$registration->room_id}}">{{ $registration->room->name }}</a>
+                                <a href="{{ route('room.show', [$registration->room_id]) }}">{{ $registration->room->name }}</a>
                             @else
                                 N/A
                             @endif

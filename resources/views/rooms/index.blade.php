@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach($roomsort as $room)
                         <tr>
-                            <td><a href="room/{{$room->id}}">{{ $room->name }}</a></td>
+                            <td><a href="{{ route('room.show', [$room->id]) }}">{{ $room->name }}</a></td>
                             <td>{{ $room->location->name}}</td>
                             <td>{{ $room->status }}</td>
                         </tr>
