@@ -2,6 +2,13 @@
 
 return [
 
+    'meal_times' => [
+        'Breakfast' => '08:00',
+        'Lunch' => '13:00',
+        'Snack' => '16:00',
+        'Dinner' => '20:00',
+    ],
+
     /*
      * Site administrator name and email for receiving notifications
      */

@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'meal_summary' => 'Meal summary',
+    'meal_date' => 'Date',
+    'meal_breakfast' => 'Breakfast',
+    'meal_lunch' => 'Lunch',
+    'meal_snack' => 'Snack',
+    'meal_dinner' => 'Dinner',
+    'meal_dietary_notes' => 'Dietary notes',
+    'room_unavailable' => 'The room is unavailable for the selected dates.',
     'welcome' => 'Welcome!',
     'toggle_navigation' => 'Toggle Navigation',
     'english' => 'English',

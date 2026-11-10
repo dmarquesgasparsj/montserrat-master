@@ -54,7 +54,7 @@ class SouteloPilotSeeder extends Seeder
                 'description' => 'Edifício fictício',
                 'notes' => '',
                 'occupancy' => 3,
-                'type' => 'B',
+                'type' => 'Building',
             ])->save();
 
             $rooms = [];

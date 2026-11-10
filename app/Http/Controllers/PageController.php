@@ -412,27 +412,31 @@ class PageController extends Controller
             ->with('retreatant.note_dietary')
             ->get();
 
-        $start = Carbon::parse($retreat->start_date)->startOfDay();
-        $end = Carbon::parse($retreat->end_date)->startOfDay();
+        $start = $retreat->start_date->copy();
+        $end = $retreat->end_date->copy();
+        $mealTimes = config('polanco.meal_times');
         $days = [];
-        for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
-            $days[$date->toDateString()] = [
-                'Breakfast' => 0,
-                'Lunch' => 0,
-                'Snack' => 0,
-                'Dinner' => 0,
-            ];
+        for ($date = $start->copy()->startOfDay(); $date->lte($end); $date->addDay()) {
+            $days[$date->toDateString()] = array_fill_keys(array_keys($mealTimes), 0);
+        }
+
+        // Older date-only records represent a whole final day.
+        if ($end->isStartOfDay()) {
+            $end->endOfDay();
         }
 
         $dietary = [];
         foreach ($registrations as $registration) {
-            $arrival = $registration->arrived_at ? Carbon::parse($registration->arrived_at)->startOfDay() : $start;
-            $depart = $registration->departed_at ? Carbon::parse($registration->departed_at)->endOfDay() : $end->copy()->endOfDay();
+            $arrival = $registration->arrived_at?->copy() ?? $start;
+            $departure = $registration->departed_at?->copy() ?? $end;
+            if ($registration->departed_at && $departure->isStartOfDay()) {
+                $departure->endOfDay();
+            }
 
             foreach ($days as $date => $meals) {
-                $d = Carbon::parse($date);
-                if ($d->between($arrival, $depart)) {
-                    foreach (array_keys($meals) as $meal) {
+                foreach ($mealTimes as $meal => $time) {
+                    $service = Carbon::parse($date.' '.$time);
+                    if ($service->betweenIncluded($arrival, $departure)) {
                         $days[$date][$meal]++;
                     }
                 }

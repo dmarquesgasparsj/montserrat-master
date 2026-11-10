@@ -2,7 +2,8 @@ FROM node:22-bookworm-slim AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
-COPY webpack.mix.js ./
+COPY artisan webpack.mix.js ./
+COPY public public
 COPY resources/assets resources/assets
 RUN npm run production
 

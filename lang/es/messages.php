@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'meal_summary' => 'Resumen de comidas',
+    'meal_date' => 'Fecha',
+    'meal_breakfast' => 'Desayuno',
+    'meal_lunch' => 'Almuerzo',
+    'meal_snack' => 'Merienda',
+    'meal_dinner' => 'Cena',
+    'meal_dietary_notes' => 'Notas alimentarias',
+    'room_unavailable' => 'La habitación no está disponible en las fechas seleccionadas.',
     'welcome' => '¡Bienvenido!',
     'toggle_navigation' => 'Alternar Navegación',
     'english' => 'Inglés', // Assuming English should also be translatable
