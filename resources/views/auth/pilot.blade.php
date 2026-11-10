@@ -20,6 +20,13 @@
                 <label for="password">Palavra-passe</label>
                 <input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required>
             </div>
+            <div class="form-group">
+                <label for="code">Código de autenticação (administração)</label>
+                <input class="form-control" id="code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
+            </div>
+            @error('code')
+                <p role="alert">{{ $message }}</p>
+            @enderror
             @error('email')
                 <p role="alert">{{ $message }}</p>
             @enderror

@@ -400,53 +400,17 @@ class PageController extends Controller
         return view('reports.retreatregistrations', compact('registrations'));   //
     }
 
-    public function retreatmealcounts($idnumber): View
+    public function retreatmealcounts($idnumber, \App\Services\RetreatMealCounts $counts): View
     {
         $this->authorize('show-registration');
 
         $retreat = \App\Models\Retreat::whereIdnumber($idnumber)->firstOrFail();
-        $registrations = \App\Models\Registration::whereCanceledAt(null)
-            ->whereEventId($retreat->id)
-            ->whereIn('role_id', [config('polanco.participant_role_id.retreatant'), config('polanco.participant_role_id.ambassador')])
-            ->whereStatusId(config('polanco.registration_status_id.registered'))
-            ->with('retreatant.note_dietary')
-            ->get();
-
-        $start = $retreat->start_date->copy();
-        $end = $retreat->end_date->copy();
-        $mealTimes = config('polanco.meal_times');
-        $days = [];
-        for ($date = $start->copy()->startOfDay(); $date->lte($end); $date->addDay()) {
-            $days[$date->toDateString()] = array_fill_keys(array_keys($mealTimes), 0);
-        }
-
-        // Older date-only records represent a whole final day.
-        if ($end->isStartOfDay()) {
-            $end->endOfDay();
-        }
+        $days = $counts->forRetreat($retreat);
 
         $dietary = [];
-        foreach ($registrations as $registration) {
-            $arrival = $registration->arrived_at?->copy() ?? $start;
-            $departure = $registration->departed_at?->copy() ?? $end;
-            if ($arrival->isStartOfDay() && $arrival->isSameDay($start)) {
-                $arrival = $start;
-            }
-            if ($registration->departed_at && $departure->isStartOfDay()) {
-                $departure = $departure->isSameDay($end) ? $end : $departure->endOfDay();
-            }
-
-            foreach ($days as $date => $meals) {
-                foreach ($mealTimes as $meal => $time) {
-                    $service = Carbon::parse($date.' '.$time);
-                    if ($service->betweenIncluded($arrival, $departure)) {
-                        $days[$date][$meal]++;
-                    }
-                }
-            }
-
-            $note = trim(optional($registration->retreatant->note_dietary)->note);
-            if (! empty($note)) {
+        foreach ($counts->registrations($retreat)->with('retreatant.note_dietary')->get() as $registration) {
+            $note = trim((string) $registration->retreatant?->note_dietary?->note);
+            if ($note !== '') {
                 $dietary[$note] = ($dietary[$note] ?? 0) + 1;
             }
         }

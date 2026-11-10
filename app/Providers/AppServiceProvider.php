@@ -39,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Pagination\Paginator::useBootstrap();
         Cashier::useCustomerModel(Contact::class);
 
+        if (config('pilot.enabled') && str_starts_with((string) config('app.url'), 'https://')) {
+            config(['session.secure' => true]);
+        }
+
         $this->bootAuth();
         $this->bootRoute();
     }
@@ -70,6 +74,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootRoute(): void
     {
+        RateLimiter::for('pilot-login', function (Request $request) {
+            $email = $request->input('email');
+
+            return [
+                Limit::perMinute(20)->by('ip:'.$request->ip()),
+                Limit::perMinute(5)->by('account:'.(is_string($email) ? strtolower(trim($email)) : 'invalid')),
+            ];
+        });
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

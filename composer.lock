@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3c1518ac50a4693432ac134af704a3c",
+    "content-hash": "1315efced29d0386cf6dbd8393780c73",
     "packages": [
         {
             "name": "barryvdh/laravel-snappy",
@@ -5174,6 +5174,39 @@
                 }
             ],
             "time": "2026-08-26T12:15:13+00:00"
+        },
+        {
+            "name": "pragmarx/google2fa",
+            "version": "v9.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/antonioribeiro/google2fa.git",
+                "reference": "f00bc788c555adfb6765c437ff3538e59cd88af1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/f00bc788c555adfb6765c437ff3538e59cd88af1",
+                "reference": "f00bc788c555adfb6765c437ff3538e59cd88af1",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/constant_time_encoding": "^1.0|^2.0|^3.0",
+                "php": "^7.1|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PragmaRX\\Google2FA\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A One Time Password Authentication package, compatible with Google Authenticator.",
+            "support": {
+                "issues": "https://github.com/antonioribeiro/google2fa/issues",
+                "source": "https://github.com/antonioribeiro/google2fa/tree/v9.1.0"
+            }
         },
         {
             "name": "psr/cache",

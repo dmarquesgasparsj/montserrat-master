@@ -9,9 +9,9 @@ use App\Models\Registration;
 use App\Models\Retreat;
 use App\Models\Room;
 use App\Models\User;
+use App\Services\PilotAccounts;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use RuntimeException;
 
 class SouteloPilotSeeder extends Seeder
@@ -22,30 +22,21 @@ class SouteloPilotSeeder extends Seeder
             throw new RuntimeException('Use the separate soutelo_pilot database with SOUTELO_PILOT enabled.');
         }
 
-        $email = config('pilot.admin_email');
+        $email = strtolower(trim((string) config('pilot.admin_email')));
         $password = config('pilot.admin_password');
+        $secret = config('pilot.admin_totp_secret');
         if (! filter_var($email, FILTER_VALIDATE_EMAIL) || ! is_string($password) || strlen($password) < 14) {
             throw new RuntimeException('Set a valid pilot email and a password of at least 14 characters.');
         }
 
-        DB::transaction(function () use ($email, $password) {
+        DB::transaction(function () use ($email, $password, $secret) {
             if (Contact::query()->exists() || User::query()->exists() || Permission::query()->exists()) {
                 throw new RuntimeException('The pilot seeder requires an empty database.');
             }
 
             $this->call(DatabaseSeeder::class);
 
-            $user = User::create([
-                'name' => 'Administração de teste',
-                'username' => $email,
-                'email' => $email,
-                'password' => Hash::make($password),
-                'provider' => 'soutelo-pilot',
-                'provider_id' => $email,
-                'avatar' => '',
-            ]);
-            $role = Permission::whereName('superuser')->firstOrFail()->roles()->firstOrFail();
-            $user->roles()->syncWithoutDetaching([$role->id]);
+            app(PilotAccounts::class)->set($email, $password, 'admin', $secret);
 
             $location = new Location;
             $location->forceFill([

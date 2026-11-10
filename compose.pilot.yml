@@ -39,6 +39,9 @@ services:
       SELF_NAME: Casa da Torre
       SELF_CONTACT_ID: "1"
       SOUTELO_PILOT: "true"
+      SOUTELO_PILOT_TRUSTED_PROXY: ${PILOT_TRUSTED_PROXY:-}
+    volumes:
+      - pilot-files:/var/www/html/storage/app
     ports:
       - "127.0.0.1:${PILOT_PORT:-8088}:80"
     depends_on:
@@ -47,3 +50,4 @@ services:
 
 volumes:
   pilot-mysql:
+  pilot-files:

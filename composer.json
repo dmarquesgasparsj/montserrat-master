@@ -30,6 +30,7 @@
         "nyholm/psr7": "^1.5",
         "owen-it/laravel-auditing": "^14.0",
         "php-http/curl-client": "^2.3",
+        "pragmarx/google2fa": "^9.1",
         "spatie/laravel-google-calendar": "^3.8",
         "spatie/laravel-stripe-webhooks": "^3.10",
         "stuyam/laravel-phone-validator": "dev-master",

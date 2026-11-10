@@ -34,6 +34,26 @@
 		@include('flash::message')
 	</div>
 	<div class="container pt-0">
+        @if (config('pilot.enabled'))
+            <nav class="navbar navbar-expand navbar-light">
+                <a class="navbar-brand" href="{{ route('pilot.home') }}">{{ config('app.name') }}</a>
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="{{ route('rooms') }}">Quartos</a>
+                    <a class="nav-link" href="{{ route('calendar') }}">Calendário</a>
+                    <a class="nav-link" href="{{ route('retreat.index') }}">Retiros</a>
+                    <a class="nav-link" href="{{ route('pilot.search-contacts') }}">Contactos</a>
+                    @can('superuser')
+                        <a class="nav-link" href="{{ route('pilot.kitchen') }}">Cozinha</a>
+                        <a class="nav-link" href="{{ route('pilot.housekeeping') }}">Limpeza</a>
+                        <a class="nav-link" href="{{ route('pilot.reservation-export') }}">Exportar reservas</a>
+                    @endcan
+                </div>
+                <form method="post" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="btn btn-outline-secondary" type="submit">Sair</button>
+                </form>
+            </nav>
+        @else
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<a class="navbar-brand" href={{ ( Auth::check() ) ? route('welcome') : route('home') }}>
                                 <img src="{{URL('/images/mrhlogoblack.png')}}" alt="{{ __('messages.home') }}" class="logo">
@@ -199,6 +219,7 @@
 				@endauth
 			</div>
 		</nav>
+        @endif
 	</div>
 
 	@if (isset($errors) && count($errors) > 0)

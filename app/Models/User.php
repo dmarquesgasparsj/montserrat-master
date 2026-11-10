@@ -37,6 +37,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pilot_totp_secret',
+        'pilot_totp_step',
     ];
 
     /**
@@ -48,6 +50,9 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'pilot_totp_secret' => 'encrypted',
+            'pilot_totp_step' => 'integer',
+            'pilot_access_version' => 'integer',
         ];
     }
 

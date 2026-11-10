@@ -1,9 +1,14 @@
 """Exercise the isolated Soutelo pilot through its HTTP routes."""
+import base64
 import datetime
+import hashlib
+import hmac
 import html.parser
 import http.cookiejar
 import json
 import os
+import struct
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -71,23 +76,86 @@ def post_json(path, data, headers):
         return error.code, json.load(error)
 
 
-def main():
+def browser_session():
     cookies = http.cookiejar.CookieJar()
     browser = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
+    return browser, cookies
+
+
+def login_account(browser, email, password, code=""):
+    with browser.open(BASE_URL + "/login", timeout=10) as response:
+        page = PilotPage(response.read().decode())
+    assert page.token, "Missing login CSRF token"
+
+    credentials = urllib.parse.urlencode({
+        "_token": page.token,
+        "email": email,
+        "password": password,
+        "code": code,
+    }).encode()
+    return browser.open(BASE_URL + "/login", credentials, timeout=15)
+
+
+def totp(secret):
+    step = int(time.time()) // 30
+    key = base64.b32decode(secret)
+    digest = hmac.new(key, struct.pack(">Q", step), hashlib.sha1).digest()
+    offset = digest[-1] & 15
+    value = struct.unpack_from(">I", digest, offset)[0] & 0x7fffffff
+    return f"{value % 1000000:06d}"
+
+
+def expect_status(browser, path, expected, headers=None):
+    request = urllib.request.Request(BASE_URL + path, headers=headers or {"Accept": "application/json"})
+    try:
+        with browser.open(request, timeout=10) as response:
+            status = response.status
+    except urllib.error.HTTPError as error:
+        status = error.code
+    assert status == expected, (path, status, expected)
+
+
+def main():
+    browser, cookies = browser_session()
+    for path in ("/rooms", "/api/events", "/person/1", "/registration/confirm/fake", "/pilot/exportar-reservas"):
+        expect_status(browser, path, 401)
+    expect_status(browser, "/login", 403, {"Host": "private.example.test", "X-Forwarded-Proto": "https"})
 
     with browser.open(BASE_URL + "/rooms", timeout=10) as response:
         assert urllib.parse.urlsplit(response.url).path == "/login", "Guest can access rooms"
-        login = PilotPage(response.read().decode())
-    assert login.token, "Missing login CSRF token"
 
-    credentials = urllib.parse.urlencode({
-        "_token": login.token,
-        "email": os.environ["SOUTELO_PILOT_EMAIL"],
-        "password": os.environ["SOUTELO_PILOT_PASSWORD"],
-    }).encode()
-    with browser.open(BASE_URL + "/login", credentials, timeout=15) as response:
+    admin_email = os.environ["SOUTELO_PILOT_EMAIL"]
+    admin_password = os.environ["SOUTELO_PILOT_PASSWORD"]
+    with login_account(browser, admin_email, admin_password) as response:
+        assert urllib.parse.urlsplit(response.url).path == "/login", "Admin logged in without MFA"
+    code = totp(os.environ["SOUTELO_PILOT_TOTP_SECRET"])
+    with login_account(browser, admin_email, admin_password, code) as response:
         assert urllib.parse.urlsplit(response.url).path == "/rooms", "Login did not reach rooms"
+        assert "no-store" in response.headers["Cache-Control"]
         grid = PilotPage(response.read().decode())
+    second_browser, _ = browser_session()
+    with login_account(second_browser, admin_email, admin_password, code) as response:
+        assert urllib.parse.urlsplit(response.url).path == "/login", "Admin code was accepted twice"
+    expect_status(browser, "/registration/confirm/fake", 403)
+    expect_status(browser, "/admin/phpinfo", 403)
+
+    for role, home in (
+        ("reception", "/rooms"), ("kitchen", "/pilot/cozinha"), ("housekeeping", "/pilot/limpeza")
+    ):
+        staff, _ = browser_session()
+        with login_account(staff, role + "@example.test", os.environ["SOUTELO_PILOT_ACCOUNT_PASSWORD"]) as response:
+            assert urllib.parse.urlsplit(response.url).path == home, (role, response.url)
+            content = response.read().decode()
+            if role != "reception":
+                assert "Participante de teste" not in content
+                for path in ("/person/1", "/rooms", "/api/events", "/contact/1/attachment/test.pdf", "/report/meal_summary/PILOT-1"):
+                    expect_status(staff, path, 403)
+        expect_status(staff, "/pilot/exportar-reservas", 403)
+
+    with browser.open(BASE_URL + "/pilot/exportar-reservas", timeout=10) as response:
+        assert "attachment" in response.headers["Content-Disposition"]
+        assert "Quarto,Retiro,Chegada" in response.read().decode()
+    print("Guest restrictions, role permissions, MFA replay protection and export passed.")
 
     with browser.open(BASE_URL + "/report/meal_summary/PILOT-1", timeout=10) as response:
         report = PilotPage(response.read().decode())
