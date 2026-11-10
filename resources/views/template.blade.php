@@ -179,7 +179,14 @@
 						<img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="rounded-circle avatar">
 					</div>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href={{ route('logout') }}>{{ __('messages.logout') }}</a>
+                                                @if (config('pilot.enabled'))
+                                                    <form method="post" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <button class="dropdown-item" type="submit">{{ __('messages.logout') }}</button>
+                                                    </form>
+                                                @else
+                                                    <a class="dropdown-item" href="{{ route('logout') }}">{{ __('messages.logout') }}</a>
+                                                @endif
 					</div>
 				</div>
 

@@ -8,6 +8,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
 
@@ -47,13 +48,13 @@ class AppServiceProvider extends ServiceProvider
         # parent::registerPolicies();
 
         //prior to installing the app ignore checking for superuser or permissions to avoid artisan errors about missing permissions table
-        if (config('app.key') !== null) {
+        if (config('app.key') && Schema::hasTable('permissions')) {
             Gate::before(function ($user) {
-                $superuser = \App\Models\Permission::where('name', 'superuser')->firstOrFail();
+                $superuser = \App\Models\Permission::where('name', 'superuser')->first();
 
                 // only return true if this user has a role with the superuser permission
                 // otherwise
-                if ($user->hasRole($superuser->roles)) {
+                if ($superuser && $user->hasRole($superuser->roles)) {
                     return true;
                 }
             });

@@ -95,9 +95,15 @@ Route::middleware('web', 'activity')->group(function () {
     // Authentication routes...
     // Route::get('login/{provider?}', [Auth\AuthController::class, 'login']);
     // Route::get('auth/google/callback', [Auth\AuthController::class, 'handleProviderCallback']);
-    Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
-    Route::get('login/google', [Auth\LoginController::class, 'redirectToProvider'])->name('login');
-    Route::get('login/google/callback', [Auth\LoginController::class, 'handleProviderCallback'])->name('login.google_callback');
+    if (config('pilot.enabled')) {
+        Route::get('login', [Auth\PilotLoginController::class, 'show'])->middleware('guest')->name('login');
+        Route::post('login', [Auth\PilotLoginController::class, 'store'])->middleware(['guest', 'throttle:10,1'])->name('pilot.login');
+        Route::post('logout', [Auth\PilotLoginController::class, 'destroy'])->middleware('auth')->name('logout');
+    } else {
+        Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
+        Route::get('login/google', [Auth\LoginController::class, 'redirectToProvider'])->name('login');
+        Route::get('login/google/callback', [Auth\LoginController::class, 'handleProviderCallback'])->name('login.google_callback');
+    }
 
     Route::get('search/autocomplete', [SearchController::class, 'autocomplete']);
     Route::get('search/getuser', [SearchController::class, 'getuser']);

@@ -15,7 +15,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Retreat extends Model implements Auditable
 {
     use HasFactory;
-    use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
