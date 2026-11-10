@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Services\PilotAccounts;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class RequirePilotAccess
@@ -26,9 +27,7 @@ class RequirePilotAccess
 
         $user = $request->user();
         if (! $user) {
-            abort_if($request->expectsJson(), 401);
-
-            return $this->privateResponse(redirect()->route('login'));
+            return $this->loginRequired($request);
         }
 
         if ($request->routeIs('logout')) {
@@ -36,8 +35,14 @@ class RequirePilotAccess
         }
 
         $role = PilotAccounts::role($user);
-        abort_unless($role && $request->session()->get('pilot.access_version') === $user->pilot_access_version, 403);
-        abort_if($role === 'admin' && $request->session()->get('pilot.mfa_user_id') !== $user->getKey(), 403);
+        if (! $role || $request->session()->get('pilot.access_version') !== $user->pilot_access_version
+            || ($role === 'admin' && $request->session()->get('pilot.mfa_user_id') !== $user->getKey())) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return $this->loginRequired($request);
+        }
 
         $allowed = match ($role) {
             'admin' => array_merge(config('pilot.reception_routes'), config('pilot.admin_routes'), [
@@ -53,9 +58,19 @@ class RequirePilotAccess
         return $this->privateResponse($next($request));
     }
 
+    private function loginRequired(Request $request): Response
+    {
+        abort_if($request->expectsJson(), 401);
+
+        return $this->privateResponse(redirect()->route('login'));
+    }
+
     private function privateResponse(Response $response): Response
     {
         $response->headers->set('Cache-Control', 'private, no-store');
+        $response->headers->set('Referrer-Policy', 'no-referrer');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        $response->headers->set('X-Frame-Options', 'DENY');
 
         return $response;
     }

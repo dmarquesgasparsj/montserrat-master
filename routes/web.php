@@ -109,6 +109,8 @@ Route::middleware('web', 'activity')->group(function () {
         Route::get('pilot/limpeza', [PilotWorkspaceController::class, 'housekeeping'])->name('pilot.housekeeping');
         Route::post('pilot/limpeza/{room}/concluir', [PilotWorkspaceController::class, 'markCleaned'])->name('pilot.room-cleaned');
         Route::get('pilot/exportar-reservas', [PilotWorkspaceController::class, 'exportReservations'])->name('pilot.reservation-export');
+        Route::get('pilot/contas', [PilotWorkspaceController::class, 'accounts'])->name('pilot.accounts');
+        Route::post('pilot/contas/{user}/perfil', [PilotWorkspaceController::class, 'assignStaffRole'])->name('pilot.staff-role');
     } else {
         Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
         Route::get('login/google', [Auth\LoginController::class, 'redirectToProvider'])->name('login');

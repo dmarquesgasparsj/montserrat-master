@@ -24,6 +24,7 @@ class PilotPage(html.parser.HTMLParser):
         self.token = None
         self.rooms = []
         self.options = {}
+        self.account_forms = {}
         self.meals = {}
         self.select = None
         self.day = None
@@ -38,6 +39,8 @@ class PilotPage(html.parser.HTMLParser):
             self.token = attrs["content"]
         if tag == "td" and attrs.get("data-room-id") not in [None, *self.rooms]:
             self.rooms.append(attrs["data-room-id"])
+        if tag == "form" and "data-account-email" in attrs:
+            self.account_forms[attrs["data-account-email"]] = urllib.parse.urlsplit(attrs["action"]).path
         if tag == "select":
             self.select = attrs.get("id")
         if tag == "option" and self.select and attrs.get("value", "").isdigit():
@@ -139,6 +142,7 @@ def main():
     expect_status(browser, "/registration/confirm/fake", 403)
     expect_status(browser, "/admin/phpinfo", 403)
 
+    staff_sessions = {}
     for role, home in (
         ("reception", "/rooms"), ("kitchen", "/pilot/cozinha"), ("housekeeping", "/pilot/limpeza")
     ):
@@ -151,11 +155,23 @@ def main():
                 for path in ("/person/1", "/rooms", "/api/events", "/contact/1/attachment/test.pdf", "/report/meal_summary/PILOT-1"):
                     expect_status(staff, path, 403)
         expect_status(staff, "/pilot/exportar-reservas", 403)
+        expect_status(staff, "/pilot/contas", 403)
+        if role == "reception":
+            for path in ("/calendar", "/retreat", "/search"):
+                expect_status(staff, path, 200)
+        staff_sessions[role] = staff
 
     with browser.open(BASE_URL + "/pilot/exportar-reservas", timeout=10) as response:
         assert "attachment" in response.headers["Content-Disposition"]
         assert "Quarto,Retiro,Chegada" in response.read().decode()
-    print("Guest restrictions, role permissions, MFA replay protection and export passed.")
+    with browser.open(BASE_URL + "/pilot/contas", timeout=10) as response:
+        accounts = PilotPage(response.read().decode())
+    change = urllib.parse.urlencode({"_token": accounts.token, "role": "housekeeping"}).encode()
+    with browser.open(BASE_URL + accounts.account_forms["kitchen@example.test"], change, timeout=10) as response:
+        audit = response.read().decode()
+        assert "Perfil alterado" in audit and admin_email in audit
+    expect_status(staff_sessions["kitchen"], "/pilot/cozinha", 401)
+    print("Guest restrictions, role permissions, MFA replay protection, export and session revocation passed.")
 
     with browser.open(BASE_URL + "/report/meal_summary/PILOT-1", timeout=10) as response:
         report = PilotPage(response.read().decode())
@@ -163,6 +179,7 @@ def main():
     with browser.open(BASE_URL + "/api/events", timeout=10) as response:
         events = json.load(response)
     assert any(event["title"] == "Grupo de teste 1" for event in events), events
+    assert all(set(event) == {"id", "title", "start", "end"} for event in events)
 
     friday, saturday, sunday = sorted(report.meals)
     assert report.meals[friday] == {"Breakfast": 0, "Lunch": 0, "Snack": 0, "Dinner": 1}

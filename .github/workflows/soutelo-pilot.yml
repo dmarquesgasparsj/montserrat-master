@@ -49,10 +49,12 @@ jobs:
           test_dir="$(mktemp -d)"
           age-keygen -o "$test_dir/identity"
           export PILOT_BACKUP_RECIPIENT="$(age-keygen -y "$test_dir/identity")"
+          printf 'pilot file restore test\n' | "${compose[@]}" exec -T --user www-data app sh -c 'cat > storage/app/private/pilot-restore.txt'
           backup="$(bash bin/pilot-backup "$test_dir")"
           "${compose[@]}" exec -T mysql sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot -e "CREATE DATABASE soutelo_restore"'
           age --decrypt -i "$test_dir/identity" "$backup/database.sql.age" \
             | "${compose[@]}" exec -T mysql sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot soutelo_restore'
           "${compose[@]}" exec -T mysql sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot -N -e "SELECT COUNT(*) FROM soutelo_restore.participant"' | grep -qx '4'
-          age --decrypt -i "$test_dir/identity" "$backup/files.tar.gz.age" | tar -tzf - | grep -q './private/'
+          age --decrypt -i "$test_dir/identity" "$backup/files.tar.gz.age" \
+            | tar -xOzf - ./private/pilot-restore.txt | grep -qx 'pilot file restore test'
           echo "Encrypted MySQL backup restored and private files archive verified."

@@ -58,7 +58,9 @@ docker compose --env-file .env.pilot -f compose.pilot.yml exec --user www-data a
     php artisan pilot:user cozinha@example.test --revoke
 ```
 
-Voltar a configurar uma conta substitui o perfil e a palavra-passe e
+A administração pode mudar o perfil de uma conta da equipa em **Contas**.
+O registo identifica quem fez a alteração e a conta afetada.
+Voltar a configurar uma conta no terminal substitui o perfil e a palavra-passe e
 invalida as sessões anteriores. A configuração de contas fica registada
 como operação do servidor. Reservar estes comandos ao operador autorizado
 e registar a identidade do operador no acesso ao servidor. As exportações

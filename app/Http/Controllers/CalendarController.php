@@ -20,7 +20,7 @@ class CalendarController extends Controller
         $this->authorize('show-retreat');
         $query = Retreat::select('id', 'title', 'start_date as start', 'end_date as end');
 
-        if (class_exists(Reservation::class)) {
+        if (! config('pilot.enabled') && class_exists(Reservation::class)) {
             $query->with('reservations');
         }
 

@@ -6,6 +6,7 @@ use App\Models\Meal;
 use App\Models\Retreat;
 use App\Models\Room;
 use App\Models\Roomstate;
+use App\Models\User;
 use App\Services\PilotAccounts;
 use App\Services\RetreatMealCounts;
 use App\Services\RoomAssignments;
@@ -72,6 +73,28 @@ class PilotWorkspaceController extends Controller
         });
 
         return redirect()->route('pilot.housekeeping');
+    }
+
+    public function accounts(): View
+    {
+        $this->authorize('superuser');
+        $users = User::where('provider', 'soutelo-pilot')->with('roles')->orderBy('email')->get();
+        $events = DB::table('pilot_security_events')
+            ->leftJoin('users as actors', 'actors.id', '=', 'pilot_security_events.actor_user_id')
+            ->leftJoin('users as targets', 'targets.id', '=', 'pilot_security_events.target_user_id')
+            ->orderByDesc('pilot_security_events.id')->limit(30)
+            ->get(['pilot_security_events.*', 'actors.email as actor_email', 'targets.email as target_email']);
+
+        return view('pilot.accounts', compact('users', 'events'));
+    }
+
+    public function assignStaffRole(Request $request, User $user, PilotAccounts $accounts): RedirectResponse
+    {
+        $this->authorize('superuser');
+        $role = $request->validate(['role' => 'required|in:reception,kitchen,housekeeping'])['role'];
+        $accounts->assignStaffRole($request->user(), $user, $role);
+
+        return redirect()->route('pilot.accounts');
     }
 
     public function exportReservations(Request $request, PilotAccounts $accounts, RoomAssignments $assignments): StreamedResponse

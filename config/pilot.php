@@ -28,6 +28,6 @@ return [
     'admin_routes' => [
         'room.create', 'room.store', 'room.edit', 'room.update',
         'location.index', 'location.show', 'location.create', 'location.store',
-        'location.edit', 'location.update', 'report.meal_summary', 'pilot.reservation-export',
+        'location.edit', 'location.update', 'report.meal_summary', 'pilot.reservation-export', 'pilot.accounts', 'pilot.staff-role',
     ],
 ];

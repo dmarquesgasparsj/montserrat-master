@@ -47,14 +47,7 @@ class PilotAccounts
                 ->where('provider_id', $email)->lockForUpdate()->first()
                 ?? new User(['email' => $email, 'provider' => 'soutelo-pilot', 'provider_id' => $email]);
 
-            $roleRecord = $role === 'admin'
-                ? Permission::whereName('superuser')->firstOrFail()->roles()->firstOrFail()
-                : Role::unguarded(fn () => Role::firstOrCreate(['name' => 'pilot-'.$role]));
-
-            if ($role === 'reception') {
-                $permissions = Permission::whereIn('name', config('pilot.reception_permissions'))->pluck('id');
-                $roleRecord->permissions()->sync($permissions);
-            }
+            $roleRecord = $this->roleRecord($role);
 
             $user->forceFill([
                 'name' => $user->name ?? $email,
@@ -68,6 +61,37 @@ class PilotAccounts
             $user->roles()->sync([$roleRecord->id]);
             $this->record('account_provisioned', null, $user->id, $role);
         });
+    }
+
+    public function assignStaffRole(User $actor, User $target, string $role): void
+    {
+        DB::transaction(function () use ($actor, $target, $role) {
+            $target = User::whereKey($target->id)->lockForUpdate()->firstOrFail();
+            $previousRole = self::role($target);
+            abort_unless($previousRole && $previousRole !== 'admin' && $role !== 'admin', 403);
+            if ($previousRole === $role) {
+                return;
+            }
+
+            $target->roles()->sync([$this->roleRecord($role)->id]);
+            $target->forceFill(['pilot_access_version' => $target->pilot_access_version + 1])->save();
+            $this->record('staff_role_changed', $actor->id, $target->id, $role);
+        });
+    }
+
+    private function roleRecord(string $role): Role
+    {
+        if ($role === 'admin') {
+            return Permission::whereName('superuser')->firstOrFail()->roles()->firstOrFail();
+        }
+
+        $record = Role::unguarded(fn () => Role::firstOrCreate(['name' => 'pilot-'.$role]));
+        if ($role === 'reception') {
+            $permissions = Permission::whereIn('name', config('pilot.reception_permissions'))->pluck('id');
+            $record->permissions()->sync($permissions);
+        }
+
+        return $record;
     }
 
     public function revoke(string $email): void

@@ -46,6 +46,7 @@
                         <a class="nav-link" href="{{ route('pilot.kitchen') }}">Cozinha</a>
                         <a class="nav-link" href="{{ route('pilot.housekeeping') }}">Limpeza</a>
                         <a class="nav-link" href="{{ route('pilot.reservation-export') }}">Exportar reservas</a>
+                        <a class="nav-link" href="{{ route('pilot.accounts') }}">Contas</a>
                     @endcan
                 </div>
                 <form method="post" action="{{ route('logout') }}">
