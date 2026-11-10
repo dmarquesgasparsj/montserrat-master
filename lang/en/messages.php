@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'room_add_reservation' => 'Add reservation',
+    'room_arrival' => 'Arrival',
+    'room_departure' => 'Checkout',
+    'room_guest' => 'Guest',
     'meal_summary' => 'Meal summary',
     'meal_date' => 'Date',
     'meal_breakfast' => 'Breakfast',

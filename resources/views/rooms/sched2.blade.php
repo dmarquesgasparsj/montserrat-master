@@ -48,6 +48,8 @@
                             @foreach($dts as $dt)
                                 @php
                                     $cell = $m[$room->id][$dt->toDateString()];
+                                    $available = count($cell['registrations']) < max(1, (int) $room->occupancy)
+                                        && ! in_array($room->status, ['C', 'M']);
                                     $color = match ($cell['status']) {
                                         'O' => 'info',
                                         'R' => 'warning',
@@ -56,7 +58,7 @@
                                         default => 'success',
                                     };
                                 @endphp
-                                <td class="table-{{ $color }} room-cell" data-room-id="{{ $room->id }}" data-date="{{ $dt->toDateString() }}">
+                                <td class="table-{{ $color }} room-cell{{ $available ? ' room-available' : '' }}" data-room-id="{{ $room->id }}" data-date="{{ $dt->toDateString() }}">
                                     @foreach ($cell['registrations'] as $registration)
                                         <div>
                                             <a class="reservation" data-registration-id="{{ $registration->id }}"
