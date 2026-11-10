@@ -429,8 +429,11 @@ class PageController extends Controller
         foreach ($registrations as $registration) {
             $arrival = $registration->arrived_at?->copy() ?? $start;
             $departure = $registration->departed_at?->copy() ?? $end;
+            if ($arrival->isStartOfDay() && $arrival->isSameDay($start)) {
+                $arrival = $start;
+            }
             if ($registration->departed_at && $departure->isStartOfDay()) {
-                $departure->endOfDay();
+                $departure = $departure->isSameDay($end) ? $end : $departure->endOfDay();
             }
 
             foreach ($days as $date => $meals) {

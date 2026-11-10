@@ -40,12 +40,21 @@ primeiro utilizador local e associa-lhe o papel de administração existente.
    pequeno-almoço de domingo. Os horários de serviço são configuráveis em
    `config/polanco.php`.
 
+## Cópias de segurança
+
+A verificação automática exporta a base MySQL do piloto e restaura-a numa
+segunda base de teste. Antes de usar o sistema na Casa, definir quem recebe
+os avisos de falha, onde guardar a cópia e com que frequência ensaiar o
+restauro.
+
 ## Acesso na Casa
 
 O Compose está ligado ao endereço local do computador por defeito. Para
 experimentar a partir de outros computadores, ligar um proxy HTTPS no mesmo
 servidor, restringir o acesso à rede da equipa e definir `PILOT_APP_URL` com
-o endereço HTTPS. Os dados da demonstração e as suas credenciais destinam-se
+o endereço HTTPS. Configurar o Laravel para confiar nos cabeçalhos encaminhados
+pelo endereço do proxy e ativar cookies seguros. Os dados da demonstração e
+as suas credenciais destinam-se
 ao ambiente de teste.
 
 No Render, o Dockerfile desta aplicação é `./Dockerfile` e o contexto é a

@@ -92,6 +92,10 @@ def main():
     with browser.open(BASE_URL + "/report/meal_summary/PILOT-1", timeout=10) as response:
         report = PilotPage(response.read().decode())
 
+    with browser.open(BASE_URL + "/api/events", timeout=10) as response:
+        events = json.load(response)
+    assert any(event["title"] == "Grupo de teste 1" for event in events), events
+
     friday, saturday, sunday = sorted(report.meals)
     assert report.meals[friday] == {"Breakfast": 0, "Lunch": 0, "Snack": 0, "Dinner": 1}
     assert report.meals[saturday] == {"Breakfast": 1, "Lunch": 1, "Snack": 1, "Dinner": 1}
@@ -130,6 +134,11 @@ def main():
         "registration_id": registration,
     }, headers)
     assert status == 409, result
+    status, result = post_json("/retreat/room_update", {
+        "retreat_id": event,
+        "registrations": {str(registration): room_one},
+    }, headers)
+    assert status == 422 and "room_id" in result["errors"], result
 
     monday = sunday + datetime.timedelta(days=1)
     with ThreadPoolExecutor(max_workers=2) as pool:

@@ -175,72 +175,33 @@ class RegistrationController extends Controller
     public function store(StoreRegistrationRequest $request, RoomAssignments $assignments): RedirectResponse
     {
         $this->authorize('create-registration');
-        $rooms = $request->input('rooms') ?: [0];
-        $num_registrants = $request->input('num_registrants');
-        //TODO: Should we check and verify that the contact type is an organization to allow multiselect or just allow any registration to book multiple rooms?
+        $count = $request->integer('num_registrants');
+        $rooms = $count > 0 ? array_fill(0, $count, null) : ($request->input('rooms') ?: [0]);
         $retreat = \App\Models\Retreat::findOrFail($request->input('event_id'));
         $contact = \App\Models\Contact::findOrFail($request->input('contact_id'));
-        /*
-         * Used primarily for registering groups
-         * If a number of registrants is selected, then add that many registrations
-         * num_registrants causes rooms to be ignored (either use num_registrants and assign rooms later
-         * or reserve rooms - for double occupancy rooms you have to do this twice to get the number or retreatants correct
-         *
-         */
-        $registration = $assignments->transaction(function () use ($request, $rooms, $num_registrants, $assignments) {
-            if ($num_registrants > 0) {
-                for ($i = 1; $i <= $num_registrants; $i++) {
-                    $registration = new \App\Models\Registration;
-                    $registration->event_id = $request->input('event_id');
-                    $registration->contact_id = $request->input('contact_id');
-                    $registration->source = $request->input('source');
-                    $registration->status_id = $request->input('status_id');
-                    $registration->register_date = $request->input('register_date');
-                    $registration->attendance_confirm_date = $request->input('attendance_confirm_date');
-                    if (! empty($request->input('canceled_at'))) {
-                        $registration->canceled_at = $request->input('canceled_at');
-                    }
-                    if (! empty($request->input('arrived_at'))) {
-                        $registration->arrived_at = $request->input('arrived_at');
-                    }
-                    if (! empty($request->input('departed_at'))) {
-                        $registration->departed_at = $request->input('departed_at');
-                    }
-                    $registration->room_id = null;
-                    $registration->registration_confirm_date = $request->input('registration_confirm_date');
-                    $registration->confirmed_by = $request->input('confirmed_by');
-                    $registration->deposit = $request->input('deposit');
-                    $registration->notes = $request->input('notes');
-                    $registration->save();
-                }
-            } else {
-                foreach ($rooms as $room) {
-                    //ensure that it is a valid room (not N/A)
-                    $registration = new \App\Models\Registration;
-                    $registration->event_id = $request->input('event_id');
-                    $registration->contact_id = $request->input('contact_id');
-                    $registration->source = $request->input('source');
-                    $registration->status_id = $request->input('status_id');
-                    $registration->register_date = $request->input('register_date');
-                    $registration->attendance_confirm_date = $request->input('attendance_confirm_date');
-                    if (! empty($request->input('canceled_at'))) {
-                        $registration->canceled_at = $request->input('canceled_at');
-                    }
-                    if (! empty($request->input('arrived_at'))) {
-                        $registration->arrived_at = $request->input('arrived_at');
-                    }
-                    if (! empty($request->input('departed_at'))) {
-                        $registration->departed_at = $request->input('departed_at');
-                    }
-                    $registration->room_id = $room;
-                    $registration->registration_confirm_date = $request->input('registration_confirm_date');
-                    $registration->confirmed_by = $request->input('confirmed_by');
-                    $registration->deposit = $request->input('deposit');
-                    $registration->notes = $request->input('notes');
+
+        $registration = $assignments->transaction(function () use ($request, $rooms, $count, $retreat, $contact, $assignments) {
+            foreach ($rooms as $room) {
+                $registration = new Registration;
+                $registration->event_id = $retreat->id;
+                $registration->contact_id = $contact->id;
+                $registration->source = $request->input('source');
+                $registration->status_id = $request->input('status_id');
+                $registration->register_date = $request->input('register_date');
+                $registration->attendance_confirm_date = $request->input('attendance_confirm_date');
+                $registration->canceled_at = $request->input('canceled_at');
+                $registration->arrived_at = $request->input('arrived_at');
+                $registration->departed_at = $request->input('departed_at');
+                $registration->room_id = $room;
+                $registration->registration_confirm_date = $request->input('registration_confirm_date');
+                $registration->confirmed_by = $request->input('confirmed_by');
+                $registration->deposit = $request->input('deposit');
+                $registration->notes = $request->input('notes');
+                if ($count === 0) {
                     $registration->remember_token = Str::random(60);
-                    $assignments->check($registration);
-                    $registration->save();
                 }
+                $assignments->check($registration);
+                $registration->save();
             }
 
             return $registration;
