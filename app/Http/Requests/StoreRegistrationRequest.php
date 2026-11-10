@@ -30,6 +30,8 @@ class StoreRegistrationRequest extends FormRequest
             'status_id' => 'required|integer|min:1',
             'contact_id' => 'required|integer|min:1',
             'deposit' => 'required|numeric|min:0|max:10000',
+            'rooms' => 'array',
+            'rooms.*' => 'nullable|integer|min:0',
             'num_registrants' => 'integer|min:0|max:99|nullable',
         ];
     }

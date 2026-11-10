@@ -3,8 +3,9 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Montserrat Retreat House Database</title>
+	<title>{{ config('app.name') }}</title>
 	<!-- generated from https://realfavicongenerator.net/ -->
 	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -33,6 +34,27 @@
 		@include('flash::message')
 	</div>
 	<div class="container pt-0">
+        @if (config('pilot.enabled'))
+            <nav class="navbar navbar-expand navbar-light">
+                <a class="navbar-brand" href="{{ route('pilot.home') }}">{{ config('app.name') }}</a>
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="{{ route('rooms') }}">Quartos</a>
+                    <a class="nav-link" href="{{ route('calendar') }}">Calendário</a>
+                    <a class="nav-link" href="{{ route('retreat.index') }}">Retiros</a>
+                    <a class="nav-link" href="{{ route('pilot.search-contacts') }}">Contactos</a>
+                    @can('superuser')
+                        <a class="nav-link" href="{{ route('pilot.kitchen') }}">Cozinha</a>
+                        <a class="nav-link" href="{{ route('pilot.housekeeping') }}">Limpeza</a>
+                        <a class="nav-link" href="{{ route('pilot.reservation-export') }}">Exportar reservas</a>
+                        <a class="nav-link" href="{{ route('pilot.accounts') }}">Contas</a>
+                    @endcan
+                </div>
+                <form method="post" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="btn btn-outline-secondary" type="submit">Sair</button>
+                </form>
+            </nav>
+        @else
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<a class="navbar-brand" href={{ ( Auth::check() ) ? route('welcome') : route('home') }}>
                                 <img src="{{URL('/images/mrhlogoblack.png')}}" alt="{{ __('messages.home') }}" class="logo">
@@ -179,7 +201,14 @@
 						<img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="rounded-circle avatar">
 					</div>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href={{ route('logout') }}>{{ __('messages.logout') }}</a>
+                                                @if (config('pilot.enabled'))
+                                                    <form method="post" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <button class="dropdown-item" type="submit">{{ __('messages.logout') }}</button>
+                                                    </form>
+                                                @else
+                                                    <a class="dropdown-item" href="{{ route('logout') }}">{{ __('messages.logout') }}</a>
+                                                @endif
 					</div>
 				</div>
 
@@ -191,6 +220,7 @@
 				@endauth
 			</div>
 		</nav>
+        @endif
 	</div>
 
 	@if (isset($errors) && count($errors) > 0)

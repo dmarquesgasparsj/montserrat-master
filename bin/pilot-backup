@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+umask 077
+
+: "${PILOT_BACKUP_RECIPIENT:?Define a chave pública age de destino}"
+destination="${1:?Indica a pasta de destino}"
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root"
+
+compose=(docker compose -f compose.pilot.yml)
+if [[ -f .env.pilot ]]; then
+    compose=(docker compose --env-file .env.pilot -f compose.pilot.yml)
+fi
+
+mkdir -p -- "$destination"
+work="$(mktemp -d -- "$destination/.pilot-backup.XXXXXXXX")"
+cleanup() {
+    rm -f -- "$work/database.sql.age" "$work/files.tar.gz.age"
+    rmdir -- "$work"
+}
+trap cleanup EXIT
+
+"${compose[@]}" exec -T mysql sh -c \
+    'MYSQL_PWD="$MYSQL_PASSWORD" mysqldump -u "$MYSQL_USER" --single-transaction --no-tablespaces --set-gtid-purged=OFF "$MYSQL_DATABASE"' \
+    | age --encrypt --recipient "$PILOT_BACKUP_RECIPIENT" --output "$work/database.sql.age"
+
+"${compose[@]}" exec -T --user www-data app tar -C storage/app -czf - . \
+    | age --encrypt --recipient "$PILOT_BACKUP_RECIPIENT" --output "$work/files.tar.gz.age"
+
+backup="$destination/polanco-$(date -u +%Y%m%dT%H%M%SZ)-${work##*.}"
+mv -T -- "$work" "$backup"
+trap - EXIT
+printf '%s\n' "$backup"

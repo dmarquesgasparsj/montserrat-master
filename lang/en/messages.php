@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'room_add_reservation' => 'Add reservation',
+    'room_arrival' => 'Arrival',
+    'room_departure' => 'Checkout',
+    'room_guest' => 'Guest',
+    'meal_summary' => 'Meal summary',
+    'meal_date' => 'Date',
+    'meal_breakfast' => 'Breakfast',
+    'meal_lunch' => 'Lunch',
+    'meal_snack' => 'Snack',
+    'meal_dinner' => 'Dinner',
+    'meal_dietary_notes' => 'Dietary notes',
+    'room_unavailable' => 'The room is unavailable for the selected dates.',
     'welcome' => 'Welcome!',
     'toggle_navigation' => 'Toggle Navigation',
     'english' => 'English',

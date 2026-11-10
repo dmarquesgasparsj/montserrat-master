@@ -9,6 +9,7 @@ use App\Mail\RegistrationCanceledChange;
 use App\Mail\RegistrationEventChange;
 use App\Mail\RetreatRegistration;
 use App\Models\Registration;
+use App\Services\RoomAssignments;
 use App\Traits\SquareSpaceTrait;
 use Auth;
 use Carbon\Carbon;
@@ -171,75 +172,40 @@ class RegistrationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRegistrationRequest $request): RedirectResponse
+    public function store(StoreRegistrationRequest $request, RoomAssignments $assignments): RedirectResponse
     {
         $this->authorize('create-registration');
-        $rooms = $request->input('rooms');
-        $num_registrants = $request->input('num_registrants');
-        //TODO: Should we check and verify that the contact type is an organization to allow multiselect or just allow any registration to book multiple rooms?
+        $count = $request->integer('num_registrants');
+        $rooms = $count > 0 ? array_fill(0, $count, null) : ($request->input('rooms') ?: [0]);
         $retreat = \App\Models\Retreat::findOrFail($request->input('event_id'));
         $contact = \App\Models\Contact::findOrFail($request->input('contact_id'));
-        /*
-         * Used primarily for registering groups
-         * If a number of registrants is selected, then add that many registrations
-         * num_registrants causes rooms to be ignored (either use num_registrants and assign rooms later
-         * or reserve rooms - for double occupancy rooms you have to do this twice to get the number or retreatants correct
-         *
-         */
-        if ($num_registrants > 0) {
-            for ($i = 1; $i <= $num_registrants; $i++) {
-                $registration = new \App\Models\Registration;
-                $registration->event_id = $request->input('event_id');
-                $registration->contact_id = $request->input('contact_id');
-                $registration->source = $request->input('source');
-                $registration->status_id = $request->input('status_id');
-                $registration->register_date = $request->input('register_date');
-                $registration->attendance_confirm_date = $request->input('attendance_confirm_date');
-                if (! empty($request->input('canceled_at'))) {
-                    $registration->canceled_at = $request->input('canceled_at');
-                }
-                if (! empty($request->input('arrived_at'))) {
-                    $registration->arrived_at = $request->input('arrived_at');
-                }
-                if (! empty($request->input('departed_at'))) {
-                    $registration->departed_at = $request->input('departed_at');
-                }
-                $registration->room_id = null;
-                $registration->registration_confirm_date = $request->input('registration_confirm_date');
-                $registration->confirmed_by = $request->input('confirmed_by');
-                $registration->deposit = $request->input('deposit');
-                $registration->notes = $request->input('notes');
-                $registration->save();
-            }
-        } else {
+
+        $registration = $assignments->transaction(function () use ($request, $rooms, $count, $retreat, $contact, $assignments) {
             foreach ($rooms as $room) {
-                //ensure that it is a valid room (not N/A)
-                $registration = new \App\Models\Registration;
-                $registration->event_id = $request->input('event_id');
-                $registration->contact_id = $request->input('contact_id');
+                $registration = new Registration;
+                $registration->event_id = $retreat->id;
+                $registration->contact_id = $contact->id;
                 $registration->source = $request->input('source');
                 $registration->status_id = $request->input('status_id');
                 $registration->register_date = $request->input('register_date');
                 $registration->attendance_confirm_date = $request->input('attendance_confirm_date');
-                if (! empty($request->input('canceled_at'))) {
-                    $registration->canceled_at = $request->input('canceled_at');
-                }
-                if (! empty($request->input('arrived_at'))) {
-                    $registration->arrived_at = $request->input('arrived_at');
-                }
-                if (! empty($request->input('departed_at'))) {
-                    $registration->departed_at = $request->input('departed_at');
-                }
+                $registration->canceled_at = $request->input('canceled_at');
+                $registration->arrived_at = $request->input('arrived_at');
+                $registration->departed_at = $request->input('departed_at');
                 $registration->room_id = $room;
                 $registration->registration_confirm_date = $request->input('registration_confirm_date');
                 $registration->confirmed_by = $request->input('confirmed_by');
                 $registration->deposit = $request->input('deposit');
                 $registration->notes = $request->input('notes');
-                $registration->remember_token = Str::random(60);
+                if ($count === 0) {
+                    $registration->remember_token = Str::random(60);
+                }
+                $assignments->check($registration);
                 $registration->save();
-                //TODO: verify that the newly created room assignment does not conflict with an existing one
             }
-        }
+
+            return $registration;
+        });
 
         flash('Registration #: <a href="'.url('/registration/'.$registration->id).'">'.$registration->id.'</a> added')->success();
 
@@ -343,7 +309,7 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRegistrationRequest $request, int $id)
+    public function update(UpdateRegistrationRequest $request, int $id, RoomAssignments $assignments)
     {
         $this->authorize('update-registration');
 
@@ -370,12 +336,32 @@ class RegistrationController extends Controller
 
         $registration->room_id = $request->input('room_id');
 
+        $eventChanged = $registration->isDirty('event_id');
+        $statusChanged = $registration->isDirty('status_id');
+        $originalEventId = $registration->getOriginal('event_id');
+
+        if ($eventChanged) {
+            $registration->room_starts_on = null;
+            $registration->room_ends_on = null;
+        }
+        if ($registration->event_id == config('polanco.event.open_deposit')) {
+            $registration->room_id = 0;
+        }
+
+        $assignments->transaction(function () use ($registration, $assignments) {
+            if ($registration->isDirty(['event_id', 'room_id', 'status_id', 'canceled_at'])) {
+                $registration->unsetRelation('retreat');
+                $assignments->check($registration);
+            }
+            $registration->save();
+        });
+
         // email finance if a (registration's event_id changes) or (the event is canceled and the registration has a deposit amount)
         if (config('polanco.notify_registration_event_change')) { // if finance notification is enabled
             $finance_email = config('polanco.finance_email');
-            $original_event = \App\Models\Retreat::findOrFail($registration->getOriginal('event_id'));
+            $original_event = \App\Models\Retreat::findOrFail($originalEventId);
 
-            if ($registration->isDirty('event_id')) {
+            if ($eventChanged) {
                 // dd($registration,$registration->event_id,$registration->getOriginal('event_id'));
                 // return view('emails.registration-event-change', compact('registration', 'retreat', 'original_event'));
                 try {
@@ -386,7 +372,7 @@ class RegistrationController extends Controller
                 flash('Email notification sent to finance regarding event change to Registration #: <a href="'.url('/registration/'.$registration->id).'">'.$registration->id.'</a>')->success();
             }
 
-            if (($registration->deposit > 0) && ($registration->status_id == config('polanco.registration_status_id.canceled')) && $registration->isDirty('status_id')) {
+            if (($registration->deposit > 0) && ($registration->status_id == config('polanco.registration_status_id.canceled')) && $statusChanged) {
                 try {
                     Mail::to($finance_email)->send(new RegistrationCanceledChange($registration, $retreat));
                 } catch (\Exception $e) { //failed to send finance notification of event_id change on registration
@@ -395,12 +381,6 @@ class RegistrationController extends Controller
                 flash('Email notification sent to finance regarding cancelation (with deposit) of Registration #: <a href="'.url('/registration/'.$registration->id).'">'.$registration->id.'</a>')->success();
             }
         }
-
-        if ($registration->event_id == config('polanco.event.open_deposit')) {
-            $registration->room_id = 0;
-        }
-
-        $registration->save();
 
         flash('Registration #: <a href="'.url('/registration/'.$registration->id).'">'.$registration->id.'</a> updated')->success();
 

@@ -7,6 +7,9 @@ use App\Http\Requests\RoomUpdateRetreatRequest;
 use App\Http\Requests\StoreRetreatRequest;
 use App\Http\Requests\UpdateRetreatRequest;
 use App\Models\Registration;
+use App\Models\Retreat;
+use App\Services\RoomAssignments;
+use Illuminate\Validation\ValidationException;
 use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
@@ -423,20 +426,33 @@ class RetreatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRetreatRequest $request, int $id): RedirectResponse
+    public function update(UpdateRetreatRequest $request, int $id, RoomAssignments $assignments): RedirectResponse
     {
         $this->authorize('update-retreat');
 
-        $retreat = \App\Models\Retreat::findOrFail($request->input('id'));
-        $retreat->idnumber = $request->input('idnumber');
-        $retreat->start_date = $request->input('start_date');
-        $retreat->end_date = $request->input('end_date');
-        $retreat->title = $request->input('title');
-        $retreat->description = $request->input('description');
-        $retreat->event_type_id = $request->input('event_type');
-        $retreat->is_active = $request->input('is_active');
-        $retreat->max_participants = $request->input('max_participants');
-        $retreat->save();
+        $retreat = $assignments->transaction(function () use ($request, $id, $assignments) {
+            $retreat = Retreat::findOrFail($id);
+            $retreat->idnumber = $request->input('idnumber');
+            $retreat->start_date = $request->input('start_date');
+            $retreat->end_date = $request->input('end_date');
+            $retreat->title = $request->input('title');
+            $retreat->description = $request->input('description');
+            $retreat->event_type_id = $request->input('event_type');
+            $retreat->is_active = $request->input('is_active');
+            $retreat->max_participants = $request->input('max_participants');
+            $datesChanged = $retreat->isDirty(['start_date', 'end_date']);
+            $retreat->save();
+
+            if ($datesChanged) {
+                $registrations = $retreat->registrations()->where('room_id', '>', 0)
+                    ->whereNull('room_starts_on')->with('retreat')->get();
+                foreach ($registrations as $registration) {
+                    $assignments->check($registration);
+                }
+            }
+
+            return $retreat;
+        });
 
 
         //$retreat->chapel = $request->input('chapel');
@@ -617,30 +633,42 @@ class RetreatController extends Controller
         return Redirect::action([self::class, 'show'], $retreat->id);
     }
 
-    public function room_update(RoomUpdateRetreatRequest $request): RedirectResponse
+    public function room_update(RoomUpdateRetreatRequest $request, RoomAssignments $assignments): RedirectResponse
     {
         $this->authorize('update-registration');
 
-        if ($request->input('registrations') !== null) {
-            foreach ($request->input('registrations') as $key => $value) {
-                $registration = \App\Models\Registration::findOrFail($key);
-                if (! isset($event_id)) {
-                    $event_id = $registration->event_id;
+        $event_id = $assignments->transaction(function () use ($request, $assignments) {
+            $rooms = $request->input('registrations', []);
+            $notes = $request->input('notes', []);
+            $eventId = $request->integer('retreat_id') ?: null;
+            $changed = [];
+
+            foreach (array_keys($rooms + $notes) as $id) {
+                $registration = Registration::with('retreat')->findOrFail($id);
+                $eventId ??= $registration->event_id;
+                if ((int) $registration->event_id !== (int) $eventId) {
+                    throw ValidationException::withMessages(['registrations' => __('messages.room_unavailable')]);
                 }
-                $registration->room_id = $value;
+
+                if (array_key_exists($id, $rooms)) {
+                    $registration->room_id = $rooms[$id];
+                    if ($registration->isDirty('room_id')) {
+                        $changed[] = $registration;
+                    }
+                }
+                if (array_key_exists($id, $notes)) {
+                    $registration->notes = $notes[$id];
+                }
                 $registration->save();
             }
-        }
-        if ($request->input('notes') !== null) {
-            foreach ($request->input('notes') as $key => $value) {
-                $registration = \App\Models\Registration::findOrFail($key);
-                if (! isset($event_id)) {
-                    $event_id = $registration->event_id;
-                }
-                $registration->notes = $value;
-                $registration->save();
+
+            foreach ($changed as $registration) {
+                $assignments->check($registration);
             }
-        }
+
+            return $eventId;
+        });
+
         if (isset($event_id)) {
             $retreat = \App\Models\Retreat::findOrFail($event_id);
             flash('Room assignments for '.$retreat->title.' successfully assigned')->success();

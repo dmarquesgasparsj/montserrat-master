@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'room_add_reservation' => 'Reservar quarto',
+    'room_arrival' => 'Chegada',
+    'room_departure' => 'Saída',
+    'room_guest' => 'Participante',
+    'meal_summary' => 'Mapa de refeições',
+    'meal_date' => 'Data',
+    'meal_breakfast' => 'Pequeno-almoço',
+    'meal_lunch' => 'Almoço',
+    'meal_snack' => 'Lanche',
+    'meal_dinner' => 'Jantar',
+    'meal_dietary_notes' => 'Notas alimentares',
+    'room_unavailable' => 'O quarto não está disponível nas datas selecionadas.',
     'welcome' => 'Bem-vindo!',
     'toggle_navigation' => 'Alternar Navegação',
     'english' => 'Inglês',

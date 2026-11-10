@@ -19,7 +19,12 @@ class RoomUpdateRetreatRequest extends FormRequest
      */
     public function rules(): array
     {
-        return ['retreat_id' => 'integer|min:0'];
+        return [
+            'retreat_id' => 'integer|min:0',
+            'registrations' => 'array',
+            'registrations.*' => 'nullable|integer|min:0',
+            'notes' => 'array',
+        ];
     }
 
     /**

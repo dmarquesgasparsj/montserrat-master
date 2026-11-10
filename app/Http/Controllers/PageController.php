@@ -400,46 +400,17 @@ class PageController extends Controller
         return view('reports.retreatregistrations', compact('registrations'));   //
     }
 
-    public function retreatmealcounts($idnumber): View
+    public function retreatmealcounts($idnumber, \App\Services\RetreatMealCounts $counts): View
     {
         $this->authorize('show-registration');
 
         $retreat = \App\Models\Retreat::whereIdnumber($idnumber)->firstOrFail();
-        $registrations = \App\Models\Registration::whereCanceledAt(null)
-            ->whereEventId($retreat->id)
-            ->whereIn('role_id', [config('polanco.participant_role_id.retreatant'), config('polanco.participant_role_id.ambassador')])
-            ->whereStatusId(config('polanco.registration_status_id.registered'))
-            ->with('retreatant.note_dietary')
-            ->get();
-
-        $start = Carbon::parse($retreat->start_date)->startOfDay();
-        $end = Carbon::parse($retreat->end_date)->startOfDay();
-        $days = [];
-        for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
-            $days[$date->toDateString()] = [
-                'Breakfast' => 0,
-                'Lunch' => 0,
-                'Snack' => 0,
-                'Dinner' => 0,
-            ];
-        }
+        $days = $counts->forRetreat($retreat);
 
         $dietary = [];
-        foreach ($registrations as $registration) {
-            $arrival = $registration->arrived_at ? Carbon::parse($registration->arrived_at)->startOfDay() : $start;
-            $depart = $registration->departed_at ? Carbon::parse($registration->departed_at)->endOfDay() : $end->copy()->endOfDay();
-
-            foreach ($days as $date => $meals) {
-                $d = Carbon::parse($date);
-                if ($d->between($arrival, $depart)) {
-                    foreach (array_keys($meals) as $meal) {
-                        $days[$date][$meal]++;
-                    }
-                }
-            }
-
-            $note = trim(optional($registration->retreatant->note_dietary)->note);
-            if (! empty($note)) {
+        foreach ($counts->registrations($retreat)->with('retreatant.note_dietary')->get() as $registration) {
+            $note = trim((string) $registration->retreatant?->note_dietary?->note);
+            if ($note !== '') {
                 $dietary[$note] = ($dietary[$note] ?? 0) + 1;
             }
         }

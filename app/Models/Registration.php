@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,7 +55,17 @@ class Registration extends Model implements Auditable
             'canceled_at' => 'datetime',
             'arrived_at' => 'datetime',
             'departed_at' => 'datetime',
+            'room_starts_on' => 'date',
+            'room_ends_on' => 'date',
         ];
+    }
+
+    public function roomNights(): array
+    {
+        $start = Carbon::parse($this->room_starts_on ?? $this->retreat->start_date)->startOfDay();
+        $end = Carbon::parse($this->room_ends_on ?? $this->retreat->end_date)->startOfDay();
+
+        return [$start, $end->gt($start) ? $end : $start->copy()->addDay()];
     }
 
     public function generateTags(): array

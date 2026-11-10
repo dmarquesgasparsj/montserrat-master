@@ -41,6 +41,17 @@ $(document).ready(function() {
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
   });
 
+  function checkoutAfter(date) {
+    const checkout = new Date(date + 'T00:00:00Z');
+    checkout.setUTCDate(checkout.getUTCDate() + 1);
+    return checkout.toISOString().slice(0, 10);
+  }
+
+  function showReservationError(xhr) {
+    const response = xhr.responseJSON;
+    window.alert(response?.message || xhr.statusText);
+  }
+
   // Enable drag & drop of reservations on the room schedule
   $('.reservation').draggable({
     revert: 'invalid',
@@ -64,7 +75,7 @@ $(document).ready(function() {
         }
       })
         .done(() => window.location.reload())
-        .fail(err => console.error('Error moving reservation', err));
+        .fail(showReservationError);
     }
   });
 
@@ -74,22 +85,23 @@ $(document).ready(function() {
   let selectedCells = [];
 
   // Click on a single available cell to open reservation modal
-  $('.room-cell.table-success').on('click', function () {
-    if (selecting || wasSelecting) return;
+  $('.room-cell.room-available').on('click', function (event) {
+    if (selecting || wasSelecting || $(event.target).closest('a').length) return;
     const roomId = $(this).data('room-id');
     const date = $(this).data('date');
     roomInput.val(roomId);
     startInput[0]._flatpickr.setDate(date, true);
-    endInput[0]._flatpickr.setDate(date, true);
+    endInput[0]._flatpickr.setDate(checkoutAfter(date), true);
     reservationModal.modal('show');
   });
 
-  $('.room-cell.table-success')
+  $('.room-cell.room-available')
     .on('mousedown', function (e) {
+      if ($(e.target).closest('a').length) return;
       selecting = true;
       startCell = this;
       selectedCells = [this];
-      $('.room-cell.table-success').removeClass('table-info');
+      $('.room-cell.room-available').removeClass('table-info');
       $(this).addClass('table-info');
       e.preventDefault();
     })
@@ -107,8 +119,9 @@ $(document).ready(function() {
     }
 
     const roomId = $(startCell).data('room-id');
-    const startDate = $(selectedCells[0]).data('date');
-    const endDate = $(selectedCells[selectedCells.length - 1]).data('date');
+    const nights = selectedCells.map(cell => $(cell).data('date')).sort();
+    const startDate = nights[0];
+    const endDate = checkoutAfter(nights[nights.length - 1]);
 
     roomInput.val(roomId);
     startInput[0]._flatpickr.setDate(startDate, true);
@@ -128,7 +141,8 @@ $(document).ready(function() {
       success: function () {
         reservationModal.modal('hide');
         window.location.reload();
-      }
+      },
+      error: showReservationError
     });
   });
 });

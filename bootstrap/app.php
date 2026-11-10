@@ -15,8 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->replace(
+            \Illuminate\Http\Middleware\TrustProxies::class,
+            \App\Http\Middleware\TrustPilotProxy::class,
+        );
+
         $middleware->redirectGuestsTo(fn () => route('login'));
-        $middleware->redirectUsersTo(AppServiceProvider::HOME);
+        $middleware->redirectUsersTo(fn () => config('pilot.enabled') ? route('pilot.home') : AppServiceProvider::HOME);
 
         $middleware->validateCsrfTokens(except: [
             'stripe/webhooks',
@@ -24,8 +29,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->throttleApi();
 
-        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocaleFromSession::class); // Add this line
+        $middleware->prependToPriorityList(
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\RequirePilotAccess::class,
+        );
+
+        $middleware->appendToGroup('web', [
+            \App\Http\Middleware\RequirePilotAccess::class,
+            \App\Http\Middleware\SetLocaleFromSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->dontFlash(['code']);
     })->create();

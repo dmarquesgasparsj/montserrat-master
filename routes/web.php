@@ -28,6 +28,7 @@ use App\Http\Controllers\ParishController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PilotWorkspaceController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RelationshipController;
@@ -84,7 +85,11 @@ Route::middleware('web', 'activity')->group(function () {
         }
     });
 
-    Route::get('/', [PageController::class, 'welcome']);
+    if (config('pilot.enabled')) {
+        Route::redirect('/', '/pilot')->name('pilot.entry');
+    } else {
+        Route::get('/', [PageController::class, 'welcome']);
+    }
     Route::get('/welcome', [PageController::class, 'welcome'])->name('welcome');
     Route::get('/welcome-test', function () {
         return view('welcome_test');
@@ -95,13 +100,26 @@ Route::middleware('web', 'activity')->group(function () {
     // Authentication routes...
     // Route::get('login/{provider?}', [Auth\AuthController::class, 'login']);
     // Route::get('auth/google/callback', [Auth\AuthController::class, 'handleProviderCallback']);
-    Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
-    Route::get('login/google', [Auth\LoginController::class, 'redirectToProvider'])->name('login');
-    Route::get('login/google/callback', [Auth\LoginController::class, 'handleProviderCallback'])->name('login.google_callback');
+    if (config('pilot.enabled')) {
+        Route::get('login', [Auth\PilotLoginController::class, 'show'])->middleware('guest')->name('login');
+        Route::post('login', [Auth\PilotLoginController::class, 'store'])->middleware(['guest', 'throttle:pilot-login'])->name('pilot.login');
+        Route::post('logout', [Auth\PilotLoginController::class, 'destroy'])->middleware('auth')->name('logout');
+        Route::get('pilot', [PilotWorkspaceController::class, 'home'])->name('pilot.home');
+        Route::get('pilot/cozinha', [PilotWorkspaceController::class, 'kitchen'])->name('pilot.kitchen');
+        Route::get('pilot/limpeza', [PilotWorkspaceController::class, 'housekeeping'])->name('pilot.housekeeping');
+        Route::post('pilot/limpeza/{room}/concluir', [PilotWorkspaceController::class, 'markCleaned'])->name('pilot.room-cleaned');
+        Route::get('pilot/exportar-reservas', [PilotWorkspaceController::class, 'exportReservations'])->name('pilot.reservation-export');
+        Route::get('pilot/contas', [PilotWorkspaceController::class, 'accounts'])->name('pilot.accounts');
+        Route::post('pilot/contas/{user}/perfil', [PilotWorkspaceController::class, 'assignStaffRole'])->name('pilot.staff-role');
+    } else {
+        Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
+        Route::get('login/google', [Auth\LoginController::class, 'redirectToProvider'])->name('login');
+        Route::get('login/google/callback', [Auth\LoginController::class, 'handleProviderCallback'])->name('login.google_callback');
+    }
 
-    Route::get('search/autocomplete', [SearchController::class, 'autocomplete']);
-    Route::get('search/getuser', [SearchController::class, 'getuser']);
-    Route::get('search', [SearchController::class, 'search']);
+    Route::get('search/autocomplete', [SearchController::class, 'autocomplete'])->name('pilot.contact-autocomplete');
+    Route::get('search/getuser', [SearchController::class, 'getuser'])->name('pilot.contact-select');
+    Route::get('search', [SearchController::class, 'search'])->name('pilot.search-contacts');
     Route::get('results', [SearchController::class, 'results'])->name('results');
 
     // Dashboard Routes
@@ -357,7 +375,7 @@ Route::middleware('web', 'activity')->group(function () {
     Route::resource('retreat', RetreatController::class);
 
     Route::get('retreats', [PageController::class, 'retreat'])->name('retreats');
-    Route::get('room/location/{location_id?}', [RoomController::class, 'index_location']);
+    Route::get('room/location/{location_id?}', [RoomController::class, 'index_location'])->name('pilot.room-location');
     Route::resource('room', RoomController::class);
     Route::get('rooms/{ymd?}', [RoomController::class, 'schedule'])->name('rooms');
     Route::post('rooms/move-reservation', [RoomController::class, 'moveReservation'])->name('rooms.move-reservation');
