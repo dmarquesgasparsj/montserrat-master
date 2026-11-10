@@ -1,0 +1,46 @@
+name: Soutelo pilot
+on:
+  push:
+    branches: [codex/soutelo-pilot]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  installation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the application, migrate and seed a fresh MySQL database
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PILOT_APP_KEY="base64:$(openssl rand -base64 32)"
+          export PILOT_DB_PASSWORD="$(openssl rand -hex 24)"
+          export PILOT_DB_ROOT_PASSWORD="$(openssl rand -hex 24)"
+          export SOUTELO_PILOT_EMAIL=pilot@example.test
+          export SOUTELO_PILOT_PASSWORD="$(openssl rand -hex 24)"
+          echo "::add-mask::$PILOT_APP_KEY"
+          echo "::add-mask::$PILOT_DB_PASSWORD"
+          echo "::add-mask::$PILOT_DB_ROOT_PASSWORD"
+          echo "::add-mask::$SOUTELO_PILOT_PASSWORD"
+
+          compose=(docker compose -f compose.pilot.yml)
+          "${compose[@]}" build app
+          "${compose[@]}" run --rm --user www-data app php artisan migrate --force
+          "${compose[@]}" run --rm --user www-data -e SOUTELO_PILOT_EMAIL -e SOUTELO_PILOT_PASSWORD app php artisan db:seed --class=SouteloPilotSeeder --force
+          "${compose[@]}" up -d app
+          curl --fail --silent --show-error --retry 15 --retry-connrefused --retry-delay 1 http://127.0.0.1:8088/up
+          curl --fail --silent --show-error -c /tmp/soutelo.cookies http://127.0.0.1:8088/login > /tmp/soutelo-login.html
+          token="$(sed -n 's/.*name="_token" value="\([^"]*\)".*/\1/p' /tmp/soutelo-login.html)"
+          test -n "$token"
+          curl --fail --silent --show-error -b /tmp/soutelo.cookies -c /tmp/soutelo.cookies \
+            --data-urlencode "_token=$token" --data-urlencode "email=$SOUTELO_PILOT_EMAIL" \
+            --data-urlencode "password=$SOUTELO_PILOT_PASSWORD" http://127.0.0.1:8088/login > /dev/null
+          curl --fail --silent --show-error -b /tmp/soutelo.cookies http://127.0.0.1:8088/rooms > /tmp/soutelo-rooms.html
+          grep -q 'T01' /tmp/soutelo-rooms.html
+          curl --fail --silent --show-error -b /tmp/soutelo.cookies http://127.0.0.1:8088/report/meal_summary/PILOT-1 > /tmp/soutelo-meals.html
+          grep -q 'PILOT-1' /tmp/soutelo-meals.html
