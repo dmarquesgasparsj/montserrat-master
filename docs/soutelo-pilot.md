@@ -5,7 +5,7 @@ A instalação abre em [http://127.0.0.1:8088](http://127.0.0.1:8088) e o MySQL 
 
 ## Instalar
 
-É necessário Docker com Compose v2. A partir da raiz do repositório, copiar
+São necessários Docker com Compose v2, OpenSSL e Python 3. A partir da raiz do repositório, copiar
 `.env.pilot.example` para `.env.pilot`. Preencher `PILOT_APP_KEY` com
 `base64:` seguido de 32 bytes aleatórios em Base64. Preencher as duas
 palavras-passe de MySQL com valores aleatórios e distintos. Em Bash, usar
@@ -99,7 +99,20 @@ este costuma ser o gateway da rede Docker. Confirmar o IP em vez de confiar
 em toda a rede. O proxy deve substituir os cabeçalhos encaminhados e
 preservar o nome do site no cabeçalho Host. Validar o certificado nos
 computadores da equipa. Com URL HTTPS, o piloto exige HTTPS e ativa cookies
-seguros.
+seguros. Se usares Caddy no próprio servidor, a configuração do site pode
+seguir este modelo. Substituir o nome e o IP pelos da rede da Casa.
+
+```caddyfile
+https://polanco.soutelo.example {
+    bind 192.0.2.10
+    tls internal
+    reverse_proxy 127.0.0.1:8088
+}
+```
+
+Para `tls internal`, instalar o certificado da autoridade interna de forma
+administrada nos computadores da equipa. A regra da firewall deve limitar
+as ligações à rede da equipa e à VPN autorizada.
 
 Ativar a cifragem do disco do servidor. Usar uma base, volumes, credenciais,
 chave Laravel e chave de cópias diferentes para cada casa. Quando duas
